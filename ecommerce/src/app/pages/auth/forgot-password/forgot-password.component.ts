@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CodeForgotPasswordComponent, NewPasswordComponent, CommonModule, FormsModule],
+  imports: [CodeForgotPasswordComponent, RouterModule, NewPasswordComponent, CommonModule, FormsModule],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.css'
 })
@@ -33,6 +34,7 @@ export class ForgotPasswordComponent {
   verifiedMail() {
     if (!this.email) {
       this.toastr.warning('Validacion', 'El campo correo es obligatorio.');
+      return;
     }
     let data = {
       email: this.email,
@@ -51,5 +53,9 @@ export class ForgotPasswordComponent {
 
   LoadingCode($event:any)  {
     this.isLoadingCode = $event;
+  }
+
+  CodeValue($event:any) {
+    this.code = $event;
   }
 }

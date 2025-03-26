@@ -12,10 +12,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './code-forgot-password.component.css'
 })
 export class CodeForgotPasswordComponent {
+
   code: string = '';
   isLoadingCode:any = null;
 
   @Output() LoadingCodeStatus: EventEmitter<any> = new EventEmitter();
+  @Output() CodeValue: EventEmitter<any> = new EventEmitter();
   
   constructor (
     public authService: AuthService,
@@ -27,6 +29,7 @@ export class CodeForgotPasswordComponent {
   verifiedCode() {
     if (!this.code) {
       this.toastr.error('Validacion', 'El codigo de verificacion es obligatorio.');
+      return;
     }
     let data = {
       code: this.code,
@@ -36,6 +39,7 @@ export class CodeForgotPasswordComponent {
       if (resp.message == 200) {
         this.isLoadingCode = 1;
         this.LoadingCodeStatus.emit(this.isLoadingCode);
+        this.CodeValue.emit(this.code);
         this.toastr.success('Exito', 'Ingresa tu nueva contraseña.');
       }else {
         this.isLoadingCode = null;

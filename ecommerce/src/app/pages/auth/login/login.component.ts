@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { after } from 'node:test';
 
+declare function password_show_toggle(): any;
 
 @Component({
   selector: 'app-login',
@@ -27,10 +29,14 @@ export class LoginComponent {
     private router: Router,
     public activedRoute: ActivatedRoute,
   ) {
+    afterNextRender (() => {
+      setTimeout(() => {
+        password_show_toggle()
+      }, 50); 
+    })
   }
   
   ngOnInit() : void {
-    //this.showSuccess();
     if (this.authService.token && this.authService.user) {
       setTimeout (() => {
         this.router.navigateByUrl('/')
@@ -85,9 +91,5 @@ export class LoginComponent {
     }, (error) => {
       console.log(error);
     })
-  }
-
-  showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
   }
 }
