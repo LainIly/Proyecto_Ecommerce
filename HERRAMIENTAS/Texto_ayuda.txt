@@ -371,6 +371,11 @@ function copiarAlPortapapeles(TEXTO) {
   document.body.removeChild(aux);
 }
 
+Ejemplos Links de Campanas
+
+http://localhost:4200/landing/torre-gamer-amd-ryzen-7-5700x-ddr4-32gb-ssd-1tb-rtx-4060-8gb?discount=67f18109bb47c
+
+
 http://localhost:4200/discount/65ab611012b4a
 http://localhost:4200/producto/laptop-gamer-2024-corei-9?discount=65ab611012b4a
 

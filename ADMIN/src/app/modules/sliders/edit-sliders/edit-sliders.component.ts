@@ -23,6 +23,10 @@ export class EditSlidersComponent {
 
   isLoading$: any;
 
+  type_slider: any = 1;
+  price_original: any = null;
+  price_campaing: any = null;
+
   constructor (
     public sliderService: SlidersService,
     public toastr: ToastrService,
@@ -45,6 +49,9 @@ export class EditSlidersComponent {
       this.color = resp.slider.color;
       this.state = resp.slider.state;
       this.imagen_previsualiza = resp.slider.imagen;
+      this.type_slider = resp.slider.type_slider;
+      this.price_original = resp.slider.price_original;
+      this.price_campaing = resp.slider.price_campaing;
     })
   }
 
@@ -94,6 +101,16 @@ export class EditSlidersComponent {
 
     if (this.color) {
       formData.append('color', this.color + '');
+    }
+
+    formData.append('type_slider', this.type_slider + '');
+
+    if (this.price_original) {
+      formData.append('price_original', this.price_original + '');
+    }
+
+    if (this.price_campaing) {
+      formData.append('price_campaing', this.price_campaing + '');
     }
 
     formData.append('subtitle', this.subtitle + '');

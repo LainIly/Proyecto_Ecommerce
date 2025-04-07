@@ -2,11 +2,11 @@
 
 namespace App\Models\Cupone;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
+use App\Models\Product\Brand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
-use App\Models\Brand;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CuponeBrand extends Model
 {

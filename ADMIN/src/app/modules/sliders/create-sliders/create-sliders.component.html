@@ -6,22 +6,22 @@
         <div class="row mb-6">
 
             <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Title: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Titulo: (*) </label>
                 <input type="text" name="title" [(ngModel)]="title"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: The best note book collection 2023">
+                    placeholder="Por ejemplo: La mejor coleccion de Laptops en el 2025">
             </div>
 
             <div class="col-lg-6 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Label: (Opcional)</label>
+                <label class="fw-semibold fs-6 py-2">Texto: (Opcional)</label>
                 <input type="text" name="icon" [(ngModel)]="label"
-                    class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: Starting at $ 999.00">
+                    class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: A partir de $ 1.5000.000">
             </div>
 
             <div class="col-lg-6 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Subtitle: (*)</label>
+                <label class="fw-semibold fs-6 py-2">Subtitulo: (*)</label>
                 <input type="text" name="subtitle" [(ngModel)]="subtitle"
-                    class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: Exclusive offer">
+                    class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: Ofertas Exckusivas">
             </div>
 
         </div>
@@ -33,7 +33,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFile"
                         accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <label class="custom-file-label" for="customFile"></label>
                 </div>
                 <div class="">
                     <img class="img py-4" [src]="imagen_previsualiza" width="200" alt="">
@@ -41,14 +41,40 @@
             </div>
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Link: (Opcional)</label>
-                <input type="text" name="link" [(ngModel)]="link"
-                    class="form-control form-control-lg form-control-solid" placeholder="Http://www.dominio.com">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="fw-semibold fs-6 py-2">Link: (Opcional)</label>
+                        <input type="text" name="link" [(ngModel)]="link"
+                            class="form-control form-control-lg form-control-solid" placeholder="Http://www.dominio.com">
+                    </div>
+                    <div class="col-12" *ngIf="type_slider == 3">
+                        <label for="etiqueta_especial" class="required fw-bold fs-6 mb-2">Precio Original: </label>
+                        <input class="form-control" type="number" id="price_original" name="price_original" [(ngModel)]="price_original" />
+                    </div>
+                    <div class="col-12" *ngIf="type_slider == 3">
+                        <label for="etiqueta_especial" class="required fw-bold fs-6 mb-2">Precio Campana: </label>
+                        <input class="form-control" type="number" id="price_campaing" name="price_campaing" [(ngModel)]="price_campaing" />
+                    </div>
+                </div>
             </div>
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
                     <label for="etiqueta_especial" class="required fw-bold fs-6 mb-2">Color: </label>
                     <input class="form-control" type="color" id="color" name="color" [(ngModel)]="color" />
+            </div>
+
+            <div class="col-lg-4 fv-row fv-plugins-icon-container">
+                <label class="required fw-bold fs-6 mb-2">Selec. Tipo</label>
+                <select
+                    class="form-control form-select-solid fw-bolder"
+                    name="type_slider"
+                    placeholder="Seleccionar"
+                    [(ngModel)]="type_slider"
+                >
+                    <option value="1">Slider Principal</option>
+                    <option value="2">Slider Secundario</option>
+                    <option value="3">Slider por Producto</option>
+                </select>
             </div>
 
         </div>

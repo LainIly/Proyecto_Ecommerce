@@ -51,10 +51,12 @@ export class EditCategorieComponent {
     this.categorieService.showCategorie(this.CATEGORIE_ID).subscribe((resp:any) => {
       console.log(resp);
       this.CATEGORIE = resp.categorie;
+
       this.type_categorie = resp.categorie.type_categorie;
       this.name = resp.categorie.name;
       this.icon = resp.categorie.icon;
       this.position = resp.categorie.position;
+
       this.categorie_second_id = resp.categorie.categorie_second_id;
       this.categorie_third_id = resp.categorie.categorie_third_id;
       this.imagen_previsualiza = resp.categorie.imagen;
@@ -88,9 +90,26 @@ export class EditCategorieComponent {
   }
 
   changeTypeCategorie(val: number) {
+    
     this.type_categorie = val;
-    this.categorie_second_id = '';
-    this.categorie_third_id = '';
+
+    if (this.type_categorie == 1 && this.categories_first.length > 0) {
+      this.categories_first = this.categories_first[0].id;
+    } else {
+      this.categories_first = null;
+    }
+
+    if (this.type_categorie == 2 && this.categories_seconds.length > 0) {
+      this.categories_seconds = this.categories_seconds[0].id;
+    } else {
+      this.categories_seconds = null;
+    }
+
+    if (this.type_categorie == 3 && this.categories_seconds.length > 0) {
+      this.categories_seconds = this.categories_seconds[0].id;
+    } else {
+      this.categories_seconds = null;
+    }
   }
 
   changeDepartamento() {

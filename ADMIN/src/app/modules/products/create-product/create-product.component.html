@@ -6,17 +6,17 @@
         <div class="row mb-6">
 
             <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Title: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Titulo: (*) </label>
                 <input type="text" name="title"  [(ngModel)]="title"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: The best note book collection 2023">
+                    placeholder="Por Ejemplo: Zapatillas Nike Air Max 2021">
             </div>
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Sku: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Codigo: (*) </label>
                 <input type="text" name="sku" [(ngModel)]="sku"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: ZD-0001">
+                    placeholder="Por Ejemplo: ZD-0001">
             </div>
 
         </div>
@@ -24,17 +24,17 @@
         <div class="row mb-6">
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Price COP: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Precio COP: (*) </label>
                 <input type="number" name="price_cop" [(ngModel)]="price_cop"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: 20.000 COP">
+                    placeholder="Por Ejemplo: 20.000 COP">
             </div>
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Price USD: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Precio USD: (*) </label>
                 <input type="number" name="price_usd" [(ngModel)]="price_usd"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: 20 USD">
+                    placeholder="Por Ejemplo: 20 USD">
             </div>
 
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
@@ -107,15 +107,15 @@
 
         <div class="row mb-6">
             <div class="col-lg-4 col-md-4 col-sm-12 my-2">
-                <label class="fw-semibold fs-6 py-2">Word: (*) </label>
+                <label class="fw-semibold fs-6 py-2">Palabras Clave: (*) </label>
                 <input type="text" name="word" (keyup.enter)="addItems()" [(ngModel)]="word"
                     class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: XXXX">
+                    placeholder="Por Ejemplo: Portatil, Laptop, Computador">
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 my-2" *ngIf="!isShowMultiselect">
-                <label class="fw-semibold fs-6 py-2">Tags: </label>
+                <label class="fw-semibold fs-6 py-2">Etiquetas: </label>
                 <ng-multiselect-dropdown
-                [placeholder]="'Select Tags'"
+                [placeholder]="'Selecciona Etiquetas'"
                 [settings]="dropdownSettings"
                 [data]="dropdownList"
                 [(ngModel)]="selectedItems"
@@ -133,7 +133,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFile"
                         accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <label class="custom-file-label" for="customFile"></label>
                 </div>
                 <div class="">
                     <img class="img py-4" [src]="imagen_previsualiza" width="200" alt="">
@@ -144,7 +144,7 @@
         
         <div class="row mb-6">
             <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                <label class="fs-6 fw-semibold mb-2">Description: </label>
+                <label class="fs-6 fw-semibold mb-2">Descripcion: </label>
                 <ckeditor [data]="description" [config]="config" (change)="onChange($event)"></ckeditor>
             </div>
             <div class="col-lg-4 fv-row fv-plugins-icon-container">

@@ -15,7 +15,7 @@ export class CreateProductComponent {
   resumen: string = '';
   price_cop: number = 0;
   price_usd: number = 0;
-  description: any = "<p>Hello, world!</p>";
+  description: any = '';
   imagen_previsualiza: any = 'https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/illustrations/easy/2.svg';
   file_imagen: any = null;
   marca_id: string = '';

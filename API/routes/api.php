@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Product\ProductVariationsController;
 use App\Http\Controllers\Admin\Product\ProductSpecificationsController;
 use App\Http\Controllers\Admin\Product\ProductVariationsAnidadoController;
 use App\Http\Controllers\Admin\Cupone\CuponeController;
+use App\Http\Controllers\Admin\Discount\DiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,4 +80,7 @@ Route::group ([
 
     Route::get("cupones/config",[CuponeController::class,"config"]);
     Route::resource("cupones",CuponeController::class);
+
+    Route::resource("discounts",DiscountController::class);
+
 });

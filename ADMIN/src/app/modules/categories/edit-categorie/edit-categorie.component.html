@@ -8,7 +8,7 @@
                     [ngClass]="{'active': type_categorie == 1}" data-kt-button="true">
                     <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
                         <input class="form-check-input" type="radio" (click)="changeTypeCategorie(1)" name="usage"
-                            value="1" checked="checked">
+                            value="1" [checked]="type_categorie == 1">
                     </span>
                     <span class="ms-5">
                         <span class="fs-6 fw-bolder mb-1 d-block">Departamento</span>
@@ -21,7 +21,7 @@
                     [ngClass]="{'active': type_categorie == 2}" data-kt-button="true">
                     <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
                         <input class="form-check-input" type="radio" (click)="changeTypeCategorie(2)" name="usage"
-                        value="2">
+                        value="2" [checked]="type_categorie == 2">
                     </span>
                     <span class="ms-5">
                         <span class="fs-6 fw-bolder mb-1 d-block">Categoria</span>
@@ -34,7 +34,7 @@
                     [ngClass]="{'active': type_categorie == 3}" data-kt-button="true">
                     <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
                         <input class="form-check-input" type="radio" (click)="changeTypeCategorie(3)" name="usage"
-                            value="2">
+                            value="3" [checked]="type_categorie == 3">
                     </span>
                     <span class="ms-5">
                         <span class="fs-6 fw-bolder mb-1 d-block">SubCategoria</span>
@@ -49,12 +49,12 @@
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
                 <label class="fw-semibold fs-6 py-2">Nombre: (*) </label>
                 <input type="text" name="name" [(ngModel)]="name" class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: Computer">
+                    placeholder="Por Ejemplo: Nombre de la Categoria">
             </div>
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
-                <label class="fw-semibold fs-6 py-2">Icon: ( {{ type_categorie == 1 ? '*' : 'Opcional' }} )</label>
+                <label class="fw-semibold fs-6 py-2">Icono: ( {{ type_categorie == 1 ? '*' : 'Opcional' }} )</label>
                 <input type="text" name="icon" [(ngModel)]="icon" class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: Icon">
+                    placeholder="Por Ejemplo: Icono de la Categoria">
             </div>
 
         </div>
@@ -66,7 +66,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFile"
                         accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <label class="custom-file-label" for="customFile"></label>
                 </div>
                 <div class="">
                     <img class="img py-4"
@@ -78,11 +78,11 @@
             <div class="col-lg-4 fv-row fv-plugins-icon-container">
                 <label class="fw-semibold fs-6 py-2">Posicion: (*)</label>
                 <input type="number" name="position" [(ngModel)]="position" class="form-control form-control-lg form-control-solid"
-                    placeholder="Example: 4">
+                    placeholder="Por Ejemplo: 4">
             </div>
 
             <div class="col-lg-4">
-                <label class="fw-semibold fs-6 py-2">Status: (*)</label>
+                <label class="fw-semibold fs-6 py-2">Estado: (*)</label>
                 <select 
                     class="form-control form-select-solid fw-bolder" 
                     name="state"
@@ -112,7 +112,7 @@
                 </select>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 my-2" *ngIf="type_categorie == 3">
-                <label class="fw-semibold fs-6 py-2">Departamento: (Primer Nivel *)</label>
+                <label class="fw-semibold fs-6 py-2">Departamento: (Primer Nivel *) o este</label>
                 <select
                         class="form-control form-select-solid fw-bolder"
                         name="departament"
@@ -129,9 +129,9 @@
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 my-2" *ngIf="type_categorie == 3">
-                <label class="fw-semibold fs-6 py-2">Categoria: (Segundo Nivel *) Ejemplo</label>
-                <select 
-                    class="form-control form-select-solid fw-bolder" 
+                <label class="fw-semibold fs-6 py-2">Categoria:(Segundo Nivel *)</label>
+                <select
+                    class="form-control form-select-solid fw-bolder"
                     name="categorie"
                     placeholder="Selec. Categoria"
                     [(ngModel)]="categorie_second_id"

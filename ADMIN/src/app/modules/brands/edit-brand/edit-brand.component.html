@@ -3,7 +3,7 @@
     <!--begin::Modal header-->
     <div class="modal-header" id="kt_modal_add_user_header">
         <!--begin::Modal title-->
-        <h2 class="fw-bolder">Edit Brand : {{ brand.name }}</h2>
+        <h2 class="fw-bolder">Editar Marca : {{ brand.name }}</h2>
         
         <!--end::Modal title-->
         <!--begin::Close-->
@@ -29,20 +29,20 @@
                 <!--begin::Input group-->
                 <div class="fv-row mb-7">
                     <!--begin::Label-->
-                    <label class="required fw-bold fs-6 mb-2">Brand Name</label>
+                    <label class="required fw-bold fs-6 mb-2">Nombre de la Marca</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Brand" [(ngModel)]="name" />
+                    <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Marca" [(ngModel)]="name" />
                     <!--end::Input-->
                 </div>
             </div>
             <!--end::Scroll-->
             <div class="fv-row mb-7">
-                <label class="required fw-bold fs-6 mb-2">Selec. State</label>
+                <label class="required fw-bold fs-6 mb-2">Selec. Estado</label>
                 <select
                     class="form-control form-select-solid fw-bolder"
                     name="XXXXX"
-                    placeholder="Select"
+                    placeholder="Seleccionar"
                     [(ngModel)]="state"
                 >
                     <option value="1">Activo</option>
