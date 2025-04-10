@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Product\ProductSpecificationsController;
 use App\Http\Controllers\Admin\Product\ProductVariationsAnidadoController;
 use App\Http\Controllers\Admin\Cupone\CuponeController;
 use App\Http\Controllers\Admin\Discount\DiscountController;
+use App\Http\Controllers\Ecommerce\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,5 +83,10 @@ Route::group ([
     Route::resource("cupones",CuponeController::class);
 
     Route::resource("discounts",DiscountController::class);
+});
 
+Route::group ([
+    'prefix' => 'ecommerce',
+], function ($router) {
+    Route::get('home', [HomeController::class, 'home']);
 });
