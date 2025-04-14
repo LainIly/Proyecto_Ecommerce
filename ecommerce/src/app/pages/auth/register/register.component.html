@@ -1,15 +1,14 @@
 <main>
 
     <!-- breadcrumb area start -->
-    <section class="breadcrumb__area include-bg text-center pt-95 pb-50">
+    <section class="breadcrumb__area include-bg text-center pt-95 pb-5">
        <div class="container">
           <div class="row">
              <div class="col-xxl-12">
                 <div class="breadcrumb__content p-relative z-index-1">
-                   <h3 class="breadcrumb__title">Register Now</h3>
+                   <h3 class="breadcrumb__title">Regístrese ahora</h3>
                    <div class="breadcrumb__list">
-                      <span><a href="#">Home</a></span>
-                      <span>Register</span>
+                      <span><a href="#">Inicio</a></span>
                    </div>
                 </div>
              </div>
@@ -31,67 +30,46 @@
              <div class="col-xl-6 col-lg-8">
                 <div class="tp-login-wrapper">
                    <div class="tp-login-top text-center mb-30">
-                      <h3 class="tp-login-title">Sign Up Shofy.</h3>
-                      <p>Already have an account?  <span><a routerLink="/login">Sign In</a></span></p>
+                      <h3 class="tp-login-title">Regístrate Shofy</h3>
+                      <p>¿Ya tiene una cuenta?  <span><a routerLink="/login">Iniciar sesión</a></span></p>
                    </div>
                    <div class="tp-login-option">
-                      <!-- <div class="tp-login-social mb-10 d-flex flex-wrap align-items-center justify-content-center">
-                          <div class="tp-login-option-item has-google">
-                            <a href="#">
-                               <img src="assets/img/icon/login/google.svg" alt="">
-                               Sign up with google
-                            </a>
-                         </div>
-                         <div class="tp-login-option-item">
-                            <a href="#">
-                               <img src="assets/img/icon/login/facebook.svg" alt="">
-                            </a>
-                         </div>
-                         <div class="tp-login-option-item">
-                            <a href="#">
-                               <img class="apple" src="assets/img/icon/login/apple.svg" alt="">
-                            </a>
-                         </div>
-                      </div> -->
-                      <div class="tp-login-mail text-center mb-40">
-                         <p>or Sign up with <a href="#">Email</a></p>
-                      </div>
                       <div class="tp-login-input-wrapper">
                          <div class="tp-login-input-box">
                             <div class="tp-login-input">
-                               <input id="name" type="text" [(ngModel)]="name" placeholder="Shahnewaz">
+                               <input id="name" type="text" [(ngModel)]="name" placeholder="Jaime Andres">
                             </div>
                             <div class="tp-login-input-title">
-                               <label for="name">Your Name</label>
+                               <label for="name">Nombres: </label>
                             </div>
                          </div>
                          <div class="tp-login-input-box">
                            <div class="tp-login-input">
-                              <input id="surname" type="text" [(ngModel)]="surname" placeholder="Sakil">
+                              <input id="surname" type="text" [(ngModel)]="surname" placeholder="Guacarapare Sotelo">
                            </div>
                            <div class="tp-login-input-title">
-                              <label for="surname">Your SurName</label>
+                              <label for="surname">Apellidos</label>
                            </div>
                         </div>
                         <div class="tp-login-input-box">
                            <div class="tp-login-input">
-                              <input id="phone" type="number" [(ngModel)]="phone" placeholder="57 33333333">
+                              <input id="phone" type="number" [(ngModel)]="phone" placeholder="3123456789">
                            </div>
                            <div class="tp-login-input-title">
-                              <label for="phone">Your Phone</label>
+                              <label for="phone">Telefono</label>
                            </div>
                         </div>
                          <div class="tp-login-input-box">
                             <div class="tp-login-input">
-                               <input id="email" type="email" [(ngModel)]="email" placeholder="shofy@mail.com">
+                               <input id="email" type="email" [(ngModel)]="email" placeholder="shofy@gmail.com">
                             </div>
                             <div class="tp-login-input-title">
-                               <label for="email">Your Email</label>
+                               <label for="email">Correo</label>
                             </div>
                          </div>
                          <div class="tp-login-input-box">
                             <div class="tp-login-input">
-                               <input id="tp_password" type="password" [(ngModel)]="password" placeholder="Min. 6 character">
+                               <input id="tp_password" type="password" [(ngModel)]="password" placeholder="Min. 6 Caracteres">
                             </div>
                             <div class="tp-login-input-eye" id="password-show-toggle">
                                <span id="open-eye" class="open-eye">
@@ -112,18 +90,18 @@
                                </span>
                             </div>
                             <div class="tp-login-input-title">
-                               <label for="tp_password">Password</label>
+                               <label for="tp_password">Contraseña</label>
                             </div>
                          </div>
                       </div>
                       <div class="tp-login-suggetions d-sm-flex align-items-center justify-content-between mb-20">
                          <div class="tp-login-remeber">
                             <input id="remeber" type="checkbox">
-                            <label for="remeber">I accept the terms of the Service & <a href="#">Privacy Policy</a>.</label>
+                            <label for="remeber">Acepto las condiciones del Servicio y <a href="#">Política de privacidad</a>.</label>
                          </div>
                       </div>
                       <div class="tp-login-bottom">
-                         <a href="#" class="tp-login-btn w-100" onclick="return false;" (click)="register()">Sign Up</a>
+                         <a href="#" class="tp-login-btn w-100" onclick="return false;" (click)="register()">Registrarse</a>
                       </div>
                    </div>
                 </div>

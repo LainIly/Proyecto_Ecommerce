@@ -92,7 +92,7 @@ export class EditSlidersComponent {
     }
 
     if (this.file_imagen) {
-      formData.append('imagen', this.file_imagen);
+      formData.append('image', this.file_imagen);
     }
 
     if (this.link) {
@@ -114,17 +114,16 @@ export class EditSlidersComponent {
     }
 
     formData.append('subtitle', this.subtitle + '');
-    formData.append('image', this.file_imagen);
 
     this.sliderService.updateSliders(this.slider_id, formData).subscribe((resp:any) => { 
       console.log(resp)
-      this.title = '';
-      this.label = '';
-      this.subtitle = '';
-      this.link = '';
-      this.color = '';
-      this.file_imagen = null;
-      this.imagen_previsualiza = 'https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/illustrations/easy/2.svg';
+      // this.title = '';
+      // this.label = '';
+      // this.subtitle = '';
+      // this.link = '';
+      // this.color = '';
+      // this.file_imagen = null;
+      // this.imagen_previsualiza = 'https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/illustrations/easy/2.svg';
       this.toastr.success('Slider editado con exito.');
     });
   }
