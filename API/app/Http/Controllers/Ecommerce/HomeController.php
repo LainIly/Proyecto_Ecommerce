@@ -29,6 +29,12 @@ class HomeController extends Controller
 
         $products_carusel = Product::where('state', 2)->whereIn('categorie_first_id', $categories_randoms->pluck('id'))->inRandomOrder()->get();
 
+        $sliders_products = Slider::where('state', 1)->where('type_slider', 3)->orderBy('id', 'asc')->get();
+
+        $product_last_discounts = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
+        $product_last_featured = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
+        $product_last_selling = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
+
         return response ()->json([
             'sliders_principal' => $sliders_principal->map(function ($slider) {
                 return [
@@ -73,6 +79,24 @@ class HomeController extends Controller
             }),
             'product_eletronics' => ProductEcommerceCollection::make($product_eletronics),
             'products_carusel' => ProductEcommerceCollection::make($products_carusel),
+            'sliders_products' => $sliders_products->map(function ($slider) {
+                return [
+                    'id' => $slider->id,
+                    'title' => $slider->title,
+                    'subtitle' => $slider->subtitle,
+                    'label' => $slider->label,
+                    'imagen' => $slider->imagen ? env('APP_URL').'storage/'.$slider->imagen : NULL,
+                    'link' => $slider->link,
+                    'state' => $slider->state,
+                    'color' => $slider->color,
+                    'type_slider' => $slider->type_slider,
+                    'price_original' => $slider->price_original,
+                    'price_campaing' => $slider->price_campaing,
+                ];
+            }),
+            'product_last_discounts' => ProductEcommerceCollection::make($product_last_discounts),
+            'product_last_featured' => ProductEcommerceCollection::make($product_last_featured),
+            'product_last_selling' => ProductEcommerceCollection::make($product_last_selling),
         ]);
     }
 

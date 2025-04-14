@@ -994,20 +994,20 @@ function HOMEINIT($) {
 	// 	},
 	// });
 
-	var slider = new Swiper('.tp-product-banner-slider-active', {
-		slidesPerView: 1,
-		spaceBetween: 0,
-		loop: true,
-		effect: 'fade',
-		pagination: {
-			el: ".tp-product-banner-slider-dot",
-			clickable: true,
-			renderBullet: function (index, className) {
-				return '<span class="' + className + '">' + '<button>' + (index + 1) + '</button>' + "</span>";
-			},
-		},
+	// var slider = new Swiper('.tp-product-banner-slider-active', {
+	// 	slidesPerView: 1,
+	// 	spaceBetween: 0,
+	// 	loop: true,
+	// 	effect: 'fade',
+	// 	pagination: {
+	// 		el: ".tp-product-banner-slider-dot",
+	// 		clickable: true,
+	// 		renderBullet: function (index, className) {
+	// 			return '<span class="' + className + '">' + '<button>' + (index + 1) + '</button>' + "</span>";
+	// 		},
+	// 	},
 
-	});
+	// });
 
 	var slider = new Swiper('.tp-product-gadget-banner-slider-active', {
 		slidesPerView: 1,
@@ -2120,5 +2120,20 @@ function PRODUCTS_CAROUSEL_HOME ($) {
 				slidesPerView: 1,
 			},
 		},
+	});
+
+	var slider = new Swiper('.tp-product-banner-slider-active', {
+		slidesPerView: 1,
+		spaceBetween: 0,
+		loop: true,
+		effect: 'fade',
+		pagination: {
+			el: ".tp-product-banner-slider-dot",
+			clickable: true,
+			renderBullet: function (index, className) {
+				return '<span class="' + className + '">' + '<button>' + (index + 1) + '</button>' + "</span>";
+			},
+		},
+
 	});
 }

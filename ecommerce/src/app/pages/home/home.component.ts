@@ -27,7 +27,11 @@ export class HomeComponent {
   PRODUCTS_CAROUSEL: any = [];
 
   BANNERS_SECUNDARIOS: any = [];
+  BANNERS_PRODUCTS: any = [];
 
+  LASTS_PRODUCT_DISCOUNT: any = [];
+  LASTS_PRODUCT_FEATURE: any = [];
+  LASTS_PRODUCT_SELLING: any = [];
 
   constructor(
       public homeService: HomeService,
@@ -45,6 +49,10 @@ export class HomeComponent {
         this.TRADING_PRODUCT_TOP_SELLER = resp.product_tranding_top_sellers.data;
         this.PRODUCTS_ELECTRONICS = resp.product_eletronics.data;
         this.PRODUCTS_CAROUSEL = resp.products_carusel.data;
+        this.BANNERS_PRODUCTS = resp.sliders_products;
+        this.LASTS_PRODUCT_DISCOUNT = resp.product_last_discounts.data;
+        this.LASTS_PRODUCT_FEATURE = resp.product_last_featured.data;
+        this.LASTS_PRODUCT_SELLING = resp.product_last_selling.data;
         
         setTimeout(() => {
           SLIDER_PRINCIPAL ($);
