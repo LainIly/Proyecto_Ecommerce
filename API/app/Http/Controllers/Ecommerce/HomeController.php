@@ -23,6 +23,12 @@ class HomeController extends Controller
         $product_tranding_featured = Product::where('state', 2)->inRandomOrder()->limit(8)->get();
         $product_tranding_top_sellers = Product::where('state', 2)->inRandomOrder()->limit(8)->get();
 
+        $sliders_secundario = Slider::where('state', 1)->where('type_slider', 2)->orderBy('id', 'asc')->get();
+
+        $product_eletronics = Product::where('state', 2)->where('categorie_third_id', 57)->inRandomOrder()->limit(6)->get();
+
+        $products_carusel = Product::where('state', 2)->whereIn('categorie_first_id', $categories_randoms->pluck('id'))->inRandomOrder()->get();
+
         return response ()->json([
             'sliders_principal' => $sliders_principal->map(function ($slider) {
                 return [
@@ -50,6 +56,23 @@ class HomeController extends Controller
             'product_tranding_new' => ProductEcommerceCollection::make($product_tranding_new),
             'product_tranding_featured' => ProductEcommerceCollection::make($product_tranding_featured),
             'product_tranding_top_sellers' => ProductEcommerceCollection::make($product_tranding_top_sellers),
+            'sliders_secundario' => $sliders_secundario->map(function ($slider) {
+                return [
+                    'id' => $slider->id,
+                    'title' => $slider->title,
+                    'subtitle' => $slider->subtitle,
+                    'label' => $slider->label,
+                    'imagen' => $slider->imagen ? env('APP_URL').'storage/'.$slider->imagen : NULL,
+                    'link' => $slider->link,
+                    'state' => $slider->state,
+                    'color' => $slider->color,
+                    'type_slider' => $slider->type_slider,
+                    'price_original' => $slider->price_original,
+                    'price_campaing' => $slider->price_campaing,
+                ];
+            }),
+            'product_eletronics' => ProductEcommerceCollection::make($product_eletronics),
+            'products_carusel' => ProductEcommerceCollection::make($products_carusel),
         ]);
     }
 
