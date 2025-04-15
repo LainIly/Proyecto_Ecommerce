@@ -23,12 +23,12 @@ class Cupone extends Model
     ];
 
     public function setCreateAtAttribute ($value) {
-        date_default_timezone_set('America/Colombia');
+        date_default_timezone_set('America/Bogota');
         $this->attributes['created_at'] = Carbon::now();
     }
 
     public function setUpdateAtAttribute ($value) {
-        date_default_timezone_set('America/Colombia');
+        date_default_timezone_set('America/Bogota');
         $this->attributes['updated_at'] = Carbon::now();
     }
 

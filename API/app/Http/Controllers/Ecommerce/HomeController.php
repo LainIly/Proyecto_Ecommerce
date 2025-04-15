@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Ecommerce;
 
+use Carbon\Carbon;
 use App\Models\Slider;
-use App\Models\Product\Categorie;
-use App\Models\Product\Product;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Ecommerce\Product\ProductEcommerceCollection;
+use App\Models\Sale\Review;
 use Illuminate\Http\Request;
+use App\Models\Product\Brand;
+use App\Models\Product\Product;
+use App\Models\Discount\Discount;
+use App\Models\Product\Categorie;
+use App\Models\Product\Propertie;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Ecommerce\Product\ProductEcommerceResource;
+use App\Http\Resources\Ecommerce\Product\ProductEcommerceCollection;
 
 class HomeController extends Controller
 {
@@ -34,6 +40,36 @@ class HomeController extends Controller
         $product_last_discounts = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
         $product_last_featured = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
         $product_last_selling = Product::where('state', 2)->inRandomOrder()->limit(3)->get();
+
+        date_default_timezone_set('America/Bogota');
+
+        $DISCOUNT_FLASH = Discount::where('type_campaing',2)->where('state',1)
+                                    ->where('start_date', '<=', today())
+                                    ->where('end_date', '>=', today())
+                                    ->first();
+
+        $DISCOUNT_FLASH_PRODUCTS = collect ([]);
+
+        if ($DISCOUNT_FLASH) {
+            foreach ($DISCOUNT_FLASH->products as $key => $aux_product) {
+                $DISCOUNT_FLASH_PRODUCTS->push(ProductEcommerceResource::make($aux_product->product));
+            }
+
+            foreach ($DISCOUNT_FLASH->categories as $key => $aux_categorie) {
+                $products_of_categories = Product::where('state', 2)->where('categorie_first_id', $aux_categorie->categorie_id)->get();
+                foreach ($products_of_categories as $key => $product) {
+                    $DISCOUNT_FLASH_PRODUCTS->push(ProductEcommerceResource::make($product));
+                }
+            }
+
+            foreach ($DISCOUNT_FLASH->brands as $key => $aux_brand) {
+                $products_of_brands = Product::where('state', 2)->where('brand_id', $aux_brand->brand_id)->get();
+                foreach ($products_of_brands as $key => $product) {
+                    $DISCOUNT_FLASH_PRODUCTS->push(ProductEcommerceResource::make($product));
+                }
+            }
+            $DISCOUNT_FLASH->end_date_format = Carbon::parse($DISCOUNT_FLASH->end_date)->format('M d Y H:i:s');
+        }
 
         return response ()->json([
             'sliders_principal' => $sliders_principal->map(function ($slider) {
@@ -97,6 +133,8 @@ class HomeController extends Controller
             'product_last_discounts' => ProductEcommerceCollection::make($product_last_discounts),
             'product_last_featured' => ProductEcommerceCollection::make($product_last_featured),
             'product_last_selling' => ProductEcommerceCollection::make($product_last_selling),
+            'discount_flash' => $DISCOUNT_FLASH,
+            'discount_flash_products' => $DISCOUNT_FLASH_PRODUCTS,
         ]);
     }
 

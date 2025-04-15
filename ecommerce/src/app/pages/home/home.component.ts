@@ -33,6 +33,9 @@ export class HomeComponent {
   LASTS_PRODUCT_FEATURE: any = [];
   LASTS_PRODUCT_SELLING: any = [];
 
+  DISCOUNT_FLASH: any;
+  DISCOUNT_FLASH_PRODUCTS: any = [];
+
   constructor(
       public homeService: HomeService,
   ) {
@@ -53,6 +56,9 @@ export class HomeComponent {
         this.LASTS_PRODUCT_DISCOUNT = resp.product_last_discounts.data;
         this.LASTS_PRODUCT_FEATURE = resp.product_last_featured.data;
         this.LASTS_PRODUCT_SELLING = resp.product_last_selling.data;
+
+        this.DISCOUNT_FLASH = resp.discount_flash;
+        this.DISCOUNT_FLASH_PRODUCTS = resp.discount_flash_products;
         
         setTimeout(() => {
           SLIDER_PRINCIPAL ($);
@@ -83,5 +89,13 @@ export class HomeComponent {
     var miDiv:any = document.getElementById(ID_BANNER);
     miDiv.innerHTML = BANNER.title;
     return '';
+  }
+
+  getNewTotal (PRODUCT:any, DISCOUNT_FLASH_P:any) {
+    if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
+      return PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount*0.01);
+    } else { //Monto Fijo
+      return PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+    }
   }
 }
