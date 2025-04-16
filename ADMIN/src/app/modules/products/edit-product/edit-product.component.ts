@@ -252,7 +252,7 @@ export class EditProductComponent {
     formData.append("price_usd",this.price_usd+"");
     formData.append("price_cop",this.price_cop+"");
     formData.append("brand_id",this.marca_id);
-    formData.append("stockj",this.stock+"");
+    formData.append("stock",this.stock+"");
 
     if (this.file_imagen) {
       formData.append("portada",this.file_imagen);
