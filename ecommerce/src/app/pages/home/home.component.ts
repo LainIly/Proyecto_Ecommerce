@@ -38,6 +38,7 @@ export class HomeComponent {
   DISCOUNT_FLASH_PRODUCTS: any = [];
 
   product_selected: any = null;
+  variation_selected: any = null;
 
   constructor(
     public homeService: HomeService,
@@ -110,9 +111,19 @@ export class HomeComponent {
   }
 
   openDetailProduct(PRODUCT:any) {
-    this.product_selected = PRODUCT;
+    this.product_selected = null;
+    this.variation_selected = null;
 
     setTimeout(() => {
+      this.product_selected = PRODUCT;
+      MODAL_PRODUCT_DETAIL($);
+    }, 50)
+  }
+
+  selectedVariation(variation:any) {
+    this.variation_selected = null;
+    setTimeout(() => {
+      this.variation_selected = variation;
       MODAL_PRODUCT_DETAIL($);
     }, 50)
   }
