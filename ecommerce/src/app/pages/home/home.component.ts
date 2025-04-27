@@ -3,6 +3,7 @@ import { HomeService } from './service/home.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ModalProductComponent } from '../guest-view/component/modal-product/modal-product.component';
 
 declare function SLIDER_PRINCIPAL([]): any;
 declare function DATA_VALUES([]): any;
@@ -13,7 +14,7 @@ declare var $: any;
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, RouterModule, CommonModule, ModalProductComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -93,21 +94,35 @@ export class HomeComponent {
     var miDiv: any = document.getElementById(ID_BANNER);
     miDiv.innerHTML = BANNER.title;
     return '';
-  }
+  } 
 
-  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any) {
+  formatPriceToCOP(price: number) {
+    return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  } // Funcion para dar formato a los precios en COP
+
+  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any): string {
+    let total: number = 0;
+
     if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-      return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+      // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+      total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
     } else { //Monto Fijo
-      return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+      total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+      // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
     }
+    return this.formatPriceToCOP(total);
   }
 
-  getTotalPriceProduct(PRODUCT: any) {
+  getTotalPriceProduct(PRODUCT: any): string {
     if (PRODUCT.discount_g) {
       return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
     }
-    return PRODUCT.price_cop;
+    return this.formatPriceToCOP(PRODUCT.price_cop);
   }
 
   openDetailProduct(PRODUCT:any) {

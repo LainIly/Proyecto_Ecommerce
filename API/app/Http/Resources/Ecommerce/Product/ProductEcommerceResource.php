@@ -93,7 +93,11 @@ class ProductEcommerceResource extends JsonResource
             ]);
         }
 
-        
+        $tags_parse = [];
+        foreach ($this->resource->tags ? json_decode($this->resource->tags, true) : [] as $key => $tag) {
+            array_push ($tags_parse, $tag['item_text']);
+        }
+
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -106,6 +110,7 @@ class ProductEcommerceResource extends JsonResource
             'state' => $this->resource->state,
             'description' => $this->resource->description,
             'tags' => $this->resource->tags ? json_decode($this->resource->tags) : [],
+            'tags_parse' => $tags_parse,
             'brand_id' => $this->resource->brand_id,
 
             'brand' => $this->resource->brand ? [
@@ -144,6 +149,23 @@ class ProductEcommerceResource extends JsonResource
             }),
             'discount_g' => $discount_g,
             'variations' => $variation_collect,
+            'specifications' => $this->resource->specifications->map(function($specification) {
+                return [
+                    'id' => $specification->id,
+                    'product_id' => $specification->product_id,
+                    'attribute_id' => $specification->attribute_id,
+                    'attribute' => $specification->attribute ? [
+                        'name' => $specification->attribute->name, 
+                        'type_attribute' => $specification->attribute->type_attribute,
+                    ]: NULL,
+                    'propertie_id' => $specification->propertie_id,
+                    'propertie' => $specification->propertie ? [
+                        'name' => $specification->propertie->name,
+                        'code' => $specification->propertie->code,
+                    ]: NULL,
+                    'value_add' => $specification->value_add,
+                ];
+            })
         ];
     }
 }

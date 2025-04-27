@@ -11,6 +11,7 @@ import { DeleteBrandComponent } from '../delete-brand/delete-brand.component';
   styleUrls: ['./lists-brand.component.scss']
 })
 export class ListsBrandComponent {
+  
   brands: any = [];
   search: string = '';
   totalPages: number = 0;
