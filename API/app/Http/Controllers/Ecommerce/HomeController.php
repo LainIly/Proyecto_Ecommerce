@@ -68,7 +68,7 @@ class HomeController extends Controller
                     $DISCOUNT_FLASH_PRODUCTS->push(ProductEcommerceResource::make($product));
                 }
             }
-            $DISCOUNT_FLASH->end_date_format = Carbon::parse($DISCOUNT_FLASH->end_date)->format('M d Y H:i:s');
+            $DISCOUNT_FLASH->end_date_format = Carbon::parse($DISCOUNT_FLASH->end_date)->addDays(1)->format('M d Y H:i:s');
         }
 
         return response ()->json([
@@ -130,11 +130,11 @@ class HomeController extends Controller
                     'price_campaing' => $slider->price_campaing,
                 ];
             }),
-            'product_last_discounts' => ProductEcommerceCollection::make($product_last_discounts),
-            'product_last_featured' => ProductEcommerceCollection::make($product_last_featured),
-            'product_last_selling' => ProductEcommerceCollection::make($product_last_selling),
-            'discount_flash' => $DISCOUNT_FLASH,
-            'discount_flash_products' => $DISCOUNT_FLASH_PRODUCTS,
+            "product_last_discounts" => ProductEcommerceCollection::make($product_last_discounts),
+            "product_last_featured" => ProductEcommerceCollection::make($product_last_featured),
+            "product_last_selling" => ProductEcommerceCollection::make($product_last_selling),
+            "discount_flash" => $DISCOUNT_FLASH,
+            "discount_flash_products" =>$DISCOUNT_FLASH_PRODUCTS,
         ]);
     }
 
@@ -170,6 +170,11 @@ class HomeController extends Controller
     }
 
     public function show_product (Request $request, $slug) {
+        $campaing_discount = $request->get('campaing_discount');
+        $discount = null;
+        if ($campaing_discount) {
+            $discount = Discount::where('code', $campaing_discount)->first();
+        }
         $product = Product::where('slug', $slug)->where('state', 2)->first();
 
         if (!$product) {
@@ -186,6 +191,7 @@ class HomeController extends Controller
             'message' => 200,
             'product' => ProductEcommerceResource::make($product),
             'product_relateds' => ProductEcommerceCollection::make($product_relateds),
+            'discount_campaing' => $discount,
         ]);
     }
 }

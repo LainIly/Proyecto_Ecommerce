@@ -1,4 +1,4 @@
-import { afterNextRender, Component } from '@angular/core';
+import { afterNextRender, afterRender, Component } from '@angular/core';
 import { HomeService } from './service/home.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -44,7 +44,7 @@ export class HomeComponent {
   constructor(
     public homeService: HomeService,
   ) {
-    afterNextRender(() => {
+    // afterNextRender(() => {
       this.homeService.home().subscribe((resp: any) => {
         console.log(resp);
         this.SLIDERS = resp.sliders_principal;
@@ -64,13 +64,14 @@ export class HomeComponent {
 
         this.DISCOUNT_FLASH = resp.discount_flash;
         this.DISCOUNT_FLASH_PRODUCTS = resp.discount_flash_products;
-
-        setTimeout(() => {
-          SLIDER_PRINCIPAL($);
-          DATA_VALUES($);
-          PRODUCTS_CAROUSEL_HOME($);
-        }, 50)
       })
+    // })
+    afterRender (() => {
+      setTimeout(() => {
+        SLIDER_PRINCIPAL($);
+        DATA_VALUES($);
+        PRODUCTS_CAROUSEL_HOME($);
+      }, 50)
     })
   }
 

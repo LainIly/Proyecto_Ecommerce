@@ -1,4 +1,4 @@
-import { afterNextRender, Component } from '@angular/core';
+import { afterNextRender, afterRender, Component } from '@angular/core';
 import { HomeService } from '../../home/service/home.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,8 @@ import { AnyMxRecord } from 'node:dns';
 
 declare function MODAL_PRODUCT_DETAIL([]): any;
 declare var $: any;
+declare function LANDING_PRODUCT([]): any;
+
 
 @Component({
   selector: 'app-landing-product',
@@ -25,6 +27,8 @@ export class LandingProductComponent {
   variation_selected: any;
   PRODUCT_RELATEDS: any = [];
   product_selected_modal: any;
+  CODE_CAMPAING: any;
+  DISCOUNT_CAMPAING: any;
 
   constructor(
     public homeService: HomeService,
@@ -35,10 +39,14 @@ export class LandingProductComponent {
     this.activedRouter.params.subscribe((resp: any) => {
       this.PRODUCT_SLUG = resp.slug;
     })
-    // afterNextRender(()=> { // Este metodo es para ejecutar del lado del Servidor. 
+
+    this.activedRouter.queryParams.subscribe((resp: any) => {
+      this.CODE_CAMPAING = resp.campaing_discount;
+    })
+    // afterNextRender(() => { // Este metodo es para ejecutar del lado del Servidor. 
     // Sin esta, se ve la respuesta solo en HTML
     // Con este, la respuesta llega en formato JSON
-    this.homeService.showProduct(this.PRODUCT_SLUG).subscribe((resp: any) => {
+    this.homeService.showProduct(this.PRODUCT_SLUG, this.CODE_CAMPAING).subscribe((resp: any) => {
       console.log(resp);
       if (resp.message == 403) {
         this.toastr.error('Validacion', resp.message_text);
@@ -46,13 +54,17 @@ export class LandingProductComponent {
       } else {
         this.PRODUCT_SELECTED = resp.product;
         this.PRODUCT_RELATEDS = resp.product_relateds.data;
+        this.DISCOUNT_CAMPAING = resp.discount_campaing;
+        if (this.DISCOUNT_CAMPAING) {
+          this.PRODUCT_SELECTED.discount_g = this.DISCOUNT_CAMPAING
+        }
       }
     })
     // })
-
-    afterNextRender(() => {
+    afterRender(() => {
       setTimeout(() => {
         MODAL_PRODUCT_DETAIL($);
+        LANDING_PRODUCT($);
       }, 50);
     })
   }
@@ -94,7 +106,7 @@ export class LandingProductComponent {
     }, 50);
   }
 
-  openDetailModal(PRODUCT:any) {
+  openDetailModal(PRODUCT: any) {
     this.product_selected_modal = null;
 
     setTimeout(() => {

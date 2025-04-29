@@ -306,7 +306,7 @@
                               <div class="col-xl-3 col-lg-3 col-sm-6">
                                  <div class="tp-product-item p-relative transition-3 mb-25">
                                     <div class="tp-product-thumb p-relative fix m-img">
-                                       <a href="#" onclick="return false;">
+                                       <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                           <img [src]="TRADING_PRODUCT.imagen" style="width: 302px; height: 261px; object-fit: contain;" alt="product-electronic">
                                        </a>
             
@@ -364,10 +364,10 @@
                                     <!-- product content -->
                                     <div class="tp-product-content">
                                        <div class="tp-product-category">
-                                          <a href="#" onclick="return false;">{{ TRADING_PRODUCT.brand.name }}</a>
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">{{ TRADING_PRODUCT.brand.name }}</a>
                                        </div>
                                        <h3 class="tp-product-title">
-                                          <a href="#" onclick="return false;">
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                              {{  TRADING_PRODUCT.title }}
                                           </a>
                                        </h3>
@@ -401,7 +401,7 @@
                               <div class="col-xl-3 col-lg-3 col-sm-6">
                                  <div class="tp-product-item p-relative transition-3 mb-25">
                                     <div class="tp-product-thumb p-relative fix m-img">
-                                       <a href="#" onclick="return false;">
+                                       <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                           <img [src]="TRADING_PRODUCT.imagen" style="width: 302px; height: 261px; object-fit: contain;" alt="product-electronic">
                                        </a>
             
@@ -459,10 +459,10 @@
                                     <!-- product content -->
                                     <div class="tp-product-content">
                                        <div class="tp-product-category">
-                                          <a href="#" onclick="return false;">{{ TRADING_PRODUCT.brand.name }}</a>
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">{{ TRADING_PRODUCT.brand.name }}</a>
                                        </div>
                                        <h3 class="tp-product-title">
-                                          <a href="#" onclick="return false;">
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                              {{  TRADING_PRODUCT.title }}
                                           </a>
                                        </h3>
@@ -496,7 +496,7 @@
                               <div class="col-xl-3 col-lg-3 col-sm-6">
                                  <div class="tp-product-item p-relative transition-3 mb-25">
                                     <div class="tp-product-thumb p-relative fix m-img">
-                                       <a href="#" onclick="return false;">
+                                       <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                           <img [src]="TRADING_PRODUCT.imagen" style="width: 302px; height: 261px; object-fit: contain;" alt="product-electronic">
                                        </a>
             
@@ -554,10 +554,10 @@
                                     <!-- product content -->
                                     <div class="tp-product-content">
                                        <div class="tp-product-category">
-                                          <a href="#" onclick="return false;">{{ TRADING_PRODUCT.brand.name }}</a>
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">{{ TRADING_PRODUCT.brand.name }}</a>
                                        </div>
                                        <h3 class="tp-product-title">
-                                          <a href="#" onclick="return false;">
+                                          <a [routerLink]="'/producto/'+TRADING_PRODUCT.slug">
                                              {{  TRADING_PRODUCT.title }}
                                           </a>
                                        </h3>
@@ -606,7 +606,7 @@
                         <div class="tp-banner-content">
                            <span>{{ BANNER.subtitle }}</span>
                            <h3 class="tp-banner-title">
-                              <a href="#" onclick="return false;" [id]="'title-banner-s-'+BANNER.id">{{ getTitleBannerSecundario(BANNER, 'title-banner-s-'+BANNER.id) }}</a>
+                              <a href="#" onclick="return fals" [id]="'title-banner-s-'+BANNER.id">{{ getTitleBannerSecundario(BANNER, 'title-banner-s-'+BANNER.id) }}</a>
                            </h3>
                            @if (BANNER.link) {
 
@@ -688,7 +688,7 @@
                         @for (PRODUCT of DISCOUNT_FLASH_PRODUCTS;track PRODUCT.id) {
                            <div class="tp-product-offer-item tp-product-item transition-3 swiper-slide">
                               <div class="tp-product-thumb p-relative fix m-img">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="['/producto', PRODUCT.slug]" [queryParams]="{campaing_discount: DISCOUNT_FLASH.code}">
                                     <img [src]="PRODUCT.imagen" style="width: 410px; height: 342px; object-fit: contain;" alt="product-electronic">
                                  </a>
       
@@ -745,10 +745,10 @@
                               <!-- product content -->
                               <div class="tp-product-content">
                                  <div class="tp-product-category">
-                                    <a href="#" onclick="return false;">{{ PRODUCT.brand.name }}</a>
+                                    <a [routerLink]="['/producto', PRODUCT.slug]" [queryParams]="{campaing_discount: DISCOUNT_FLASH.code}">{{ PRODUCT.brand.name }}</a>
                                  </div>
                                  <h3 class="tp-product-title">
-                                    <a href="#" onclick="return false;">
+                                    <a [routerLink]="['/producto', PRODUCT.slug]" [queryParams]="{campaing_discount: DISCOUNT_FLASH.code}">
                                        {{ PRODUCT.title }}
                                     </a>
                                  </h3>
@@ -831,7 +831,7 @@
                                <div class="tp-product-gadget-banner-content">
                                   <span class="tp-product-gadget-banner-price">Por solo $ 400.000 COP</span>
                                   <h3 class="tp-product-gadget-banner-title">
-                                     <a href="product-details.html">Novedad seleccionada <br> Productos</a>
+                                     <a href="product-details.html">Novedades <br> Productos</a>
                                   </h3>
                                </div>
                             </div>
@@ -856,7 +856,7 @@
                         <div class="col-xl-4 col-sm-6">
                            <div class="tp-product-item p-relative transition-3 mb-25">
                               <div class="tp-product-thumb p-relative fix m-img">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">
                                     <img [src]="PRODUCT.imagen" style="width: 248px;height: 240px;object-fit: contain;" alt="product-electronic">
                                  </a>
       
@@ -914,10 +914,10 @@
                               <!-- product content -->
                               <div class="tp-product-content">
                                  <div class="tp-product-category">
-                                    <a href="#" onclick="return false;">{{ PRODUCT.brand.name }}</a>
+                                    <a [routerLink]="'/producto/'+PRODUCT.slug">{{ PRODUCT.brand.name }}</a>
                                  </div>
                                  <h3 class="tp-product-title">
-                                    <a href="#" onclick="return false;">
+                                    <a [routerLink]="'/producto/'+PRODUCT.slug">
                                        {{ PRODUCT.title}}
                                     </a>
                                  </h3>
@@ -1038,7 +1038,7 @@
                         @for (PRODUCT of PRODUCTS_CAROUSEL;track PRODUCT.id) {
                            <div class="tp-product-item transition-3 mb-25 swiper-slide">
                               <div class="tp-product-thumb p-relative fix m-img">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug+'?campaing_discount='+DISCOUNT_FLASH.code">
                                     <img [src]="PRODUCT.imagen" style="width: 282px;height: 242px;object-fit: contain;" alt="product-electronic">
                                  </a>
       
@@ -1095,10 +1095,10 @@
                               <!-- product content -->
                               <div class="tp-product-content">
                                  <div class="tp-product-category">
-                                    <a href="#" onclick="return false;">{{ PRODUCT.brand.name }}</a>
+                                    <a [routerLink]="'/producto/'+PRODUCT.slug+'?campaing_discount='+DISCOUNT_FLASH.code">{{ PRODUCT.brand.name }}</a>
                                  </div>
                                  <h3 class="tp-product-title">
-                                    <a href="#" onclick="return false;">
+                                    <a [routerLink]="'/producto/'+PRODUCT.slug+'?campaing_discount='+DISCOUNT_FLASH.code">
                                        {{  PRODUCT.title }}
                                     </a>
                                  </h3>
@@ -1150,16 +1150,16 @@
                      @for (PRODUCT of LASTS_PRODUCT_DISCOUNT;track PRODUCT.id) {
                         <div class="tp-product-sm-item d-flex align-items-center">
                            <div class="tp-product-thumb mr-25 fix">
-                              <a href="#" onclick="return false;">
+                              <a [routerLink]="'/producto/'+PRODUCT.slug">
                                  <img [src]="PRODUCT.imagen" style="width: 140px; height: 140px; object-fit: contain;" alt="">
                               </a>
                            </div>
                            <div class="tp-product-sm-content">
                               <div class="tp-product-category">
-                                 <a href="#" onclick="return false;" >{{ PRODUCT.brand.name }}</a>
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">{{ PRODUCT.brand.name }}</a>
                               </div>
                               <h3 class="tp-product-title">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">
                                     {{ PRODUCT.title }}
                                  </a>
                               </h3>
@@ -1201,16 +1201,16 @@
                      @for (PRODUCT of LASTS_PRODUCT_FEATURE;track PRODUCT.id) {
                         <div class="tp-product-sm-item d-flex align-items-center">
                            <div class="tp-product-thumb mr-25 fix">
-                              <a href="#" onclick="return false;">
+                              <a [routerLink]="'/producto/'+PRODUCT.slug">
                                  <img [src]="PRODUCT.imagen" style="width: 140px; height: 140px; object-fit: contain;" alt="">
                               </a>
                            </div>
                            <div class="tp-product-sm-content">
                               <div class="tp-product-category">
-                                 <a href="#" onclick="return false;" >{{ PRODUCT.brand.name }}</a>
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">{{ PRODUCT.brand.name }}</a>
                               </div>
                               <h3 class="tp-product-title">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">
                                     {{ PRODUCT.title }}
                                  </a>
                               </h3>
@@ -1253,16 +1253,16 @@
                      @for (PRODUCT of LASTS_PRODUCT_SELLING;track PRODUCT.id) {
                         <div class="tp-product-sm-item d-flex align-items-center">
                            <div class="tp-product-thumb mr-25 fix">
-                              <a href="#" onclick="return false;">
+                              <a [routerLink]="'/producto/'+PRODUCT.slug">
                                  <img [src]="PRODUCT.imagen" style="width: 140px; height: 140px; object-fit: contain;" alt="">
                               </a>
                            </div>
                            <div class="tp-product-sm-content">
                               <div class="tp-product-category">
-                                 <a href="#" onclick="return false;" >{{ PRODUCT.brand.name }}</a>
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">{{ PRODUCT.brand.name }}</a>
                               </div>
                               <h3 class="tp-product-title">
-                                 <a href="#" onclick="return false;">
+                                 <a [routerLink]="'/producto/'+PRODUCT.slug">
                                     {{ PRODUCT.title }}
                                  </a>
                               </h3>
@@ -1531,13 +1531,13 @@
     <div class="modal fade tp-product-modal" id="producQuickViewModal" tabindex="-1" aria-labelledby="producQuickViewModal" aria-hidden="true">
        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
-            @defer (on viewport; when product_selected) {
+            <!-- @defer (on viewport; when product_selected) { -->
                @if (product_selected) {
                   <app-modal-product [product_selected]="product_selected"></app-modal-product>
                }
-            } @placeholder (minimum 1000ms) {
+            <!-- } @placeholder (minimum 1000ms) {
                <div>Cargando...</div>
-            }
+            } -->
           </div>
        </div>
     </div>
