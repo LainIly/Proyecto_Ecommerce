@@ -18,9 +18,13 @@
                         <div class="row align-items-center">
                            <div class="col-xl-5 col-lg-6 col-md-6">
                               <div class="tp-slider-content p-relative z-index-1">
-                                 <span [id]="'label-'+SLIDER.id">{{ getLabelSlider(SLIDER) }}</span>
+                                 <span [id]="'label-'+SLIDER.id">
+                                    <!-- {{ getLabelSlider(SLIDER) }} -->
+                                 </span>
                                  <h3 class="tp-slider-title">{{ SLIDER.title }}</h3>
-                                    <p [id]="'subtitle-'+SLIDER.id"> {{ getSubtitleSlider(SLIDER) }}</p>
+                                    <p [id]="'subtitle-'+SLIDER.id">
+                                        <!-- {{ getSubtitleSlider(SLIDER) }} -->
+                                    </p>
                                  
                                     @if(SLIDER.link){
                                        <div class="tp-slider-btn">
@@ -318,7 +322,7 @@
                                              }
 
                                              @if (TRADING_PRODUCT.discount_g.type_discount == 2) {
-                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} COP</span>
+                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} {{ currency }}</span>
                                              }
                                           </div>
                                        }
@@ -385,9 +389,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} COP</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} COP</span>
+                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -413,7 +417,7 @@
                                              }
 
                                              @if (TRADING_PRODUCT.discount_g.type_discount == 2) {
-                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} COP</span>
+                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} {{ currency }}</span>
                                              }
                                           </div>
                                        }
@@ -480,9 +484,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} COP</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} COP</span>
+                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -508,7 +512,7 @@
                                              }
 
                                              @if (TRADING_PRODUCT.discount_g.type_discount == 2) {
-                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} COP</span>
+                                                <span class="product-hot">- {{ TRADING_PRODUCT.discount_g.discount }} {{ currency }}</span>
                                              }
                                           </div>
                                        }
@@ -575,9 +579,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} COP</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(TRADING_PRODUCT.price_cop) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} COP</span>
+                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -606,7 +610,9 @@
                         <div class="tp-banner-content">
                            <span>{{ BANNER.subtitle }}</span>
                            <h3 class="tp-banner-title">
-                              <a href="#" onclick="return fals" [id]="'title-banner-s-'+BANNER.id">{{ getTitleBannerSecundario(BANNER, 'title-banner-s-'+BANNER.id) }}</a>
+                              <a href="#" onclick="return fals" [id]="'title-banner-s-'+BANNER.id">
+                                 <!-- {{ getTitleBannerSecundario(BANNER, 'title-banner-s-'+BANNER.id) }} -->
+                              </a>
                            </h3>
                            @if (BANNER.link) {
 
@@ -630,7 +636,9 @@
                         <div class="tp-banner-thumb include-bg transition-3" [attr.data-background]="BANNER.imagen"></div>
                         <div class="tp-banner-content">
                            <h3 class="tp-banner-title">
-                              <a href="#" onclick="return false;" [id]="'title-banner-sa-'+BANNER.id">{{ getTitleBannerSecundario(BANNER, 'title-banner-sa-'+BANNER.id) }}</a>
+                              <a href="#" onclick="return false;" [id]="'title-banner-sa-'+BANNER.id">
+                                 <!-- {{ getTitleBannerSecundario(BANNER, 'title-banner-sa-'+BANNER.id) }} -->
+                              </a>
                            </h3>
                            <p>{{ BANNER.subtitle }}</p>
                            <div class="tp-banner-btn">
@@ -765,8 +773,8 @@
                                     </div>
                                  </div>
                                  <div class="tp-product-price-wrapper">
-                                    <span class="tp-product-price old-price">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
-                                    <span class="tp-product-price new-price">{{ getNewTotal (PRODUCT, DISCOUNT_FLASH) }} COP</span>
+                                    <span class="tp-product-price old-price">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
+                                    <span class="tp-product-price new-price">{{ getNewTotal (PRODUCT, DISCOUNT_FLASH) }} {{ currency }}</span>
                                  </div>
   
                                  <div class="tp-product-countdown" data-countdown [attr.data-date]="DISCOUNT_FLASH.end_date_format">
@@ -829,7 +837,7 @@
                          <div class="swiper-wrapper">
                             <div class="tp-product-gadget-banner-item swiper-slide include-bg" data-background="assets/img/product/gadget/gadget-banner-1.jpg">
                                <div class="tp-product-gadget-banner-content">
-                                  <span class="tp-product-gadget-banner-price">Por solo $ 400.000 COP</span>
+                                  <span class="tp-product-gadget-banner-price">Por solo $ 400.000 {{ currency }}</span>
                                   <h3 class="tp-product-gadget-banner-title">
                                      <a href="product-details.html">Novedades <br> Productos</a>
                                   </h3>
@@ -837,7 +845,7 @@
                             </div>
                             <div class="tp-product-gadget-banner-item swiper-slide include-bg" data-background="assets/img/product/gadget/gadget-banner-2.jpg">
                                <div class="tp-product-gadget-banner-content">
-                                  <span class="tp-product-gadget-banner-price">Por solo $ 200.000 COP</span>
+                                  <span class="tp-product-gadget-banner-price">Por solo $ 200.000 {{ currency }}</span>
                                   <h3 class="tp-product-gadget-banner-title">
                                      <a href="product-details.html">Mejor valorados <br> Productos</a>
                                   </h3>
@@ -868,7 +876,7 @@
                                        }
 
                                        @if (PRODUCT.discount_g.type_discount == 2) {
-                                          <span class="product-hot">- {{ formatPriceToCOP(PRODUCT.discount_g.discount) }} COP</span>
+                                          <span class="product-hot">- {{ formatPriceToCOP(PRODUCT.discount_g.discount) }} {{ currency }}</span>
                                        }
                                     </div>
                                  }
@@ -935,9 +943,9 @@
                                  </div>
                                  <div class="tp-product-price-wrapper">
                                     @if (PRODUCT.discount_g) {
-                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
+                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
                                     }
-                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} COP</span>
+                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
                                  </div>
                               </div>
                            </div>
@@ -966,8 +974,8 @@
                                  <span class="tp-product-banner-subtitle">{{ BANNER.subtitle }}</span>
                                  <h3 class="tp-product-banner-title">{{ BANNER.title }}</h3>
                                  <div class="tp-product-banner-price mb-40">
-                                    <span class="old-price">{{ formatPriceToCOP(BANNER.price_original) }} COP</span>
-                                    <p class="new-price">{{ formatPriceToCOP(BANNER.price_campaing) }} COP</p>
+                                    <span class="old-price">{{ formatPriceToCOP(BANNER.price_original) }} {{ currency }}</span>
+                                    <p class="new-price">{{ formatPriceToCOP(BANNER.price_campaing) }} {{ currency }}</p>
                                  </div>
                                  @if (BANNER.link) {
                                     <div class="tp-product-banner-btn">
@@ -1049,7 +1057,7 @@
                                        }
 
                                        @if (PRODUCT.discount_g.type_discount == 2) {
-                                          <span class="product-hot">- {{ PRODUCT.discount_g.discount }} COP</span>
+                                          <span class="product-hot">- {{ PRODUCT.discount_g.discount }} {{ currency }}</span>
                                        }
                                     </div>
                                  }
@@ -1116,9 +1124,9 @@
                                  </div>
                                  <div class="tp-product-price-wrapper">
                                     @if (PRODUCT.discount_g) {
-                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
+                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
                                     }
-                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} COP</span>
+                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
                                  </div>
                               </div>
                            </div>
@@ -1177,9 +1185,9 @@
                               </div>
                               <div class="tp-product-price-wrapper">
                                  @if (PRODUCT.discount_g) {
-                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
                                  }
-                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} COP</span>
+                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>
@@ -1228,9 +1236,9 @@
                               </div>
                               <div class="tp-product-price-wrapper">
                                  @if (PRODUCT.discount_g) {
-                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
                                  }
-                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} COP</span>
+                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>
@@ -1279,7 +1287,10 @@
                                  </div>
                               </div>
                               <div class="tp-product-price-wrapper">
-                                 <span class="tp-product-price">{{ formatPriceToCOP(PRODUCT.price_cop) }} COP</span>
+                                 @if (PRODUCT.discount_g) {
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
+                                 }
+                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>
