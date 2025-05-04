@@ -4,9 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { after } from 'node:test';
 import { ModalProductComponent } from '../component/modal-product/modal-product.component';
-import { AnyMxRecord } from 'node:dns';
+import { CookieService } from 'ngx-cookie-service';
 
 declare function MODAL_PRODUCT_DETAIL([]): any;
 declare var $: any;
@@ -30,11 +29,14 @@ export class LandingProductComponent {
   CODE_CAMPAING: any;
   DISCOUNT_CAMPAING: any;
 
+  currency: string = 'COP';
+
   constructor(
     public homeService: HomeService,
     public activedRouter: ActivatedRoute,
     private toastr: ToastrService,
     private router: Router,
+    private cookieService: CookieService,
   ) {
     this.activedRouter.params.subscribe((resp: any) => {
       this.PRODUCT_SLUG = resp.slug;
@@ -66,6 +68,7 @@ export class LandingProductComponent {
         MODAL_PRODUCT_DETAIL($);
         LANDING_PRODUCT($);
       }, 50);
+      this.currency = this.cookieService.get('currency') ? this.cookieService.get('currency') : 'COP';
     })
   }
 
@@ -81,21 +84,45 @@ export class LandingProductComponent {
   getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any): string {
     let total: number = 0;
 
-    if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-      // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-      total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
-    } else { //Monto Fijo
-      total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
-      // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+    if (this.currency == 'COP') {
+      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else { //Monto Fijo
+        total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+      }
+    } else {
+      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        total = PRODUCT.price_usd - PRODUCT.price_usd * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else { //Monto Fijo
+        total = PRODUCT.price_usd - DISCOUNT_FLASH_P.discount;
+        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+      }
     }
     return this.formatPriceToCOP(total);
   }
 
   getTotalPriceProduct(PRODUCT: any): string {
+
     if (PRODUCT.discount_g) {
       return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
     }
-    return this.formatPriceToCOP(PRODUCT.price_cop);
+
+    if (this.currency == 'COP') {
+      return this.formatPriceToCOP(PRODUCT.price_cop);
+    } else {
+      return this.formatPriceToCOP(PRODUCT.price_usd);
+    }
+  }
+
+  getTotalCurrency (PRODUCT: any) {
+    if (this.currency == 'COP') {
+      return this.formatPriceToCOP(PRODUCT.price_cop);
+    } else {
+      return this.formatPriceToCOP(PRODUCT.price_usd);
+    }
   }
 
   selectedVariation(variation: any) {

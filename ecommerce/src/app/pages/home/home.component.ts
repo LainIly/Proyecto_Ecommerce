@@ -41,7 +41,7 @@ export class HomeComponent {
 
   product_selected: any = null;
   variation_selected: any = null;
-  
+
   currency: string = 'COP';
 
   constructor(
@@ -124,21 +124,47 @@ export class HomeComponent {
   getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any): string {
     let total: number = 0;
 
-    if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-      // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-      total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
-    } else { //Monto Fijo
-      total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
-      // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+    if (this.currency == 'COP') {
+      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else { //Monto Fijo
+        total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+      }
+    } else {
+      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        total = PRODUCT.price_usd - PRODUCT.price_usd * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else { //Monto Fijo
+        total = PRODUCT.price_usd - DISCOUNT_FLASH_P.discount;
+        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
+      }
     }
     return this.formatPriceToCOP(total);
+  }
+
+  getTotalCurrency (PRODUCT: any) {
+    if (this.currency == 'COP') {
+      return this.formatPriceToCOP(PRODUCT.price_cop);
+    } else {
+      return this.formatPriceToCOP(PRODUCT.price_usd);
+    }
+  }
+  
+  getTotalBanner(BANNER: any) {
+    if (this.currency == 'COP') {
+      return this.formatPriceToCOP(BANNER.price_cop);
+    } else {
+      return this.formatPriceToCOP(BANNER.price_usd);
+    }
   }
 
   getTotalPriceProduct(PRODUCT: any): string {
     if (PRODUCT.discount_g) {
       return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
     }
-    
+
     if (this.currency == 'COP') {
       return this.formatPriceToCOP(PRODUCT.price_cop);
     } else {

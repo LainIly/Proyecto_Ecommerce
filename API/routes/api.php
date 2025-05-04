@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Product\ProductVariationsAnidadoController;
 use App\Http\Controllers\Admin\Cupone\CuponeController;
 use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Http\Controllers\Ecommerce\HomeController;
+use App\Http\Controllers\Ecommerce\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,4 +93,10 @@ Route::group ([
     Route::get('menus', [HomeController::class, 'menus']);
 
     Route::get('product/{slug}', [HomeController::class, 'show_product']);
+
+    Route::group([
+        'middleware' => 'auth:api',
+    ], function ($router) {
+        Route::resource('carts', CartController::class);
+    });
 });
