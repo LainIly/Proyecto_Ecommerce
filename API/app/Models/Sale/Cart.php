@@ -13,7 +13,6 @@ use App\Models\Product\ProductVariation;
 class Cart extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     
     protected $fillable = [
         'user_id',
@@ -42,14 +41,14 @@ class Cart extends Model
     }
 
     public function user () {
-        return $this->belongTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function product () {
-        return $this->belongTo(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function product_variation () {
-        return $this->belongTo(ProductVariation::class);
+        return $this->belongsTo(ProductVariation::class);
     }
 }

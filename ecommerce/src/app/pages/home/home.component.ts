@@ -1,10 +1,12 @@
-import { afterNextRender, afterRender, Component } from '@angular/core';
+import { afterRender, Component } from '@angular/core';
 import { HomeService } from './service/home.service';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalProductComponent } from '../guest-view/component/modal-product/modal-product.component';
 import { CookieService } from 'ngx-cookie-service';
+import { CartService } from './service/cart.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router, RouterModule } from '@angular/router';
 
 declare function SLIDER_PRINCIPAL([]): any;
 declare function DATA_VALUES([]): any;
@@ -47,6 +49,9 @@ export class HomeComponent {
   constructor(
     public homeService: HomeService,
     private cookieService: CookieService,
+    public cartService: CartService,
+    private toastr: ToastrService,
+    private router: Router,
   ) {
     // afterNextRender(() => {
     this.homeService.home().subscribe((resp: any) => {
@@ -92,6 +97,47 @@ export class HomeComponent {
 
   ngOnInit(): void {
 
+  }
+
+  addCart(PRODUCT:any) {
+    if (!this.cartService.authService.user) {
+      this.toastr.error('Validacion', 'Debes iniciar sesion para agregar productos al carrito.');
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
+    if (PRODUCT.variations.length > 0) {
+      $('#producQuickViewModal').modal('show');
+      this.openDetailProduct(PRODUCT);
+      return;
+    }
+
+    let data = {
+      product_id: PRODUCT.id,
+      type_discount: null,
+      discount: 0,
+      type_campaing: null,
+      code_cupon: null,
+      code_discount: null,
+      product_variation_id: null,
+      quantity: 1,
+      price_unit: PRODUCT.price_cop,
+      subtotal: PRODUCT.price_cop,
+      total: PRODUCT.price_cop,
+      currency: this.currency,
+    }
+    this.cartService.registerCart(data).subscribe((resp:any) => {
+      console.log(resp);
+
+      if (resp.message == 403) {
+        this.toastr.error('Validacion', resp.message_text);
+      } else {
+        this.cartService.changeCart(resp.cart);
+        this.toastr.success('Exito', 'Producto agregado al carrito de compras.');
+      }
+    }, err => {
+      console.log(err);
+    })
   }
 
   getLabelSlider(SLIDER: any) {
@@ -178,7 +224,7 @@ export class HomeComponent {
 
     setTimeout(() => {
       this.product_selected = PRODUCT;
-      MODAL_PRODUCT_DETAIL($);
+      // MODAL_PRODUCT_DETAIL($);
     }, 50)
   }
 

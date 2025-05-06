@@ -33,13 +33,13 @@ class CartController extends Controller
     {
         $user = auth('api')->user();
 
-        if ($request->$product_variation_id) {
+        if ($request->product_variation_id) {
             $is_exists_cart_variations = Cart::where('product_variation_id', $request->product_variation_id)
                                             ->where('product_id', $request->product_id)
                                             ->where('user_id', $user->id)->first();
 
             if ($is_exists_cart_variations) {
-                return respnse ()->json([
+                return response ()->json([
                     'message' => 403,
                     'message_text' => 'El Producto ya existe en el carrito',
                 ]);
@@ -58,7 +58,7 @@ class CartController extends Controller
                                             ->where('user_id', $user->id)->first();
 
             if ($is_exists_cart_simple) {
-                return respnse ()->json([
+                return response ()->json([
                     'message' => 403,
                     'message_text' => 'El Producto ya existe en el carrito',
                 ]);
@@ -96,14 +96,14 @@ class CartController extends Controller
     {
         $user = auth('api')->user();
 
-        if ($request->$product_variation_id) {
+        if ($request->product_variation_id) {
             $is_exists_cart_variations = Cart::where('product_variation_id', $request->product_variation_id)
                                             ->where('product_id', $request->product_id)
                                             ->where('id', '<>', $id)
                                             ->where('user_id', $user->id)->first();
 
             if ($is_exists_cart_variations) {
-                return respnse ()->json([
+                return response ()->json([
                     'message' => 403,
                     'message_text' => 'El Producto ya existe en el carrito',
                 ]);
@@ -123,7 +123,7 @@ class CartController extends Controller
                                             ->where('user_id', $user->id)->first();
 
             if ($is_exists_cart_simple) {
-                return respnse ()->json([
+                return response ()->json([
                     'message' => 403,
                     'message_text' => 'El Producto ya existe en el carrito',
                 ]);

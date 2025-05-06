@@ -163,47 +163,59 @@
         <div class="cartmini__top-wrapper">
             <div class="cartmini__top p-relative">
                 <div class="cartmini__top-title">
-                    <h4>Cesta de la compra</h4>
+                    <h4>Carrito de Compra</h4>
                 </div>
                 <div class="cartmini__close">
                     <button type="button" class="cartmini__close-btn cartmini-close-btn"><i class="fal fa-times"></i></button>
                 </div>
             </div>
-            <div class="cartmini__shipping">
+            <!-- <div class="cartmini__shipping">
              <p> Envío gratuito para todos los pedidos superiores a <span>$ 200.000 COP</span></p>
              <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" data-width="70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
               </div>                   
-            </div>
+            </div> -->
             <div class="cartmini__widget">
-                <div class="cartmini__widget-item">
-                    <div class="cartmini__thumb">
-                      <a href="product-details.html">
-                         <img src="assets/img/product/product-1.jpg" alt="">
-                      </a>
-                    </div>
-                    <div class="cartmini__content">
-                      <h5 class="cartmini__title"><a href="product-details.html">Cerradura inteligente Level Bolt</a></h5>
-                      <div class="cartmini__price-wrapper">
-                         <span class="cartmini__price">$ 180.000 COP</span>
-                         <span class="cartmini__quantity">x2</span>
+               @for (cart of listCarts; track cart.id) {
+                  <div class="cartmini__widget-item">
+                      <div class="cartmini__thumb" style="display: flex; align-items: center;">
+                        <a [routerLink]="'/producto/'+cart.product.slug">
+                           <img [src]="cart.product.imagen" alt="">
+                        </a>
                       </div>
-                    </div>
-                    <a href="#" class="cartmini__del"><i class="fa-regular fa-xmark"></i></a>
-                </div>
+                      <div class="cartmini__content">
+                        <h5 class="cartmini__title"><a [routerLink]="'/producto/'+cart.product.slug">{{ cart.product.title }}</a></h5>
+                        <div class="cartmini__price-wrapper">
+                           <span class="cartmini__price">{{ formatPriceToCOP(cart.subtotal) }} {{ currency }}</span>
+                           <span class="cartmini__quantity mx-1"> x{{ cart.quantity }}</span>
+                           <br>
+                           <span class="cartmini__price">Total: {{ formatPriceToCOP(cart.total) }} {{ currency }}</span>
+                           @if (cart.product_variation) {
+                              <br>
+                              <span class="cartmini__quantity mx-1">{{ cart.product_variation.attribute.name }} : {{ cart.product_variation.propertie ? cart.product_variation.propertie.name : cart.product_variation.value_add}}</span>
+                              @if (cart.product_variation.variation_father) {
+                                 <br>
+                                 <span class="cartmini__quantity mx-1">{{ cart.product_variation.variation_father.attribute.name }} : {{ cart.product_variation.variation_father.propertie ? cart.product_variation.variation_father.propertie.name : cart.product_variation.variation_father.value_add}}</span>
+                              }
+                           }
+                        </div>
+                      </div>
+                      <a href="#" onclick="return false;" (click)="deleteCart(cart)" class="cartmini__del"><i class="fa-regular fa-xmark"></i></a>
+                  </div>
+               }
             </div>
             <!-- for wp -->
             <!-- if no item in cart -->
             <div class="cartmini__empty text-center d-none">
                 <img src="assets/img/product/cartmini/empty-cart.png" alt="">
-                <p>Su cesta está vacía</p>
+                <p>Su carrito está vacío</p>
                 <a href="shop.html" class="tp-btn">Ir a la tienda</a>
             </div>
         </div>
         <div class="cartmini__checkout">
             <div class="cartmini__checkout-title mb-30">
                 <h4>Subtotal:</h4>
-                <span>$ 500.000 COP</span>
+                <span>{{ formatPriceToCOP(totalCarts) }} {{ currency }}</span>
             </div>
             <div class="cartmini__checkout-btn">
                 <a href="cart.html" class="tp-btn mb-10 w-100"> Ver carrito</a>
@@ -367,11 +379,11 @@
                             <button type="button" class="tp-header-action-btn cartmini-open-btn">
                                <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd" d="M6.48626 20.5H14.8341C17.9004 20.5 20.2528 19.3924 19.5847 14.9348L18.8066 8.89359C18.3947 6.66934 16.976 5.81808 15.7311 5.81808H5.55262C4.28946 5.81808 2.95308 6.73341 2.4771 8.89359L1.69907 14.9348C1.13157 18.889 3.4199 20.5 6.48626 20.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                  <path d="M6.34902 5.5984C6.34902 3.21232 8.28331 1.27803 10.6694 1.27803V1.27803C11.8184 1.27316 12.922 1.72619 13.7362 2.53695C14.5504 3.3477 15.0081 4.44939 15.0081 5.5984V5.5984" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                  <path d="M7.70365 10.1018H7.74942" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M6.34902 5.5984C6.34902 3.21232 8.28331 1.27803 10.6694 1.27803V1.27803C11.8184 1.7316 12.922 1.72619 13.7362 2.53695C14.5504 3.3477 15.0081 4.44939 15.0081 5.5984V5.5984" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M7.70365 10.1018H7.74942" stroke="currentColor" stroke-width="1.5" stroke-linecap="ro2und" stroke-linejoin="round"/>
                                   <path d="M13.5343 10.1018H13.5801" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                </svg>    
-                               <span class="tp-header-action-badge">13</span>                                                                          
+                               <span class="tp-header-action-badge">{{ listCarts.length }}</span>                                                                          
                             </button>
                          </div>
                          <div class="tp-header-action-item d-lg-none">
@@ -733,7 +745,7 @@
                             <path d="M7.70365 10.1018H7.74942" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M13.5343 10.1018H13.5801" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                          </svg>    
-                         <span class="tp-header-action-badge">13</span>                                                                          
+                         <span class="tp-header-action-badge">{{ listCarts.length }}</span>                                                                          
                       </button>
                    </div>
                    <div class="tp-header-action-item d-lg-none">
