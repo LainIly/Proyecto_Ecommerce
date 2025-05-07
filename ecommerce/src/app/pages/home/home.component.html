@@ -389,9 +389,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(TRADING_PRODUCT) }} {{ currency }}</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(TRADING_PRODUCT)) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
+                                          <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(TRADING_PRODUCT)) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -484,9 +484,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(TRADING_PRODUCT) }} {{ currency }}</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(TRADING_PRODUCT)) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
+                                          <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(TRADING_PRODUCT)) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -579,9 +579,9 @@
                                        </div>
                                        <div class="tp-product-price-wrapper">
                                           @if (TRADING_PRODUCT.discount_g) {
-                                             <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(TRADING_PRODUCT) }} {{ currency }}</span>
+                                             <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(TRADING_PRODUCT)) }} {{ currency }}</span>
                                           }
-                                          <span class="tp-product-price new-price">{{ getTotalPriceProduct(TRADING_PRODUCT) }} {{ currency }}</span>
+                                          <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(TRADING_PRODUCT)) }} {{ currency }}</span>
                                        </div>
                                     </div>
                                  </div>
@@ -717,7 +717,7 @@
                                              
                                           <span class="tp-product-tooltip">Añadir al carrito</span>
                                        </button>
-                                       <button type="button" (click)="openDetailProduct(PRODUCT)" class="tp-product-action-btn tp-product-quick-view-btn" data-bs-toggle="modal" data-bs-target="#producQuickViewModal">
+                                       <button type="button" (click)="openDetailProduct(PRODUCT, DISCOUNT_FLASH)" class="tp-product-action-btn tp-product-quick-view-btn" data-bs-toggle="modal" data-bs-target="#producQuickViewModal">
                                           <svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99938 5.64111C8.66938 5.64111 7.58838 6.72311 7.58838 8.05311C7.58838 9.38211 8.66938 10.4631 9.99938 10.4631C11.3294 10.4631 12.4114 9.38211 12.4114 8.05311C12.4114 6.72311 11.3294 5.64111 9.99938 5.64111ZM9.99938 11.9631C7.84238 11.9631 6.08838 10.2091 6.08838 8.05311C6.08838 5.89611 7.84238 4.14111 9.99938 4.14111C12.1564 4.14111 13.9114 5.89611 13.9114 8.05311C13.9114 10.2091 12.1564 11.9631 9.99938 11.9631Z" fill="currentColor"/>
                                              <g mask="url(#mask0_1211_721)">
@@ -777,8 +777,8 @@
                                     </div>
                                  </div>
                                  <div class="tp-product-price-wrapper">
-                                    <span class="tp-product-price old-price">{{ getTotalCurrency(PRODUCT) }} {{ currency }} </span>
-                                    <span class="tp-product-price new-price">{{ getNewTotal (PRODUCT, DISCOUNT_FLASH) }} {{ currency }} </span>
+                                    <span class="tp-product-price old-price">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }} </span>
+                                    <span class="tp-product-price new-price">{{ formatPriceToCOP(getNewTotal(PRODUCT, DISCOUNT_FLASH)) }} {{ currency }} </span>
                                  </div>
   
                                  <div class="tp-product-countdown" data-countdown [attr.data-date]="DISCOUNT_FLASH.end_date_format">
@@ -947,9 +947,9 @@
                                  </div>
                                  <div class="tp-product-price-wrapper">
                                     @if (PRODUCT.discount_g) {
-                                       <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(PRODUCT) }} {{ currency }}</span>
+                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }}</span>
                                     }
-                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
+                                    <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
                                  </div>
                               </div>
                            </div>
@@ -1128,9 +1128,9 @@
                                  </div>
                                  <div class="tp-product-price-wrapper">
                                     @if (PRODUCT.discount_g) {
-                                       <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(PRODUCT) }} {{ currency }}</span>
+                                       <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }}</span>
                                     }
-                                    <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
+                                    <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
                                  </div>
                               </div>
                            </div>
@@ -1189,9 +1189,9 @@
                               </div>
                               <div class="tp-product-price-wrapper">
                                  @if (PRODUCT.discount_g) {
-                                    <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(PRODUCT) }} {{ currency }}</span>
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }}</span>
                                  }
-                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
+                                 <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>
@@ -1240,9 +1240,9 @@
                               </div>
                               <div class="tp-product-price-wrapper">
                                  @if (PRODUCT.discount_g) {
-                                    <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(PRODUCT) }} {{ currency }}</span>
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }}</span>
                                  }
-                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
+                                 <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>
@@ -1292,9 +1292,9 @@
                               </div>
                               <div class="tp-product-price-wrapper">
                                  @if (PRODUCT.discount_g) {
-                                    <span class="tp-product-price old-price mx-1">{{ getTotalCurrency(PRODUCT) }} {{ currency }}</span>
+                                    <span class="tp-product-price old-price mx-1">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }}</span>
                                  }
-                                 <span class="tp-product-price new-price">{{ getTotalPriceProduct(PRODUCT) }} {{ currency }}</span>
+                                 <span class="tp-product-price new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
                               </div>
                            </div>
                         </div>

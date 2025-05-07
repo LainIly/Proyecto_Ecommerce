@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 declare function MODAL_PRODUCT_DETAIL([]): any;
+declare function MODAL_QUANTITY([]): any;
 declare var $: any;
 
 @Component({
@@ -37,37 +38,54 @@ export class ModalProductComponent {
   ngOnInit(): void {
     setTimeout(() => {
       MODAL_PRODUCT_DETAIL($);
+      MODAL_QUANTITY($);
     }, 50);
   }
 
-  formatPriceToCOP(price: number) {
+  formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  } // Funcion para dar formato a los precios en COP
-
-  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any): string {
-
-    let total: number = 0;
-
-    if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-      // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-      total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
-    } else { //Monto Fijo
-      total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
-      // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
-    }
-    return this.formatPriceToCOP(total);
   }
 
-  getTotalPriceProduct(PRODUCT: any): string {
+  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any) {
+    if (this.currency == 'COP') {
+      if (DISCOUNT_FLASH_P.type_discount == 1) {
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        return PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else {
+        return PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+      }
+    } else {
+      if (DISCOUNT_FLASH_P.type_discount == 1) {
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        return PRODUCT.price_usd - PRODUCT.price_usd * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else {
+        return PRODUCT.price_usd - DISCOUNT_FLASH_P.discount;
+      }
+    }
+  }
+
+  getTotalPriceProduct(PRODUCT: any) {
     if (PRODUCT.discount_g) {
       return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
     }
-    return this.formatPriceToCOP(PRODUCT.price_cop);
+    if (this.currency == 'COP') {
+      return PRODUCT.price_cop;
+    } else {
+      return PRODUCT.price_usd;
+    }
+  }
+
+  getTotalCurrency(PRODUCT: any) {
+    if (this.currency == 'COP') {
+      return PRODUCT.price_cop;
+    } else {
+      return PRODUCT.price_usd;
+    }
   }
 
   selectedVariation(variation: any) {
@@ -109,12 +127,12 @@ export class ModalProductComponent {
       }
     }
 
-    if (this.product_selected.variations.length > 0 && this.variation_selected && 
+    if (this.product_selected.variations.length > 0 && this.variation_selected &&
       this.variation_selected.subvariations.length == 0) {
       product_variation_id = this.variation_selected.id;
     }
 
-    if (this.product_selected.variations.length > 0 && this.variation_selected && 
+    if (this.product_selected.variations.length > 0 && this.variation_selected &&
       this.variation_selected.subvariations.length > 0) {
       product_variation_id = this.sub_variation_selected.id;
     }
@@ -133,15 +151,14 @@ export class ModalProductComponent {
       code_cupon: null,
       code_discount: discount_g ? discount_g.code : null,
       product_variation_id: product_variation_id,
-      quantity: $('#tp-cart-input-val').val(),
-      price_unit: this.product_selected.price_cop,
+      quantity: $("#tp-cart-input-val").val(),
+      price_unit:this.currency == 'PEN' ? this.product_selected.price_pen : this.product_selected.price_usd,
       subtotal: this.getTotalPriceProduct(this.product_selected),
-      // total: this.getTotalPriceProduct(this.product_selected) * $('#tp-cart-input-val').val(), //ACA ESTA EL ERROR.
+      total: this.getTotalPriceProduct(this.product_selected)*$("#tp-cart-input-val").val(),
       currency: this.currency,
-    }
-    this.cartService.registerCart(data).subscribe((resp: any) => {
-      // console.log(resp);
+    };
 
+    this.cartService.registerCart(data).subscribe((resp: any) => {
       if (resp.message == 403) {
         this.toastr.error('Validacion', resp.message_text);
       } else {
@@ -150,6 +167,8 @@ export class ModalProductComponent {
       }
     }, err => {
       console.log(err);
-    })
+    });
   }
+  //NOTA: IMPLEMENTAR ESTAS FUNCIONES EN EL HOME COMPONENT
+  // formatPriceToCOP, getNewTotal,getTotalPriceProduct, getTotalCurrency
 }

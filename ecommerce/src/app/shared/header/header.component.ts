@@ -57,7 +57,7 @@ export class HeaderComponent {
   }
 
   deleteCart(CART: any) {
-    this.cartService.deleteCart(CART.id).subscribe((resp:any) => {
+    this.cartService.deleteCart(CART.id).subscribe((resp: any) => {
       this.toastr.info('Se eliminó el producto.')
       this.cartService.removeCart(CART);
     })
@@ -76,12 +76,12 @@ export class HeaderComponent {
     }, 50);
   }
 
-  formatPriceToCOP(price: number) { // F
+  formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  } 
+  }
 }

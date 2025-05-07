@@ -99,7 +99,7 @@ export class HomeComponent {
 
   }
 
-  addCart(PRODUCT:any) {
+  addCart(PRODUCT: any) {
     if (!this.cartService.authService.user) {
       this.toastr.error('Validacion', 'Debes iniciar sesion para agregar productos al carrito.');
       this.router.navigateByUrl('/login');
@@ -108,27 +108,32 @@ export class HomeComponent {
 
     if (PRODUCT.variations.length > 0) {
       $('#producQuickViewModal').modal('show');
-      this.openDetailProduct(PRODUCT);
+      this.openDetailProduct(PRODUCT); // Abre el modal para seleccionar variaciones
       return;
+    }
+
+    let discount_g = null;
+
+    if (PRODUCT.discount_g) {
+      discount_g = PRODUCT.discount_g;
     }
 
     let data = {
       product_id: PRODUCT.id,
-      type_discount: null,
-      discount: 0,
-      type_campaing: null,
+      type_discount: discount_g ? discount_g.type_discount : null,
+      discount: discount_g ? discount_g.discount : null,
+      type_campaing: discount_g ? discount_g.type_campaing : null,
       code_cupon: null,
-      code_discount: null,
+      code_discount: discount_g ? discount_g.code : null,
       product_variation_id: null,
       quantity: 1,
-      price_unit: PRODUCT.price_cop,
-      subtotal: PRODUCT.price_cop,
-      total: PRODUCT.price_cop,
+      price_unit: this.currency == 'COP' ? PRODUCT.price_cop : PRODUCT.price_usd,
+      subtotal: this.getTotalPriceProduct(PRODUCT),
+      total: this.getTotalPriceProduct(PRODUCT) * 1,
       currency: this.currency,
-    }
-    this.cartService.registerCart(data).subscribe((resp:any) => {
-      console.log(resp);
+    };
 
+    this.cartService.registerCart(data).subscribe((resp: any) => {
       if (resp.message == 403) {
         this.toastr.error('Validacion', resp.message_text);
       } else {
@@ -137,9 +142,8 @@ export class HomeComponent {
       }
     }, err => {
       console.log(err);
-    })
+    });
   }
-
   getLabelSlider(SLIDER: any) {
     var miDiv: any = document.getElementById('label-' + SLIDER.id);
     miDiv.innerHTML = SLIDER.label;
@@ -158,46 +162,52 @@ export class HomeComponent {
     return '';
   }
 
-  formatPriceToCOP(price: number) {
+  formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  } // Funcion para dar formato a los precios en COP
-
-  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any): string {
-    let total: number = 0;
-
-    if (this.currency == 'COP') {
-      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-        total = PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
-      } else { //Monto Fijo
-        total = PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
-        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
-      }
-    } else {
-      if (DISCOUNT_FLASH_P.type_discount == 1) { //Porcentaje de descuento
-        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-        total = PRODUCT.price_usd - PRODUCT.price_usd * (DISCOUNT_FLASH_P.discount * 0.01);
-      } else { //Monto Fijo
-        total = PRODUCT.price_usd - DISCOUNT_FLASH_P.discount;
-        // return (PRODUCT.price_cop - DISCOUNT_FLASH_P.discount).toFixed(0);
-      }
-    }
-    return this.formatPriceToCOP(total);
   }
 
-  getTotalCurrency (PRODUCT: any) {
+  getNewTotal(PRODUCT: any, DISCOUNT_FLASH_P: any) {
     if (this.currency == 'COP') {
-      return this.formatPriceToCOP(PRODUCT.price_cop);
+      if (DISCOUNT_FLASH_P.type_discount == 1) {
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        return PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else {
+        return PRODUCT.price_cop - DISCOUNT_FLASH_P.discount;
+      }
     } else {
-      return this.formatPriceToCOP(PRODUCT.price_usd);
+      if (DISCOUNT_FLASH_P.type_discount == 1) {
+        // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
+        return PRODUCT.price_usd - PRODUCT.price_usd * (DISCOUNT_FLASH_P.discount * 0.01);
+      } else {
+        return PRODUCT.price_usd - DISCOUNT_FLASH_P.discount;
+      }
     }
   }
-  
+
+  getTotalPriceProduct(PRODUCT: any) {
+    if (PRODUCT.discount_g) {
+      return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
+    }
+    if (this.currency == 'COP') {
+      return PRODUCT.price_cop;
+    } else {
+      return PRODUCT.price_usd;
+    }
+  }
+
+  getTotalCurrency(PRODUCT: any) {
+    if (this.currency == 'COP') {
+      return PRODUCT.price_cop;
+    } else {
+      return PRODUCT.price_usd;
+    }
+  }
+
   getTotalBanner(BANNER: any) {
     if (this.currency == 'COP') {
       return this.formatPriceToCOP(BANNER.price_cop);
@@ -206,23 +216,16 @@ export class HomeComponent {
     }
   }
 
-  getTotalPriceProduct(PRODUCT: any): string {
-    if (PRODUCT.discount_g) {
-      return this.getNewTotal(PRODUCT, PRODUCT.discount_g);
-    }
-
-    if (this.currency == 'COP') {
-      return this.formatPriceToCOP(PRODUCT.price_cop);
-    } else {
-      return this.formatPriceToCOP(PRODUCT.price_usd);
-    }
-  }
-
-  openDetailProduct(PRODUCT: any) {
+  openDetailProduct(PRODUCT: any, DISCOUNT_FLASH: any = null) {
     this.product_selected = null;
     this.variation_selected = null;
 
     setTimeout(() => {
+      setTimeout(() => {
+        if (DISCOUNT_FLASH) {
+          this.product_selected.discount_g = DISCOUNT_FLASH;
+        }
+      }, 25)
       this.product_selected = PRODUCT;
       // MODAL_PRODUCT_DETAIL($);
     }, 50)
