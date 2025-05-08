@@ -186,10 +186,10 @@
                       <div class="cartmini__content">
                         <h5 class="cartmini__title"><a [routerLink]="'/producto/'+cart.product.slug">{{ cart.product.title }}</a></h5>
                         <div class="cartmini__price-wrapper">
-                           <span class="cartmini__price">{{ formatPriceToCOP(cart.subtotal) }} {{ currency }}</span>
+                           <span class="cartmini__price">{{ formatPriceToCOP(cart.subtotal) }} {{ cart.currency }}</span>
                            <span class="cartmini__quantity mx-1"> x{{ cart.quantity }}</span>
                            <br>
-                           <span class="cartmini__price">Total: {{ formatPriceToCOP(cart.total) }} {{ currency }}</span>
+                           <span class="cartmini__price">Total: {{ formatPriceToCOP(cart.total) }} {{ cart.currency }}</span>
                            @if (cart.product_variation) {
                               <br>
                               <span class="cartmini__quantity mx-1">{{ cart.product_variation.attribute.name }} : {{ cart.product_variation.propertie ? cart.product_variation.propertie.name : cart.product_variation.value_add}}</span>
@@ -209,17 +209,17 @@
             <div class="cartmini__empty text-center d-none">
                 <img src="assets/img/product/cartmini/empty-cart.png" alt="">
                 <p>Su carrito está vacío</p>
-                <a href="shop.html" class="tp-btn">Ir a la tienda</a>
+                <a href="/" class="tp-btn">Ir a la tienda</a>
             </div>
         </div>
         <div class="cartmini__checkout">
-            <div class="cartmini__checkout-title mb-30">
+            <div class="cartmini__checkout-title mb-30" *ngIf="isLoading">
                 <h4>Subtotal:</h4>
                 <span>{{ formatPriceToCOP(totalCarts) }} {{ currency }}</span>
             </div>
             <div class="cartmini__checkout-btn">
-                <a href="cart.html" class="tp-btn mb-10 w-100"> Ver carrito</a>
-                <a href="checkout.html" class="tp-btn tp-btn-border w-100"> Checkout</a>
+                <a routerLink="/carrito-de-compra" class="tp-btn mb-10 w-100"> Ver carrito</a>
+                <a routerLink="/proceso-de-pago" class="tp-btn tp-btn-border w-100"> Checkout</a>
             </div>
         </div>
     </div>
@@ -263,14 +263,14 @@
                                </li>
                             </ul>
                          </div>
-                         <div class="tp-header-top-menu-item tp-header-currency">
+                         <div class="tp-header-top-menu-item tp-header-currency" *ngIf="isLoading">
                             <span class="tp-header-currency-toggle" id="tp-header-currency-toggle">{{ currency }}</span>
                             <ul>
                                <li *ngIf="currency == 'COP'">
-                                  <a href="#" (click)="changeCurrency('USD')">USD</a>
+                                  <a href="#" onclick="return false;" (click)="changeCurrency('USD')">USD</a>
                                </li>
                                <li *ngIf="currency == 'USD'">
-                                  <a href="#" (click)="changeCurrency('COP')">COP</a>
+                                  <a href="#" onclick="return false;" (click)="changeCurrency('COP')">COP</a>
                                </li>
                             </ul>
                          </div>

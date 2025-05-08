@@ -69,4 +69,16 @@ export class CartService {
     let URL = URL_SERVICIOS + '/ecommerce/carts/' + cart_id;
     return this.http.delete(URL, {headers : headers});
   }
+
+  deleteCartsAll() {
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = URL_SERVICIOS + '/ecommerce/carts/delete_all';
+    return this.http.delete(URL, {headers : headers});
+  }
+
+  applyCupon(data:any) {
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = URL_SERVICIOS + '/ecommerce/carts/apply_cupon';
+    return this.http.post(URL, data, {headers : headers});
+  }
 }
