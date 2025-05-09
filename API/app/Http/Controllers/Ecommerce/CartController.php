@@ -111,7 +111,7 @@ class CartController extends Controller
                         $subtotal = $cart->price_unit - $cupon->discount;
                     }
 
-                    // if (!$cart->code_discount) {
+                    if (!$cart->code_discount) {
                         $cart->update([
                             'type_discount' => $cupon->type_discount,
                             'discount' => $cupon->discount,
@@ -121,7 +121,7 @@ class CartController extends Controller
                             'type_campaign' => NULL,
                             'code_discount' => NULL,
                         ]);
-                    // }
+                    }
                 }
             }
 
@@ -142,7 +142,7 @@ class CartController extends Controller
                         $subtotal = $cart->price_unit - $cupon->discount;
                     }
 
-                    // if (!$cart->code_discount) {
+                    if (!$cart->code_discount) {
                         $cart->update([
                             'type_discount' => $cupon->type_discount,
                             'discount' => $cupon->discount,
@@ -152,7 +152,7 @@ class CartController extends Controller
                             'type_campaign' => NULL,
                             'code_discount' => NULL,
                         ]);
-                    // }
+                    }
                 }
             }
 
@@ -173,7 +173,7 @@ class CartController extends Controller
                         $subtotal = $cart->price_unit - $cupon->discount;
                     }
 
-                    // if (!$cart->code_discount) {
+                    if (!$cart->code_discount) {
                         $cart->update([
                             'type_discount' => $cupon->type_discount,
                             'discount' => $cupon->discount,
@@ -183,7 +183,7 @@ class CartController extends Controller
                             'type_campaign' => NULL,
                             'code_discount' => NULL,
                         ]);
-                    // }
+                    }
                 }
             }
         }

@@ -30,12 +30,13 @@ export class ModalProductComponent {
     private cartService: CartService,
     public cookieService: CookieService,
   ) {
-    afterRender(() => {
-      this.currency = this.cookieService.get('currency') ? this.currency = this.cookieService.get('currency') : 'COP';
-    })
+    // afterRender(() => {
+    //   this.currency = this.cookieService.get('currency') ? this.currency = this.cookieService.get('currency') : 'COP';
+    // })
   }
 
   ngOnInit(): void {
+    this.currency = this.cookieService.get("currency") ? this.cookieService.get("currency") : 'COP';
     setTimeout(() => {
       MODAL_PRODUCT_DETAIL($);
       MODAL_QUANTITY($);
@@ -152,7 +153,7 @@ export class ModalProductComponent {
       code_discount: discount_g ? discount_g.code : null,
       product_variation_id: product_variation_id,
       quantity: $("#tp-cart-input-val").val(),
-      price_unit:this.currency == 'PEN' ? this.product_selected.price_pen : this.product_selected.price_usd,
+      price_unit:this.currency == 'COP' ? this.product_selected.price_cop : this.product_selected.price_usd,
       subtotal: this.getTotalPriceProduct(this.product_selected),
       total: this.getTotalPriceProduct(this.product_selected)*$("#tp-cart-input-val").val(),
       currency: this.currency,

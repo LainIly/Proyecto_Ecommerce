@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Sale\Cart;
+use App\Models\Sale\UserAddres;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -70,5 +72,14 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function carts () {
+        return $this->hasMany(Cart::class, 'user_id');
+    }
+
+    
+    public function address () {
+        return $this->hasMany(UserAddres::class, 'user_id');
     }
 }

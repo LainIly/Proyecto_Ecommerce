@@ -28,7 +28,7 @@ export class LandingProductComponent {
   sub_variation_selected: any;
   PRODUCT_RELATEDS: any = [];
   product_selected_modal: any;
-  CODE_CAMPAING: any;
+  CAMPAING_CODE: any;
   DISCOUNT_CAMPAING: any;
 
   currency: string = 'COP';
@@ -46,13 +46,13 @@ export class LandingProductComponent {
     })
 
     this.activedRouter.queryParams.subscribe((resp: any) => {
-      this.CODE_CAMPAING = resp.campaing_discount;
+      this.CAMPAING_CODE = resp.campaing_discount;
     })
     // afterNextRender(() => { // Este metodo es para ejecutar del lado del Servidor. 
     // Sin esta, se ve la respuesta solo en HTML
     // Con este, la respuesta llega en formato JSON
-    this.homeService.showProduct(this.PRODUCT_SLUG, this.CODE_CAMPAING).subscribe((resp: any) => {
-      console.log(resp);
+    this.homeService.showProduct(this.PRODUCT_SLUG, this.CAMPAING_CODE).subscribe((resp: any) => {
+      // console.log(resp);
       if (resp.message == 403) {
         this.toastr.error('Validacion', resp.message_text);
         this.router.navigateByUrl('/');
@@ -61,7 +61,7 @@ export class LandingProductComponent {
         this.PRODUCT_RELATEDS = resp.product_relateds.data;
         this.DISCOUNT_CAMPAING = resp.discount_campaing;
         if (this.DISCOUNT_CAMPAING) {
-          this.PRODUCT_SELECTED.discount_g = this.DISCOUNT_CAMPAING
+          this.PRODUCT_SELECTED.discount_g = this.DISCOUNT_CAMPAING;
         }
       }
     })
@@ -81,6 +81,9 @@ export class LandingProductComponent {
     }, 50);
   }
 
+  ngAfterViewInit(): void {
+    
+  }
 
   formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {

@@ -91,12 +91,12 @@ export class HomeComponent {
           }
         });
       }, 50)
-      this.currency = this.cookieService.get('currency') ? this.currency = this.cookieService.get('currency') : 'COP';
+      // this.currency = this.cookieService.get('currency') ? this.currency = this.cookieService.get('currency') : 'COP';
     })
   }
 
   ngOnInit(): void {
-
+    this.currency = this.cookieService.get("currency") ? this.cookieService.get("currency") : 'COP';
   }
 
   addCart(PRODUCT: any) {

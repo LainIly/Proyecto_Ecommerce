@@ -2,20 +2,18 @@
 
 namespace App\Models\Sale;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
-use App\Models\Product\Product;
-use App\Models\User\User;
-use App\Models\Product\ProductVariation;
 
-class Cart extends Model
+class SaleDetail extends Model
 {
     use HasFactory;
-    
+    use SoftDeletes;
+
     protected $fillable = [
-        'user_id',
+        'sale_id',
         'product_id',
         'type_discount',
         'discount',
@@ -41,8 +39,8 @@ class Cart extends Model
         $this->attributes['updated_at'] = Carbon::now();
     }
 
-    public function user () {
-        return $this->belongsTo(User::class);
+    public function sale () {
+        return $this->belongsTo(Sale::class);
     }
 
     public function product () {
@@ -52,4 +50,5 @@ class Cart extends Model
     public function product_variation () {
         return $this->belongsTo(ProductVariation::class);
     }
+
 }

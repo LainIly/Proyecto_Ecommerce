@@ -561,14 +561,15 @@
                                           </h3>
                                           <div class="tp-product-price-wrapper-3">
                                              @if (PRODUCT.discount_g) {
-                                                <span class="tp-product-price-3 old-price">{{ formatPriceToCOP(PRODUCT.price_cop) }} {{ currency }}</span>
+                                                <span class="tp-product-price-3 old-price">{{ formatPriceToCOP(getTotalCurrency(PRODUCT)) }} {{ currency }} </span>
                                              } 
-                                             <span class="tp-product-price-3 new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }}</span>
+                                             <span class="tp-product-price-3 new-price">{{ formatPriceToCOP(getTotalPriceProduct(PRODUCT)) }} {{ currency }} </span>
                                           </div>
                                        </div>
                                     </div>
                                 </div>
                             }
+                            
                        </div>
                     </div>
                     <div class="tp-related-swiper-scrollbar tp-swiper-scrollbar"></div>
@@ -579,7 +580,6 @@
         <!-- related product area end -->
 
     }
-
 
         <div class="modal fade tp-product-modal" id="producQuickViewModal" tabindex="-1" aria-labelledby="producQuickViewModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -596,5 +596,4 @@
                 </div>
             </div>
        </div>
-
  </main>
