@@ -5,6 +5,7 @@ import { UserAddressService } from '../service/user-address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 declare var paypal:any;
 
@@ -43,6 +44,7 @@ export class CheckoutComponent {
     public cookieService: CookieService,
     public addressService: UserAddressService,
     private toastr: ToastrService,
+    public router: Router,
   ) {
     afterNextRender(() => {
       this.addressService.listAddress().subscribe((resp: any) => {
@@ -71,7 +73,7 @@ export class CheckoutComponent {
       },
 
       // set up the transaction
-      createOrder: (data:any, actions:any) => {
+      createOrder: (data:any, actions:any) => { //Implentacion de PayPal
           // pass in any options from the v2 orders create call:
           // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
 
@@ -147,6 +149,7 @@ export class CheckoutComponent {
           this.cartService.checkout(dataSale).subscribe((resp:any) => {
             console.log(resp);
             this.toastr.success('Exito', 'Pago realizado correctamente.');
+            this.router.navigateByUrl('gracias-por-tu-compra/' + Order.purchase_units[0].payments.captures[0].id);
           });
           // return actions.order.capture().then(captureOrderHandler);
       },
@@ -158,7 +161,7 @@ export class CheckoutComponent {
   }).render(this.paypalElement?.nativeElement);
 
 
-  }
+  } //Falta implementar el metodo de pago con MercadoPago
 
   formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
@@ -166,7 +169,7 @@ export class CheckoutComponent {
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price); 
   }
 
   registerAddress() {

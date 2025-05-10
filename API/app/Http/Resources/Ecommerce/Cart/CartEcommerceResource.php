@@ -23,7 +23,7 @@ class CartEcommerceResource extends JsonResource
                 'title' => $this->resource->product->title,
                 'slug' => $this->resource->product->slug,
                 'price_cop' => $this->resource->product->price_cop,
-                            'price_usd' => $this->resource->product->price_usd, 
+                'price_usd' => $this->resource->product->price_usd, 
                 'imagen' => env('APP_URL'). 'storage/'.$this->resource->product->imagen,
                 'brand_id' => $this->resource->product->brand_id,
 

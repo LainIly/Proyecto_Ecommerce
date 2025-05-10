@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Product\Product;
+use App\Models\Product\ProductVariation;
+use App\Models\Sale\Sale;
 
 class SaleDetail extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
         'sale_id',

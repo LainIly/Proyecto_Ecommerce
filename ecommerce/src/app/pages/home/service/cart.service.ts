@@ -87,4 +87,10 @@ export class CartService {
     let URL = URL_SERVICIOS + '/ecommerce/checkout';
     return this.http.post(URL, data, {headers : headers});
   }
+
+  showOrder (sale_id: string = '') {
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = URL_SERVICIOS + '/ecommerce/sale/' + sale_id;
+    return this.http.get(URL, {headers : headers});
+  }
 }

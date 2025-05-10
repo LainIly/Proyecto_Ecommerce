@@ -8,6 +8,9 @@ use App\Models\Sale\Cart;
 use App\Models\Sale\Sale;
 use App\Models\Sale\SaleAddres;
 use App\Models\Sale\SaleDetail;
+use App\Mail\SaleMail;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\Ecommerce\Sale\SaleResource;
 
 class SaleController extends Controller
 {
@@ -40,6 +43,9 @@ class SaleController extends Controller
         $sale_addres ['sale_id'] = $sale->id;
         $sale_address = SaleAddres::create($sale_addres);
 
+        $sale_new = Sale::findOrFail($sale->id);
+        Mail::to(auth('api')->user()->email)->send(new SaleMail(auth('api')->user(), $sale_new));
+
         return response ()->json([
             'message' => 200,
         ]);
@@ -50,7 +56,11 @@ class SaleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sale = Sale::where('n_transaccion', $id)->first();
+
+        return response ()->json([
+            'sale' => SaleResource::make($sale),
+        ]);
     }
 
     /**
