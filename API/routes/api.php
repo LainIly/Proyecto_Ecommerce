@@ -104,6 +104,8 @@ Route::group ([
         Route::resource('carts', CartController::class);
         Route::resource('user_address', UserAddressController::class);
 
+        Route::get('mercadopago', [SaleController::class, 'mercadopago']);
+
         Route::get('sale/{id}', [SaleController::class, 'show']);
         Route::post('checkout', [SaleController::class, 'store']);
 
