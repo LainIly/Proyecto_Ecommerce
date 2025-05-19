@@ -126,8 +126,9 @@
                              </div>
     
                              <!-- single item -->
-                             <div class="tp-product-details-variation-item" *ngIf="variation_selected">
-                                <h4 class="tp-product-details-variation-title">{{ variation_selected.subvariation.attribute.name }}: </h4>
+                             <div class="tp-product-details-variation-item" *ngIf="variation_selected && variation_selected.subvariation">
+                                <h4 class="tp-product-details-variation-title" *ngIf="variation_selected.subvariation">{{ variation_selected.subvariation.attribute.name }}: </h4>
+                                <h4 class="tp-product-details-variation-title" *ngIf="!variation_selected.subvariation">{{ variation_selected.attribute.name }}: </h4>
                                 <div class="tp-product-details-variation-list">
                                    @for (subvariation of variation_selected.subvariations;track subvariation.id) {
                                       @if (subvariation.propertie && subvariation.propertie.code) {

@@ -31,7 +31,7 @@ class HomeController extends Controller
 
         $sliders_secundario = Slider::where('state', 1)->where('type_slider', 2)->orderBy('id', 'asc')->get();
 
-        $product_eletronics = Product::where('state', 2)->where('categorie_third_id', 57)->inRandomOrder()->limit(6)->get();
+        $product_eletronics = Product::where('state', 2)->where('categorie_first_id', 59)->inRandomOrder()->limit(6)->get();
 
         $products_carusel = Product::where('state', 2)->whereIn('categorie_first_id', $categories_randoms->pluck('id'))->inRandomOrder()->get();
 

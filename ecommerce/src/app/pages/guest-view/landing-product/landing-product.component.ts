@@ -81,9 +81,9 @@ export class LandingProductComponent {
     }, 50);
   }
 
-  ngAfterViewInit(): void {
+  // ngAfterViewInit(): void {
     
-  }
+  // }
 
   formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
