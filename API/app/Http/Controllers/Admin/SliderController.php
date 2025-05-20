@@ -89,7 +89,7 @@ class SliderController extends Controller
             $request->request->add(['imagen' => $path]);
         }
 
-        $slider -> update($request->all());
+        $slider->update($request->all());
         return response () -> json(['message' => 200]);
     }
 

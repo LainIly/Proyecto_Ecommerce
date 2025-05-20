@@ -109,7 +109,7 @@
 											<table width="100%" border="0" cellspacing="0" cellpadding="0">
 													<tr>
 														<td class="text-12 c-grey l-grey a-right py-20" style="font-size:12px; line-height:16px; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; color:#6e6e6e; text-align:right; padding-top: 20px; padding-bottom: 20px;">
-															<webversion class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="text-decoration:none; color:#6e6e6e;">View this email in your browser</span></webversion>
+															<webversion class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="text-decoration:none; color:#6e6e6e;">Ver este correo electrónico en su navegador</span></webversion>
 														</td>
 													</tr>
 												</table>											<!-- END Top -->
@@ -148,14 +148,14 @@
 																								<tr>
 																									<td class="title-36 a-center pb-15" style="font-size:36px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
 																										<multiline>
-																											<strong>Activate with Code</strong>
+																											<strong>Activar con código</strong>
 																										</multiline>
 																									</td>
 																								</tr>
 																								<tr>
 																									<td class="text-16 lh-26 a-center pb-25" style="font-size:16px; color:#6e6e6e; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; line-height: 26px; text-align:center; padding-bottom: 25px;">
 																										<multiline>
-																											Click on the button below to activate code, this is your requested account key code to log in with your email address (name@mail.com)
+																											Haga clic en el botón de abajo para activar el código, este es el código clave de su cuenta solicitada para iniciar sesión con su dirección de correo electrónico (name@mail.com)
 																										</multiline>
 																									</td>
 																								</tr>
@@ -165,7 +165,7 @@
 																											<tr>
 																												<td class="title-22 a-center py-20 px-50 mpx-15" style="border-radius: 10px; border: 1px dashed #b4b4d4; font-size:22px; line-height:26px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-top: 20px; padding-bottom: 20px; padding-left: 50px; padding-right: 50px;" bgcolor="#f4ecfa">
 																													<multiline>
-																														<strong>USE CODE : <span class="c-purple" style="color:#9128df;">{{ $user->code_verified }}</span></strong>
+																														<strong>Código de uso  : <span class="c-purple" style="color:#9128df;">{{ $user->code_verified }}</span></strong>
 																													</multiline>
 																												</td>
 																											</tr>
@@ -180,7 +180,7 @@
 																												<td class="btn-16 c-white l-white" bgcolor="#f3189e" style="font-size:16px; line-height:20px; mso-padding-alt:15px 35px; font-family:'PT Sans', Arial, sans-serif; text-align:center; font-weight:bold; text-transform:uppercase; border-radius:25px; min-width:auto !important; color:#ffffff;">
 																													<multiline>
 																														<a href="#" target="_blank" class="link c-white" style="display: block; padding: 15px 35px; text-decoration:none; color:#ffffff;">
-																															<span class="link c-white" style="text-decoration:none; color:#ffffff;">ACTIVATE CODE</span>
+																															<span class="link c-white" style="text-decoration:none; color:#ffffff;">Activar Código</span>
 																														</a>
 																													</multiline>
 																												</td>
@@ -205,75 +205,12 @@
 												</tr>
 											</table>
 											<!-- END Container -->
-											
-											<!-- Footer -->
-											<table width="100%" border="0" cellspacing="0" cellpadding="0">
-													<tr>
-														<td class="p-50 mpx-15" bgcolor="#949196" style="border-radius: 0 0 10px 10px; padding: 50px;">
-															<table width="100%" border="0" cellspacing="0" cellpadding="0">
-																<tr>
-																	<td align="center" class="pb-20" style="padding-bottom: 20px;">
-																		<!-- Socials -->
-																		<table border="0" cellspacing="0" cellpadding="0">
-																			<tr>
-																				<td class="img" width="34" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/ico_facebook.png" width="34" height="34" editable="true" border="0" alt="" /></a>
-																				</td>
-																				<td class="img" width="15" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-																				<td class="img" width="34" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/ico_instagram.png" width="34" height="34" editable="true" border="0" alt="" /></a>
-																				</td>
-																				<td class="img" width="15" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-																				<td class="img" width="34" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/ico_twitter.png" width="34" height="34" editable="true" border="0" alt="" /></a>
-																				</td>
-																				<td class="img" width="15" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-																				<td class="img" width="34" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/ico_pinterest.png" width="34" height="34" editable="true" border="0" alt="" /></a>
-																				</td>
-																			</tr>
-																		</table>
-																		<!-- END Socials -->
-																	</td>
-																</tr>
-																<tr>
-																	<td class="text-14 lh-24 a-center c-white l-white pb-20" style="font-size:14px; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; line-height: 24px; text-align:center; color:#ffffff; padding-bottom: 20px;">
-																		<multiline>
-																			Address name St. 12, City Name, State, Country Name
-																			<br />
-																			<a cm_dontconvertlink href="tel:+17384796719" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;"><span class="link c-white" style="text-decoration:none; color:#ffffff;">(738) 479-6719</span></a> - <a cm_dontconvertlink href="tel:+13697181973" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;"><span class="link c-white" style="text-decoration:none; color:#ffffff;">(369) 718-1973</span></a>
-																			<br />
-																			<a href="mailto:info@website.com" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;"><span class="link c-white" style="text-decoration:none; color:#ffffff;">info@website.com</span></a> - <a href="www.website.com" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;"><span class="link c-white" style="text-decoration:none; color:#ffffff;">www.website.com</span></a>
-																		</multiline>
-																	</td>
-																</tr>
-																<tr>
-																	<td align="center">
-																		<!-- Download App -->
-																		<table border="0" cellspacing="0" cellpadding="0">
-																			<tr>
-																				<td class="img" width="117" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/btn_appstore.png" width="117" height="40" editable="true" border="0" alt="" /></a>
-																				</td>
-																				<td class="img" width="15" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-																				<td class="img" width="117" style="font-size:0pt; line-height:0pt; text-align:left;">
-																					<a href="#" target="_blank"><img src="../images/btn_gplay.png" width="117" height="40" editable="true" border="0" alt="" /></a>
-																				</td>
-																			</tr>
-																		</table>
-																		<!-- END Download App -->
-																	</td>
-																</tr>
-															</table>
-														</td>
-													</tr>
-												</table>											<!-- END Footer -->
-											
+
 											<!-- Bottom -->
 											<table width="100%" border="0" cellspacing="0" cellpadding="0">
 													<tr>
 														<td class="text-12 lh-22 a-center c-grey- l-grey py-20" style="font-size:12px; color:#6e6e6e; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; line-height: 22px; text-align:center; padding-top: 20px; padding-bottom: 20px;">
-															<unsubscribe class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">UNSUBSCRIBE</span></unsubscribe> &nbsp;|&nbsp; <webversion class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">WEB VERSION</span></webversion> &nbsp;|&nbsp; <forwardtoafriend class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">SEND TO A FRIEND</span></forwardtoafriend>
+															<unsubscribe class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">Cancelar subscripcion</span></unsubscribe> &nbsp;|&nbsp; <webversion class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">Version Web</span></webversion> &nbsp;|&nbsp; <forwardtoafriend class="link c-grey" style="text-decoration:none; color:#6e6e6e;"><span class="link c-grey" style="white-space: nowrap; text-decoration:none; color:#6e6e6e;">Enviar a un amigo</span></forwardtoafriend>
 														</td>
 													</tr>
 												</table>											<!-- END Bottom -->

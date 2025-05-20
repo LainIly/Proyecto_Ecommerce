@@ -84,46 +84,30 @@ export class EditSlidersComponent {
     }
 
     let formData = new FormData();
-
     formData.append('title', this.title);
-
     if (this.label) {
       formData.append('label', this.label);
     }
-
+    formData.append('subtitle', this.subtitle + '');
     if (this.file_imagen) {
       formData.append('image', this.file_imagen);
     }
-
     if (this.link) {
-      formData.append('link', this.link + '');
+      formData.append('link', this.link);
     }
-
     if (this.color) {
-      formData.append('color', this.color + '');
+      formData.append('color', this.color);
     }
-
-    formData.append('type_slider', this.type_slider + '');
-
+    formData.append('type_slider', this.type_slider);
     if (this.price_original) {
-      formData.append('price_original', this.price_original + '');
+      formData.append('price_original', this.price_original);
     }
-
     if (this.price_campaing) {
-      formData.append('price_campaing', this.price_campaing + '');
+      formData.append('price_campaing', this.price_campaing);
     }
-
-    formData.append('subtitle', this.subtitle + '');
 
     this.sliderService.updateSliders(this.slider_id, formData).subscribe((resp:any) => { 
       console.log(resp)
-      // this.title = '';
-      // this.label = '';
-      // this.subtitle = '';
-      // this.link = '';
-      // this.color = '';
-      // this.file_imagen = null;
-      // this.imagen_previsualiza = 'https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/illustrations/easy/2.svg';
       this.toastr.success('Slider editado con exito.');
     });
   }

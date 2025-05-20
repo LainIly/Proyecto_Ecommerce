@@ -40,7 +40,7 @@
                            </div>
                            <div class="col-xl-7 col-lg-6 col-md-6">
                               <div class="tp-slider-thumb text-end">
-                                 <img [src]="SLIDER.imagen" style="width: 738px; height: 366px; object-fit: contain; " alt="slider-img">
+                                 <img [src]="SLIDER.imagen" style="width: 738px; height: 366px; object-fit: cover; " alt="slider-img">
                               </div>
                            </div>
                         </div>
@@ -606,7 +606,7 @@
                @if (idx == 0) {
                   <div class="col-xl-8 col-lg-7">
                      <div class="tp-banner-item tp-banner-height p-relative mb-30 z-index-1 fix">
-                        <div class="tp-banner-thumb include-bg transition-3" [attr.data-background]="BANNER.imagen"></div>
+                        <div class="tp-banner-thumb include-bg transition-3" [attr.data-background]="BANNER.imagen" style="width: 792px; height: 260px; object-fit: cover;"></div>
                         <div class="tp-banner-content">
                            <span>{{ BANNER.subtitle }}</span>
                            <h3 class="tp-banner-title">
@@ -615,7 +615,6 @@
                               </a>
                            </h3>
                            @if (BANNER.link) {
-
                               <div class="tp-banner-btn">
                                  <a [href]="BANNER.link" class="tp-link-btn">Comprar ahora 
                                     <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -997,7 +996,7 @@
                                  </div>
       
                                  <div class="tp-product-banner-thumb text-end p-relative z-index-1">
-                                    <img [src]="BANNER.imagen" style="width: 414px;height: 355px; object-fit: contain;" alt="">
+                                    <img [src]="BANNER.imagen" style="width: 556px;height: 367px; object-fit: cover;" alt="">
                                  </div>
                               </div>
                            </div>
