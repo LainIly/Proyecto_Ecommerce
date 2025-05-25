@@ -13,6 +13,7 @@ use App\Models\Product\ProductVariation;
 class Cart extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     
     protected $fillable = [
         'user_id',

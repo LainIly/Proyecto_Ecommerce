@@ -108,6 +108,7 @@ Route::group ([
 
         Route::get('sale/{id}', [SaleController::class, 'show']);
         Route::post('checkout', [SaleController::class, 'store']);
-
+        Route::post('checkout-temp', [SaleController::class, 'checkout_temp']);
     });
+    Route::post('checkout-mercadopago', [SaleController::class, 'checkout_mercadopago']);
 });

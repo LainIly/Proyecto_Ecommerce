@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sale extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -21,7 +22,8 @@ class Sale extends Model
         'total',
         'price_dolar',
         'description',
-        'n_transaccion'
+        'n_transaccion',
+        'preference_id',
     ];
 
     public function setCreateAtAttribute ($value) {

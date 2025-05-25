@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
-declare var paypal:any;
+declare var paypal: any;
+declare var MercadoPago: any;
 
 @Component({
   selector: 'app-checkout',
@@ -33,11 +34,13 @@ export class CheckoutComponent {
   postcode_zip: string = '';
   phone: string = '';
   email: string = '';
-  
+
   address_selected: any;
   description: string = '';
 
-  @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
+  @ViewChild('paypal', { static: true }) paypalElement?: ElementRef;
+
+  PREFERENCE_ID: string = '';
 
   constructor(
     public cartService: CartService,
@@ -73,92 +76,92 @@ export class CheckoutComponent {
       },
 
       // set up the transaction
-      createOrder: (data:any, actions:any) => { //Implentacion de PayPal
-          // pass in any options from the v2 orders create call:
-          // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+      createOrder: (data: any, actions: any) => { //Implentacion de PayPal
+        // pass in any options from the v2 orders create call:
+        // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
 
-          if (this.totalCarts == 0) {
-            this.toastr.error('Error', 'No se puede procesar el pago con un monto de $ 0.');
-            return;
-          }
+        if (this.totalCarts == 0) {
+          this.toastr.error('Error', 'No se puede procesar el pago con un monto de $ 0.');
+          return;
+        }
 
-          if (this.listCarts.length == 0) {
-            this.toastr.error('Error', 'No hay productos en el carrito.');
-            return;
-          }
+        if (this.listCarts.length == 0) {
+          this.toastr.error('Error', 'No hay productos en el carrito.');
+          return;
+        }
 
-          if (!this.name ||
-            !this.surname ||
-            !this.company ||
-            !this.country_region ||
-            !this.city ||
-            !this.address ||
-            !this.street ||
-            !this.postcode_zip ||
-            !this.phone ||
-            !this.email) {
-            this.toastr.error('Error', 'Los campos de la dirección son requeridos.');
-      
-            return;
-          }
+        if (!this.name ||
+          !this.surname ||
+          !this.company ||
+          !this.country_region ||
+          !this.city ||
+          !this.address ||
+          !this.street ||
+          !this.postcode_zip ||
+          !this.phone ||
+          !this.email) {
+          this.toastr.error('Error', 'Los campos de la dirección son requeridos.');
 
-          const createOrderPayload = {
-            purchase_units: [
-              {
-                amount: {
-                    description: "COMPRAR POR EL ECOMMERCE",
-                    value: this.totalCarts,
-                }
+          return;
+        }
+
+        const createOrderPayload = {
+          purchase_units: [
+            {
+              amount: {
+                description: "COMPRAR POR EL ECOMMERCE",
+                value: this.totalCarts,
               }
-            ]
-          };
+            }
+          ]
+        };
 
-          return actions.order.create(createOrderPayload);
+        return actions.order.create(createOrderPayload);
       },
 
       // finalize the transaction
-      onApprove: async (data:any, actions:any) => {
-          
-          let Order = await actions.order.capture();
-          // Order.purchase_units[0].payments.captures[0].id
+      onApprove: async (data: any, actions: any) => {
 
-          let dataSale = {
-            method_payment: 'PAYPAL',
-            currency_total: this.currency,
-            currency_payment: 'USD',
-            discount: 0,
-            subtotal: this.totalCarts,
-            total: this.totalCarts,
-            price_dolar: 0,
-            n_transaccion: Order.purchase_units[0].payments.captures[0].id,
-            description: this.description,
-            sale_address: {
-              name: this.name,
-              surname: this.surname,
-              company: this.company,
-              country_region: this.country_region,
-              city: this.city,
-              address: this.address,
-              street: this.street,
-              postcode_zip: this.postcode_zip,
-              phone: this.phone,
-              email: this.email
-            }
+        let Order = await actions.order.capture();
+        // Order.purchase_units[0].payments.captures[0].id
+
+        let dataSale = {
+          method_payment: 'PAYPAL',
+          currency_total: this.currency,
+          currency_payment: 'USD',
+          discount: 0,
+          subtotal: this.totalCarts,
+          total: this.totalCarts,
+          price_dolar: 0,
+          n_transaccion: Order.purchase_units[0].payments.captures[0].id,
+          description: this.description,
+          sale_address: {
+            name: this.name,
+            surname: this.surname,
+            company: this.company,
+            country_region: this.country_region,
+            city: this.city,
+            address: this.address,
+            street: this.street,
+            postcode_zip: this.postcode_zip,
+            phone: this.phone,
+            email: this.email
           }
+        }
 
-          this.cartService.checkout(dataSale).subscribe((resp:any) => {
-            console.log(resp);
-            this.toastr.success('Exito', 'Pago realizado correctamente.');
-            this.router.navigateByUrl('gracias-por-tu-compra/' + Order.purchase_units[0].payments.captures[0].id);
-          });
-          // return actions.order.capture().then(captureOrderHandler);
+        this.cartService.checkout(dataSale).subscribe((resp: any) => {
+          console.log(resp);
+          this.toastr.success('Exito', 'Pago realizado correctamente.');
+          this.router.navigateByUrl('gracias-por-tu-compra/' + Order.purchase_units[0].payments.captures[0].id);
+        });
+        // return actions.order.capture().then(captureOrderHandler);
       },
 
       // handle unrecoverable errors
-      onError: (err:any) => {
-          console.error('An error prevented the buyer from checking out with PayPal');
+      onError: (err: any) => {
+        console.error('An error prevented the buyer from checking out with PayPal');
       }
-  }).render(this.paypalElement?.nativeElement);
+    }).render(this.paypalElement?.nativeElement);
 
 
   } //Falta implementar el metodo de pago con MercadoPago
@@ -169,7 +172,88 @@ export class CheckoutComponent {
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price); 
+    }).format(price);
+  }
+
+  openMercadoPago() {
+
+    if (this.totalCarts == 0) {
+      this.toastr.error('Error', 'No se puede procesar el pago con un monto de $ 0.');
+      return;
+    }
+
+    if (this.listCarts.length == 0) {
+      this.toastr.error('Error', 'No hay productos en el carrito.');
+      return;
+    }
+
+    if (!this.name ||
+      !this.surname ||
+      !this.company ||
+      !this.country_region ||
+      !this.city ||
+      !this.address ||
+      !this.street ||
+      !this.postcode_zip ||
+      !this.phone ||
+      !this.email) {
+      this.toastr.error('Error', 'Los campos de la dirección son requeridos.');
+
+      return;
+    }
+
+    this.cartService.mercadopago(this.totalCarts).subscribe((resp: any) => {
+      console.log(resp);
+
+      this.PREFERENCE_ID = resp.preference.id;
+
+      let data = {
+        description: this.description,
+        sale_address: {
+          name: this.name,
+          surname: this.surname,
+          company: this.company,
+          country_region: this.country_region,
+          city: this.city,
+          address: this.address,
+          street: this.street,
+          postcode_zip: this.postcode_zip,
+          phone: this.phone,
+          email: this.email
+        }
+      }
+
+      this.cartService.storeTemp(data).subscribe((resp: any) => {
+        console.log(resp);
+
+        const mp = new MercadoPago('TEST-0dfa0e67-2116-46d0-9709-ebf95db9db3f');
+        const bricksBuilder = mp.bricks();
+
+        mp.bricks().create("wallet", "wallet_container", {
+          initialization: {
+            preferenceId: this.PREFERENCE_ID,
+          },
+        });
+
+        // mp.checkout({ //FORMA DE PAGO CON VENTANA MODAL
+        //   preference: {
+        //     id: this.PREFERENCE_ID, // ID de la preferencia
+        //   },
+        //   render: {
+        //     container: "#wallet_container",
+        //     label: "Pagar",
+        //   },
+        //   callback: (response: any) => {
+        //     console.log(response);
+        //     if (response.status === 'approved') {
+        //       console.log('Pago aprobado. Detalles:', response);
+        //     } else {
+        //       console.log('Pago no aprobado o cancelado. Detalles:', response);
+        //     }
+        //   },
+        // });
+      })
+    })
   }
 
   registerAddress() {
@@ -240,7 +324,7 @@ export class CheckoutComponent {
     this.addressService.updateAddress(this.address_selected.id, data).subscribe((resp: any) => {
       console.log(resp);
       this.toastr.success('Exito', 'Dirección actualizada correctamente.');
-      let INDEX = this.address_list.findIndex((item:any) => item.id == resp.addres.id);
+      let INDEX = this.address_list.findIndex((item: any) => item.id == resp.addres.id);
 
       if (INDEX != -1) {
         this.address_list[INDEX] = resp.addres;
@@ -278,6 +362,4 @@ export class CheckoutComponent {
     this.phone = '';
     this.email = '';
   }
-
-
 }

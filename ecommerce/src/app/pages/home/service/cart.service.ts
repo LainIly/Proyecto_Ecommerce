@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../../auth/service/auth.service';
 import { URL } from 'url';
-import { URL_SERVICIOS } from '../../../config/config';
+import { PRODUCTION, URL_SERVICIOS } from '../../../config/config';
 
 @Injectable({
   providedIn: 'root'
@@ -92,5 +92,30 @@ export class CartService {
     let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
     let URL = URL_SERVICIOS + '/ecommerce/sale/' + sale_id;
     return this.http.get(URL, {headers : headers});
+  }
+
+  mercadopago(price_total: number = 0) {
+
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = '';
+
+    if (PRODUCTION) {
+      URL = URL_SERVICIOS + '/ecommerce/mercadopago';
+    } else {
+      URL = 'https://fetconnect.store/api/ecommerce/mercadopago?price_unit=' + price_total;
+    }
+    return this.http.get(URL, {headers : headers});
+  }
+
+  checkoutMercadoPago (data:any) {
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = URL_SERVICIOS + '/ecommerce/checkout-mercadopago';
+    return this.http.post(URL, data, {headers : headers});
+  }
+
+  storeTemp(data:any) {
+    let headers = new HttpHeaders({'Authorization': 'Bearer' + this.authService.token});
+    let URL = URL_SERVICIOS + '/ecommerce/checkout-temp';
+    return this.http.post(URL, data, {headers : headers});
   }
 }

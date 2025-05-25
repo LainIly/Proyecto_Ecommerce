@@ -13,6 +13,7 @@ use App\Models\Sale\Sale;
 class SaleDetail extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'sale_id',
