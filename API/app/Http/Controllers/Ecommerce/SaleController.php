@@ -16,6 +16,8 @@ use MercadoPago\PreferenceClient;
 use MercadoPago\Configuration\MercadoPagoConfig;
 use App\Models\Sale\SaleTemp;
 use Illuminate\Support\Facades\Http;
+use App\Models\Product\Product;
+use App\Models\Product\ProductVariation;
 
 class SaleController extends Controller
 {
@@ -39,11 +41,40 @@ class SaleController extends Controller
 
         foreach ($carts as $key => $cart) {
             
+            $nCart = $cart;
+
             $new_detail = [];
             $new_detail = $cart->toArray();
             $new_detail['sale_id'] = $sale->id;
             SaleDetail::create($new_detail);
+
+            //Descuento de stock al producto cuando se crea una venta
+
+            if ($cart->product_variation_id) {
+                $variation = ProductVariation::find($cart->product_variation_id);
+                if ($variation->variation_father) {
+                    $variation->variation_father->update ([
+                        'stock' => $variation->variation_father->stock - $cart->quantity,
+                    ]);
+                    $variation->update ([
+                        'stock' => $variation->stock - $cart->quantity,
+                    ]);
+                } else {
+                    $variation->update ([
+                        'stock' => $variation->stock - $cart->quantity,
+                    ]);
+                }
+            } else {
+                $product = Product::find($cart->product_id);
+                $product->update ([
+                    'stock' => $product->stock - $cart->quantity,
+                ]);
+            }
+            
+            //Al crear la venta, eliminamos el carrito del usuario
+            $cart->delete();
         }
+
         $sale_addres = $request->sale_address;
         $sale_addres ['sale_id'] = $sale->id;
         $sale_address = SaleAddres::create($sale_addres);
@@ -79,11 +110,39 @@ class SaleController extends Controller
         $carts = Cart::where('user_id', auth('api')->user()->id)->get();
 
         foreach ($carts as $key => $cart) {
+
+            $nCart = $cart;
             
             $new_detail = [];
-            $new_detail = $cart->toArray();
+            $new_detail = $nCart->toArray();
             $new_detail['sale_id'] = $sale->id;
             SaleDetail::create($new_detail);
+
+            //Descuento de stock al producto cuando se crea una venta
+
+            if ($cart->product_variation_id) {
+                $variation = ProductVariation::find($cart->product_variation_id);
+                if ($variation->variation_father) {
+                    $variation->variation_father->update ([
+                        'stock' => $variation->variation_father->stock - $cart->quantity,
+                    ]);
+                    $variation->update ([
+                        'stock' => $variation->stock - $cart->quantity,
+                    ]);
+                } else {
+                    $variation->update ([
+                        'stock' => $variation->stock - $cart->quantity,
+                    ]);
+                }
+            } else {
+                $product = Product::find($cart->product_id);
+                $product->update ([
+                    'stock' => $product->stock - $cart->quantity,
+                ]);
+            }
+            
+            //Al crear la venta, eliminamos el carrito del usuario
+            $cart->delete();
         }
 
         $sale_addres = json_decode($sale_temp->sale_address, true);

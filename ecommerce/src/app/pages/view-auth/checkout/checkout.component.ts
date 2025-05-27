@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 declare var paypal: any;
 declare var MercadoPago: any;
@@ -40,6 +41,8 @@ export class CheckoutComponent {
 
   @ViewChild('paypal', { static: true }) paypalElement?: ElementRef;
 
+  price_dolar: number = 4;
+
   PREFERENCE_ID: string = '';
 
   constructor(
@@ -48,6 +51,7 @@ export class CheckoutComponent {
     public addressService: UserAddressService,
     private toastr: ToastrService,
     public router: Router,
+    public http: HttpClient
   ) {
     afterNextRender(() => {
       this.addressService.listAddress().subscribe((resp: any) => {
@@ -64,6 +68,12 @@ export class CheckoutComponent {
     this.cartService.currentDataCart$.subscribe((resp: any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + item.total, 0);
+    });
+
+
+    //Consultar el precio del dolar al iniciar con API
+    this.http.get('https://open.er-api.com/v6/latest/USD').subscribe((resp:any) => {
+      this.price_dolar = resp.rates.COP;
     });
 
     paypal.Buttons({
@@ -110,7 +120,7 @@ export class CheckoutComponent {
             {
               amount: {
                 description: "COMPRAR POR EL ECOMMERCE",
-                value: this.totalCarts,
+                value: this.totalPayPal(),
               }
             }
           ]
@@ -130,8 +140,8 @@ export class CheckoutComponent {
           currency_total: this.currency,
           currency_payment: 'USD',
           discount: 0,
-          subtotal: this.totalCarts,
-          total: this.totalCarts,
+          subtotal: this.totalPayPal(),
+          total: this.totalPayPal(),
           price_dolar: 0,
           n_transaccion: Order.purchase_units[0].payments.captures[0].id,
           description: this.description,
@@ -152,7 +162,10 @@ export class CheckoutComponent {
         this.cartService.checkout(dataSale).subscribe((resp: any) => {
           console.log(resp);
           this.toastr.success('Exito', 'Pago realizado correctamente.');
-          this.router.navigateByUrl('gracias-por-tu-compra/' + Order.purchase_units[0].payments.captures[0].id);
+          this.cartService.resetCart();
+          setTimeout(() => {
+            this.router.navigateByUrl('gracias-por-tu-compra/' + Order.purchase_units[0].payments.captures[0].id);
+          }, 50)
         });
         // return actions.order.capture().then(captureOrderHandler);
       },
@@ -173,6 +186,14 @@ export class CheckoutComponent {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  }
+
+  totalPayPal() {
+    if (this.currency == 'USD') {
+      return this.totalCarts;
+    } else {
+      return (this.totalCarts / this.price_dolar).toFixed(2);
+    }
   }
 
   openMercadoPago() {
