@@ -109,6 +109,11 @@ Route::group ([
         Route::get('sale/{id}', [SaleController::class, 'show']);
         Route::post('checkout', [SaleController::class, 'store']);
         Route::post('checkout-temp', [SaleController::class, 'checkout_temp']);
+        Route::post('checkout-mercadopago', [SaleController::class, 'checkout_mercadopago']);
+        
+        Route::get('profile_client/me', [AuthController::class, 'me']);
+        Route::get('profile_client/orders', [SaleController::class, 'orders']);
+        Route::put('profile_client', [AuthController::class, 'update']);
+
     });
-    Route::post('checkout-mercadopago', [SaleController::class, 'checkout_mercadopago']);
 });

@@ -55,8 +55,7 @@ export class CheckoutComponent {
   ) {
     afterNextRender(() => {
       this.addressService.listAddress().subscribe((resp: any) => {
-        console.log(resp);
-
+        // console.log(resp);
         this.address_list = resp.address;
       })
     })

@@ -13191,7 +13191,7 @@ div.tp-blog-thumb img {
   border-top-width: 1px;
 }
 .profile__ticket .table > :not(caption) > * > * {
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
   border: 0;
   box-shadow: none;
 }
@@ -21896,5 +21896,4 @@ product all slider
 [dir=rtl] .tp-product-details-wishlist.mb-15 {
   margin-right: 15px;
 }
-
 /*# sourceMappingURL=main.css.map */

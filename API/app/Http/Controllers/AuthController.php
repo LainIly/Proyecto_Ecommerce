@@ -26,7 +26,7 @@ class AuthController extends Controller
         'verified_email', 'verified_code', 'new_password'
         ]]);  
     }
- 
+
     /**
      * Register a User.
      *
@@ -58,6 +58,26 @@ class AuthController extends Controller
         Mail::to(request()->email)->send(new VerifiedMail($user));
 
         return response()->json($user, 201);
+    }
+
+    public function update(Request $request) {
+
+        $is_exists_email = User::where('id', '<>', auth('api')->user()->id)
+                                ->where('email', $request->email)->first();
+
+        if ($is_exists_email) {
+            return response()->json([
+                'message' => 403,
+                'message_text' => 'El correo electrónico ya está en uso.'
+            ]);
+        }
+
+        $user = User::find(auth('api')->user()->id);
+
+        $user->update($request->all());
+        return response()->json([
+            'message' => 200,
+        ]);
     }
  
     public function verified_email(Request $request) {
@@ -149,7 +169,18 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        $user = User::find(auth('api')->user()->id);
+
+        return response()->json([
+            'name' => $user->name,
+            'surname' => $user->surname,
+            'phone' => $user->phone,
+            'email' => $user->email,
+            'bio' => $user->bio,
+            'fb' => $user->fb,
+            'sexo' => $user->sexo,
+            'address_city' => $user->address_city,
+        ]);
     }
  
     /**

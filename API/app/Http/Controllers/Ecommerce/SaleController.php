@@ -18,6 +18,7 @@ use App\Models\Sale\SaleTemp;
 use Illuminate\Support\Facades\Http;
 use App\Models\Product\Product;
 use App\Models\Product\ProductVariation;
+use App\Http\Resources\Ecommerce\Sale\SaleCollection;
 
 class SaleController extends Controller
 {
@@ -27,6 +28,15 @@ class SaleController extends Controller
     public function index()
     {
         //
+    }
+
+    public function orders () {
+        $user = auth('api')->user();
+
+        $sales = Sale::where('user_id', $user->id)->orderBy('id', 'desc')->get();
+        return response()->json([
+            'sales' => SaleCollection::make($sales),
+        ]);
     }
  
     /**
