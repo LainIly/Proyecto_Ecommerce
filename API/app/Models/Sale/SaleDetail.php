@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Product\Product;
 use App\Models\Product\ProductVariation;
 use App\Models\Sale\Sale;
+use App\Models\Sale\Review;
 
 class SaleDetail extends Model
 {
@@ -54,4 +55,7 @@ class SaleDetail extends Model
         return $this->belongsTo(ProductVariation::class);
     }
 
+    public function review () {
+        return $this->hasOne(Review::class, 'sale_detail_id');
+    }
 }

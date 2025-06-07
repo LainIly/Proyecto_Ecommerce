@@ -29,6 +29,7 @@ class SaleResource extends JsonResource
 
             'sale_details' => $this->resource->sale_details->map(function ($sale_detail) {
                 return [
+                            'id' => $sale_detail->id,
                             'product_id' => $sale_detail->product_id,
                             'product' => [
                                 'id' => $sale_detail->product->id,
@@ -83,6 +84,7 @@ class SaleResource extends JsonResource
                                 'total' => $sale_detail->total,
                                 'currency' => $sale_detail->currency,
                                 'created_at' => $sale_detail->created_at->format('Y-m-d h:i A'),
+                                'review' => $sale_detail->review,
                         ];
             }),
             'sale_address' => $this->resource->sale_addres,

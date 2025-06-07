@@ -1,5 +1,5 @@
 <div class="profile__ticket table-responsive">
-    <table class="table">
+    <table class="table" *ngIf="!sale_detail_review">
         <thead>
             <tr>
                 <th scope="col">Transaccion ID</th>
@@ -16,20 +16,54 @@
                 <td data-info="title">{{ sale.method_payment }}</td>
                 <td scope="row">{{ sale.created_at }} </td>
                 <td data-info="status pending">{{ formatPriceToCOP(sale.total) }} {{ sale.currency_payment }} </td>
-                <td><a href="#" onclick="return false;" (click)="detailShow(sale)" class="tp-logout-btn">Detalles</a></td>
+                <td><a href="#" onclick="return false;" (click)="detailShow(sale)" class="tp-logout-btn">Detalles</a>
+                </td>
             </tr>
-                @for (sale_detail of sale.sale_details;track sale_detail.id) {
-                <tr *ngIf="sale.sale_detail_show">
-                    <th scope="row">
-                        <img [src]="sale_detail.product.imagen" style="width: 50px; object-fit: contain;" alt="">
-                    </th>
-                    <td data-info="title">{{ sale_detail.product.title }}</td>
-                    <td scope="row">{{ sale_detail.quantity }}</td>
-                    <td data-info="status pending">{{ formatPriceToCOP(sale_detail.subtotal) }} {{ sale_detail.currency }} </td>
-                    <td data-info="status pending">{{ formatPriceToCOP(sale_detail.total) }} {{ sale_detail.currency }} </td>
-                </tr>
-                }
+            @for (sale_detail of sale.sale_details;track sale_detail.id) {
+            <tr *ngIf="sale.sale_detail_show">
+                <th scope="row">
+                    <img [src]="sale_detail.product.imagen" style="width: 50px; object-fit: contain;" alt="">
+                    <br>
+                    <a href="#" onclick="return false;" (click)="reviewShow(sale_detail)"
+                        class="tp-logout-btn">Reseña</a>
+                </th>
+                <td data-info="row">{{ sale_detail.product.title }}</td>
+                <td scope="row">{{ sale_detail.quantity }}</td>
+                <td data-info="status pending">{{ formatPriceToCOP(sale_detail.subtotal) }} {{ sale_detail.currency }}
+                </td>
+                <td data-info="status pending">{{ formatPriceToCOP(sale_detail.total) }} {{ sale_detail.currency }}
+                </td>
+            </tr>
+            }
             }
         </tbody>
     </table>
+    <div class="tp-product-details-review-form" *ngIf="sale_detail_review">
+        <h3 class="tp-product-details-review-form-title">Valora este producto</h3>
+        <p>Su dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *.</p>
+        <form action="#">
+            <div class="tp-product-details-review-form-rating d-flex align-items-center">
+                <p>Tu valoración :</p>
+                <div class="tp-product-details-review-form-rating-icon d-flex align-items-center">
+                    <span class="start-large" [ngClass]="{'start-gris': rating < 1}" (click)="selectedRating(1)"><i class="fa-solid fa-star"></i></span>
+                    <span class="start-large" [ngClass]="{'start-gris': rating < 2}" (click)="selectedRating(2)"><i class="fa-solid fa-star"></i></span>
+                    <span class="start-large" [ngClass]="{'start-gris': rating < 3}" (click)="selectedRating(3)"><i class="fa-solid fa-star"></i></span>
+                    <span class="start-large" [ngClass]="{'start-gris': rating < 4}" (click)="selectedRating(4)"><i class="fa-solid fa-star"></i></span>
+                    <span class="start-large" [ngClass]="{'start-gris': rating < 5}" (click)="selectedRating(5)"><i class="fa-solid fa-star"></i></span>
+                </div>
+            </div>
+            <div class="tp-product-details-review-input-wrapper">
+                <div class="tp-product-details-review-input-box">
+                    <div class="tp-product-details-review-input">
+                        <textarea id="message" name="message" [(ngModel)]='message' placeholder="Escibe tu reseña aqui..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="tp-product-details-review-btn-wrapper">
+                <button type="button" class="tp-product-details-review-btn mx-1" (click)="saveReview()" > {{ sale_detail_review.review ? 'Editar' : 'Enviar' }}</button>
+                <button type="button" (click)="backList()" class="tp-product-details-review-btn">Salir</button>
+            </div>
+        </form>
+    </div>
 </div>
+`
