@@ -62,6 +62,18 @@ class AuthController extends Controller
 
     public function update(Request $request) {
 
+        if ($request->password) {
+
+            $user = User::find(auth('api')->user()->id);
+            $user->update([
+                'password' => bcrypt($request->password),
+            ]);
+
+            return response()->json([
+                'message' => 200,
+            ]);
+        }
+
         $is_exists_email = User::where('id', '<>', auth('api')->user()->id)
                                 ->where('email', $request->email)->first();
 

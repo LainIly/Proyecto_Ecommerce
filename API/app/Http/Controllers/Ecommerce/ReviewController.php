@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ecommerce;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Sale\Review;
+use App\Models\User;
 
 class ReviewController extends Controller
 {

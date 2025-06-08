@@ -22,6 +22,8 @@ declare function MODAL_QUANTITY_LANDING([]): any;
 })
 export class LandingProductComponent {
 
+  reviews: any = [];
+
   PRODUCT_SLUG: any;
   PRODUCT_SELECTED: any;
   variation_selected: any;
@@ -32,7 +34,6 @@ export class LandingProductComponent {
   DISCOUNT_CAMPAING: any;
 
   currency: string = 'COP';
-
   plus: number = 0;
 
   constructor(
@@ -62,6 +63,7 @@ export class LandingProductComponent {
         this.PRODUCT_SELECTED = resp.product;
         this.PRODUCT_RELATEDS = resp.product_relateds.data;
         this.DISCOUNT_CAMPAING = resp.discount_campaing;
+        this.reviews = resp.reviews;
         if (this.DISCOUNT_CAMPAING) {
           this.PRODUCT_SELECTED.discount_g = this.DISCOUNT_CAMPAING;
         }

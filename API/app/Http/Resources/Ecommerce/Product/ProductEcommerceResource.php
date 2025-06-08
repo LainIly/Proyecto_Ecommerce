@@ -5,6 +5,7 @@ namespace App\Http\Resources\Ecommerce\Product;
 use Illuminate\Http\Request;
 use App\Models\Product\ProductVariation;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\User;
 
 class ProductEcommerceResource extends JsonResource
 {
@@ -118,11 +119,10 @@ class ProductEcommerceResource extends JsonResource
                 'name' => $this->resource->brand->name,
             ] : NULL,
 
-            'categorie_first_id' => $this->resource->categorie_first_id,
-
-            'categorie_first' => $this->resource->categorie_first ? [
-                'id' => $this->resource->categorie_first->id,
-                'name' => $this->resource->categorie_first->name,
+            "categorie_first_id"  => $this->resource->categorie_first_id,
+            "categorie_first"  => $this->resource->categorie_first ? [
+                "id" => $this->resource->categorie_first->id,
+                "name" => $this->resource->categorie_first->name, 
             ] : NULL,
 
             'categorie_second_id' => $this->resource->categorie_second_id,
@@ -148,7 +148,11 @@ class ProductEcommerceResource extends JsonResource
                 ];
             }),
             'discount_g' => $discount_g,
+            
             'variations' => $variation_collect,
+            'avg_review' => $this->resource->reviews_avg ? round($this->resource->reviews_avg, 2) : 0,
+            'count_reviews' => $this->resource->reviews_count,
+
             'specifications' => $this->resource->specifications->map(function($specification) {
                 return [
                     'id' => $specification->id,

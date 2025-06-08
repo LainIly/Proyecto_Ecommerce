@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\Models\Product\Product;
-use App\Models\User\User;
+use App\Models\User;
 use App\Models\Sale\SaleDetail;
 
 class Review extends Model

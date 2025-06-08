@@ -72,6 +72,18 @@ class Product extends Model
         return $this->hasMany(ProductSpecification::class,"product_id");
     }
 
+    public function reviews () {
+        return $this->hasMany(Review::class,"product_id");
+    }
+
+    public function getReviewsCountAttribute () {
+        return  $this->reviews->count();
+    }
+
+    public function getReviewsAvgAttribute () {
+        return $this->reviews->avg('rating');
+    }
+
     public function getDiscountCategorieAttribute () {
         date_default_timezone_set('America/Bogota');
         $discount = null;

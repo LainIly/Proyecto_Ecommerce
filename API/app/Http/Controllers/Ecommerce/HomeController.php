@@ -14,6 +14,7 @@ use App\Models\Product\Propertie;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Ecommerce\Product\ProductEcommerceResource;
 use App\Http\Resources\Ecommerce\Product\ProductEcommerceCollection;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -187,11 +188,24 @@ class HomeController extends Controller
         $product_relateds = Product::where('categorie_first_id', $product->categorie_first_id)
                                     ->where('state', 2)->get();
 
+        $reviews = Review::where('product_id', $product->id)->get();
+
         return response ()->json([
             'message' => 200,
             'product' => ProductEcommerceResource::make($product),
             'product_relateds' => ProductEcommerceCollection::make($product_relateds),
             'discount_campaing' => $discount,
+            'reviews' => $reviews->map(function($review) {
+                return [
+                    'id' => $review->id,
+                    'user' => [
+                        'full_name' => $review->user->name . ' ' .  $review->user->surname,
+                    ],
+                    'message' => $review->message,
+                    'rating' => $review->rating,
+                    'created_at' => $review->created_at->format('Y-m-d h:i A'),
+                ];
+            }),
         ]);
     }
 }

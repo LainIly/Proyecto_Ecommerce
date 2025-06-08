@@ -24,6 +24,8 @@ export class EditProfileClientComponent {
   address_city: string = '';
   description: string = '';
 
+  file_imagen: any = null;
+
   constructor(
     public profileClient: ProfileClientService,
     public toast: ToastrService,
@@ -68,4 +70,14 @@ export class EditProfileClientComponent {
       }
     });
   }
+
+  // processFile($event:any) {
+  //   if ($event.target.files[0].type.indexOf('image') < 0) {
+  //     this.toast.error('Validacion', 'El archivo seleccionado no es una imagen');
+  //     return;
+  //   }
+  //   this.file_imagen = $event.target.files[0];
+  //   let reader = new FileReader();
+  //   reader.readAsDataURL(this.file_imagen);
+  // }
 }
