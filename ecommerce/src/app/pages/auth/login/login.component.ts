@@ -18,33 +18,31 @@ declare function password_show_toggle(): any;
 })
 
 export class LoginComponent {
-  
+
   email: string = '';
   password: string = '';
   code_user: string = '';
 
-  constructor (
+  constructor(
     private toastr: ToastrService,
     private authService: AuthService,
     private router: Router,
     public activedRoute: ActivatedRoute,
   ) {
-    afterNextRender (() => {
+    afterNextRender(() => {
       setTimeout(() => {
         password_show_toggle()
-      }, 50); 
+      }, 50);
     })
   }
-  
-  ngOnInit() : void {
+
+  ngOnInit(): void {
     if (this.authService.token && this.authService.user) {
-      setTimeout (() => {
-        this.router.navigateByUrl('/')
-      }, 500)
+      this.router.navigateByUrl('/');
       return;
     }
 
-    this.activedRoute.queryParams.subscribe((resp:any) => {
+    this.activedRoute.queryParams.subscribe((resp: any) => {
       this.code_user = resp.code;
     })
 
@@ -52,7 +50,7 @@ export class LoginComponent {
       let data = {
         code_user: this.code_user,
       }
-      this.authService.verifiedAuth(data).subscribe((resp:any) => {
+      this.authService.verifiedAuth(data).subscribe((resp: any) => {
         console.log(resp);
 
         if (resp.message == 403) {
@@ -61,7 +59,7 @@ export class LoginComponent {
 
         if (resp.message == 200) {
           this.toastr.success('Exito', 'El correo ha sido verificado. Ingresar a la tienda.');
-          setTimeout (() => {
+          setTimeout(() => {
             this.router.navigateByUrl('/login')
           }, 500)
         }
@@ -69,25 +67,25 @@ export class LoginComponent {
     }
   }
 
-  login(){
+  login() {
     if (!this.email || !this.password) {
       this.toastr.error('Validacion', 'Necesitas ingresar todos los campos.');
       return;
     }
-    this.authService.login(this.email, this.password).subscribe((resp:any) => {
-      console.log(resp);
+    this.authService.login(this.email, this.password).subscribe((resp: any) => {
+      // console.log(resp);
       if (resp.error && resp.error.error) {
-        this.toastr.error('Validacion', resp.error.error);
-        return;
-      }
-      if (resp == true) {
-        this.toastr.success('Bienvenido', 'Inicio de sesion correcto');
-        setTimeout (() => {
-          this.router.navigateByUrl('/')
-        }, 500)
+        this.toastr.error(resp.error.error);
         return;
       }
 
+      if (resp == true) {
+        this.toastr.success('Bienvenido', 'Inicio de sesion correcto');
+        setTimeout(() => {
+          window.location.reload();
+        }, 50)
+        return;
+      }
     }, (error) => {
       console.log(error);
     })

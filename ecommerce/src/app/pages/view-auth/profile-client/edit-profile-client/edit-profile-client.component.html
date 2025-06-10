@@ -94,10 +94,24 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xxl-6 col-md-6">
+                    <div class="profile__input-box">
+                        <label class="form-label">Sube tu avatar:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile"
+                                accept=".jpeg, .bmp, .jpg, .png, .gif, .webp, .svg" (change)="processFile($event)">
+                        </div>
+                    </div>
+                    <div class="" *ngIf="imagen_previsualiza">
+                        <img class="img py-4" [src]="imagen_previsualiza" width="50px" alt="">
+                    </div>
+                </div>
+
                 <div class="col-xxl-6 col-md-6">
                     <div class="profile__input-box">
                         <div class="profile__input">
-                            <select [(ngModel)]="sexo" name="sexo" class="form-select">
+                            <select [(ngModel)]="sexo" name="sexo" class="nice-select open">
                                 <option value="Masculino">Masculino</option>
                                 <option value="Femenino">Femenino</option>
                                 <option value="Otros">Otros</option>
@@ -105,7 +119,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-6 col-md-6">
+                <div class="col-xxl-12 col-md-6">
                     <div class="profile__input-box">
                         <div class="profile__input">
                             <input type="text" placeholder="Ingresa tu direccion" name="address_city"
@@ -121,14 +135,6 @@
                                         stroke="currentColor" stroke-width="1.5" />
                                 </svg>
                             </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xxl-6 col-md-6">
-                    <div class="profile__input-box">
-                        <div class="profile__input">
-                            <!-- Avatar del cliente -->
                         </div>
                     </div>
                 </div>

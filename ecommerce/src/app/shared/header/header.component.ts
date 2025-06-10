@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CartService } from '../../pages/home/service/cart.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProfileClientService } from '../../pages/view-auth/profile-client/service/profile-client.service';
 
 declare function CurrecyChange([]): any;
 declare var $: any;
@@ -22,6 +23,8 @@ export class HeaderComponent {
   categories_menus: any = [];
   currency: string = 'COP';
 
+  imagen_previsualiza: any;
+
   user: any;
   listCarts: any = [];
   totalCarts: number = 0;
@@ -32,6 +35,7 @@ export class HeaderComponent {
     public cookieService: CookieService,
     public cartService: CartService,
     private toastr: ToastrService,
+    public profileClient: ProfileClientService
   ) {
     afterNextRender(() => {
       this.homeService.menus().subscribe((resp: any) => {
@@ -40,13 +44,18 @@ export class HeaderComponent {
       })
       this.currency = this.cookieService.get('currency') ? this.currency = this.cookieService.get('currency') : 'COP';
       this.user = this.cartService.authService.user;
+      
+      this.profileClient.showUsers().subscribe((resp:any) => {
+        this.imagen_previsualiza = resp.avatar;
+      })
+      
 
       if (this.user) {
         this.cartService.listCart().subscribe((resp: any) => {
           resp.carts.data.forEach((cart: any) => {
             if (cart.currency != this.currency) {
               this.cookieService.set('currency', cart.currency);
-              setTimeout (() => {
+              setTimeout(() => {
                 window.location.reload();
               }, 25)
             }
@@ -72,6 +81,14 @@ export class HeaderComponent {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + item.total, 0);
     })
+  }
+
+  logout() {
+    this.cartService.authService.logout();
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 50)
   }
 
   deleteCart(CART: any) {

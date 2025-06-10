@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { afterRender, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../../home/service/cart.service';

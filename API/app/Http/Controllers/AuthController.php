@@ -86,6 +86,16 @@ class AuthController extends Controller
 
         $user = User::find(auth('api')->user()->id);
 
+        if ($request->hasFile('file_imagen')) {
+
+            if ($user->avatar) {
+                Storage::delete($user->avatar); 
+            }
+
+            $path = Storage::putFile('users', $request->file('file_imagen'));
+            $request->request->add(['avatar' => $path]);
+        }
+
         $user->update($request->all());
         return response()->json([
             'message' => 200,
@@ -192,6 +202,7 @@ class AuthController extends Controller
             'fb' => $user->fb,
             'sexo' => $user->sexo,
             'address_city' => $user->address_city,
+            'avatar' => $user->avatar ? env('APP_URL'). 'storage/' . $user->avatar : 'https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/svg/avatars/016-boy-7.svg',
         ]);
     }
  

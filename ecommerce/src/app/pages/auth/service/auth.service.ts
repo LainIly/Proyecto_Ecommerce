@@ -86,7 +86,7 @@ export class AuthService {
     this.token = '';
 
     setTimeout(() => {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/');
     }, 500)
   }
 }

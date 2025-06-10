@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileClientService } from '../service/profile-client.service';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,7 @@ export class EditProfileClientComponent {
   description: string = '';
 
   file_imagen: any = null;
+  imagen_previsualiza: any;
 
   constructor(
     public profileClient: ProfileClientService,
@@ -41,26 +42,52 @@ export class EditProfileClientComponent {
       this.tw = resp.tw;
       this.sexo = resp.sexo;
       this.address_city = resp.address_city;
+      this.imagen_previsualiza = resp.avatar;
     });
   }
 
   updateUser() {
+
     if (!this.name || !this.email) {
       this.toast.error('Es necesario ingresar un Nombre y un Correo.');
       return;
     }
-    let data = {
-      name: this.name,
-      surname: this.surname,
-      email: this.email,
-      phone: this.phone,
-      bio: this.bio,
-      fb: this.fb,
-      tw: this.tw,
-      sexo: this.sexo,
-      address_city: this.address_city,
+
+    let formData = new FormData();
+
+    formData.append('name', this.name);
+    formData.append('surname', this.surname);
+    formData.append('email', this.email);
+    
+    if (this.phone) {
+      formData.append('phone', this.phone);
     }
-    this.profileClient.updateProfile(data).subscribe((resp: any) => {
+
+    if (this.bio) {
+      formData.append('bio', this.bio);
+    }
+
+    if (this.fb) {
+      formData.append('fb', this.fb);
+    }
+
+    if (this.tw) {
+      formData.append('tw', this.tw);
+    }
+
+    if (this.sexo) {
+      formData.append('sexo', this.sexo);
+    }
+
+    if (this.address_city) {
+      formData.append('address_city', this.address_city);
+    }
+
+    if (this.file_imagen) {
+      formData.append('file_imagen', this.file_imagen);
+    }
+    
+    this.profileClient.updateProfile(formData).subscribe((resp: any) => {
       console.log(resp);
 
       if (resp.message == 403) {
@@ -71,13 +98,17 @@ export class EditProfileClientComponent {
     });
   }
 
-  // processFile($event:any) {
-  //   if ($event.target.files[0].type.indexOf('image') < 0) {
-  //     this.toast.error('Validacion', 'El archivo seleccionado no es una imagen');
-  //     return;
-  //   }
-  //   this.file_imagen = $event.target.files[0];
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(this.file_imagen);
-  // }
+
+  processFile($event:any) {
+
+    if ($event.target.files[0].type.indexOf('image') < 0) {
+      this.toast.error('Validacion', 'El archivo seleccionado no es una imagen');
+      return;
+    }
+
+    this.file_imagen = $event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file_imagen);
+    reader.onloadend = () => this.imagen_previsualiza = reader.result;
+  }
 }

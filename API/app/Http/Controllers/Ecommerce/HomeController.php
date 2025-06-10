@@ -200,6 +200,7 @@ class HomeController extends Controller
                     'id' => $review->id,
                     'user' => [
                         'full_name' => $review->user->name . ' ' .  $review->user->surname,
+                        'avatar' => $review->user->avatar ? env('APP_URL').'storage/'.$review->user->avatar : 'https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/svg/avatars/016-boy-7.svg',
                     ],
                     'message' => $review->message,
                     'rating' => $review->rating,
