@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Product\ProductSpecification;
 use App\Models\Product\ProductVariation;
+use App\Models\Product\Attribute;
 
 class Propertie extends Model
 {
@@ -34,5 +35,9 @@ class Propertie extends Model
     
     public function variations () {
         return $this->hasMany(ProductVariation::class);
+    }
+
+    public function attribute () {
+        return $this->belongsTo(Attribute::class, 'attribute_id');
     }
 }
