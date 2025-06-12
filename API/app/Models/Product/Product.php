@@ -45,9 +45,11 @@ class Product extends Model
     public function categorie_first(){
         return $this->belongsTo(Categorie::class,"categorie_first_id");
     }
+
     public function categorie_second(){
         return $this->belongsTo(Categorie::class,"categorie_second_id");
     }
+
     public function categorie_third(){
         return $this->belongsTo(Categorie::class,"categorie_third_id");
     }
@@ -150,6 +152,18 @@ class Product extends Model
         }
         if($brand_id){
             $query->where("brand_id",$brand_id);
+        }
+        return $query;
+    }
+
+    public function scopefilterAdvanceEcommmerce($query,  $categories_selected, $colors_product_selected) {
+
+        if ($categories_selected && sizeof($categories_selected) > 0) {
+            $query->whereIn('categorie_first_id', $categories_selected);
+        }
+
+        if ($colors_product_selected && sizeof($colors_product_selected) > 0) {
+            $query->whereIn('id', $colors_product_selected);
         }
         return $query;
     }

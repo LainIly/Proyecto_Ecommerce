@@ -144,6 +144,7 @@ export class HomeComponent {
       console.log(err);
     });
   }
+  
   getLabelSlider(SLIDER: any) {
     var miDiv: any = document.getElementById('label-' + SLIDER.id);
     miDiv.innerHTML = SLIDER.label;
