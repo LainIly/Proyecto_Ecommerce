@@ -142,7 +142,7 @@
                </div>
                <form action="#">
                   <div class="tp-search-input mb-10">
-                     <input type="text" placeholder="Search for product...">
+                     <input type="text" (keyup.enter)="searchProduct()" [(ngModel)]="search" name="search" placeholder="Buscar productos...">
                      <button type="submit"><i class="flaticon-search-1"></i></button>
                   </div>
                   <div class="tp-search-category">
@@ -332,7 +332,7 @@
                      <form action="#">
                         <div class="tp-header-search-wrapper d-flex align-items-center">
                            <div class="tp-header-search-box">
-                              <input type="text" placeholder="Buscar Productos...">
+                              <input type="text" (keyup.enter)="searchProduct()" [(ngModel)]="search" name="search" placeholder="Buscar Productos...">
                            </div>
                            <div class="tp-header-search-category">
                               <select>
@@ -363,8 +363,9 @@
                <div class="col-xl-4 col-lg-3 col-md-8 col-6">
                   <div class="tp-header-main-right d-flex align-items-center justify-content-end">
                      <div class="tp-header-login d-none d-lg-block">
-                        <a href="#" onclick="return false;" class="d-flex align-items-center">
-                           <div class="tp-header-login-icon" *ngIf="!imagen_previsualiza">
+                        <a href="#" class="d-flex align-items-center">
+                           <div class="tp-header-login-icon"> 
+                              <!-- *ngIf="!imagen_previsualiza" -->
                               <span>
                                  <svg width="17" height="21" viewBox="0 0 17 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -384,7 +385,7 @@
                            </div>
 
                            <div class="tp-header-login-content d-none d-xl-block" *ngIf="user">
-                              <img [src]='imagen_previsualiza' alt="" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%;">
+                              <!-- <img [src]='imagen_previsualiza' alt="" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%;"> -->
                               <span>Hola, {{ user.full_name }}</span>
                               <h5 class="tp-header-login-title"><a routerLink="/perfil-del-cliente" target="_blank">Ir a tu Cuenta</a></h5>
                            </div>

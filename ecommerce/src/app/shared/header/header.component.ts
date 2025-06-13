@@ -30,6 +30,8 @@ export class HeaderComponent {
   totalCarts: number = 0;
   isLoading: boolean = false;
 
+  search: string = '';
+
   constructor(
     public homeService: HomeService,
     public cookieService: CookieService,
@@ -125,5 +127,9 @@ export class HeaderComponent {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  }
+
+  searchProduct() {
+    window.location.href = '/productos-busqueda?search=' + this.search;
   }
 }

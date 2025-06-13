@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { HomeService } from '../../home/service/home.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CartService } from '../../home/service/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModalProductComponent } from '../component/modal-product/modal-product.component';
@@ -33,6 +33,14 @@ export class FilterAdvanceComponent {
 
   categories_selected: any = [];
   colors_selected: any = [];
+  brands_selected: any = [];
+
+  min_price: number = 0;
+  max_price: number = 0;
+
+  options_aditional: any = [];
+
+  search: string = '';
 
   constructor(
     public homeService: HomeService,
@@ -40,6 +48,7 @@ export class FilterAdvanceComponent {
     public cartService: CartService,
     public toastr: ToastrService,
     private router: Router,
+    public activedRouter: ActivatedRoute
   ) {
     this.homeService.getConfigFilter().subscribe((resp: any) => {
       // console.log(resp);
@@ -49,7 +58,13 @@ export class FilterAdvanceComponent {
       this.Brands = resp.brands;
       this.Products_relateds = resp.product_relateds.data;
     })
-    this.homeService.filterAdvanceProduct({}).subscribe((resp: any) => {
+
+    this.activedRouter.queryParams.subscribe((resp:any) => {
+      // console.log(resp);
+      this.search = resp.search;
+    });
+
+    this.homeService.filterAdvanceProduct({ search: this.search }).subscribe((resp: any) => {
       // console.log(resp);
       this.PRODUCTS = resp.products.data;
     })
@@ -57,6 +72,25 @@ export class FilterAdvanceComponent {
 
   ngOnInit(): void {
     this.currency = this.cookieService.get("currency") ? this.cookieService.get("currency") : 'COP';
+
+    if (typeof $ !== 'undefined') {
+      $("#slider-range").slider({ //Estos valores son en COP (Moneda Colombiana)
+        range: true,
+        min: 0,
+
+        max: 10000000,
+        values: [50, 100000],
+        slide: (event: any, ui: any) => {
+          $("#amount").val(this.currency + ' ' + ui.values[0] + " - " + this.currency + ' ' + ui.values[1]);
+          this.min_price = ui.values[0];
+          this.max_price = ui.values[1];
+        }, stop: () => {
+          this.filterAdvanceProduct();
+        }
+      });
+      $("#amount").val(this.currency + ' ' + $("#slider-range").slider("values", 0) +
+        " - " + this.currency + ' ' + $("#slider-range").slider("values", 1));
+    }
   }
 
   addCategorie(categorie: any) {
@@ -71,6 +105,18 @@ export class FilterAdvanceComponent {
     this.filterAdvanceProduct();
   }
 
+  addBrand(Brand: any) {
+    let INDEX = this.brands_selected.findIndex((item: any) => item == Brand.id);
+
+    if (INDEX != -1) {
+      this.brands_selected.splice(INDEX, 1);
+    } else {
+      this.brands_selected.push(Brand.id);
+    }
+    // console.log(this.brands_selected);
+    this.filterAdvanceProduct();
+  }
+
   addColor(color: any) {
     let INDEX = this.colors_selected.findIndex((item: any) => item == color.id);
 
@@ -80,6 +126,18 @@ export class FilterAdvanceComponent {
       this.colors_selected.push(color.id);
     }
     // console.log(this.colors_selected);
+    this.filterAdvanceProduct();
+  }
+
+  addOptionAditional(option: string) {
+    let INDEX = this.options_aditional.findIndex((item: any) => item == option);
+
+    if (INDEX != -1) {
+      this.options_aditional.splice(INDEX, 1);
+    } else {
+      this.options_aditional.push(option);
+    }
+    // console.log(this.options_aditional);
     this.filterAdvanceProduct();
   }
 
@@ -97,6 +155,12 @@ export class FilterAdvanceComponent {
     let data = {
       categories_selected: this.categories_selected,
       colors_selected: this.colors_selected,
+      brands_selected: this.brands_selected,
+      min_price: this.min_price,
+      max_price: this.max_price,
+      currency: this.currency,
+      options_aditional: this.options_aditional,
+      search: this.search,
     }
     this.homeService.filterAdvanceProduct(data).subscribe((resp: any) => {
       // console.log(resp);
@@ -200,5 +264,9 @@ export class FilterAdvanceComponent {
     } else {
       return PRODUCT.price_usd;
     }
+  }
+
+  reset() {
+    window.location.href = '/productos-busqueda';
   }
 }

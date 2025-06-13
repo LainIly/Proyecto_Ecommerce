@@ -34,9 +34,9 @@
                                     <div
                                         class="tp-shop-widget-filter-info d-flex align-items-center justify-content-between">
                                         <span class="input-range">
-                                            <input type="text" id="amount" readonly>
+                                            <input type="text" id="amount" style="width: 200px;" readonly>
                                         </span>
-                                        <button class="tp-shop-widget-filter-btn" type="button">Filtrar</button>
+                                        <button class="tp-shop-widget-filter-btn" type="button" (click)="reset()" >Reiniciar</button>
                                     </div>
                                 </div>
                             </div>
@@ -50,11 +50,11 @@
                                     <ul class="filter-items filter-checkbox">
                                         <li class="filter-item checkbox">
                                             <input id="on_sale" type="checkbox">
-                                            <label for="on_sale">A la venta</label>
+                                            <label for="on_sale" (click)="addOptionAditional('campaing')">Campaña de Descuesto</label>
                                         </li>
                                         <li class="filter-item checkbox">
                                             <input id="in_stock" type="checkbox">
-                                            <label for="in_stock">En Stock</label>
+                                            <label for="in_stock" (click)="addOptionAditional('review')">Reseñas</label>
                                         </li>
                                     </ul><!-- .filter-items -->
                                 </div>
@@ -63,7 +63,6 @@
                         <!-- categories -->
                         <div class="tp-shop-widget mb-50">
                             <h3 class="tp-shop-widget-title">Categorias</h3>
-
                             <div class="tp-shop-widget-content">
                                 <div class="tp-shop-widget-categories">
                                     <ul>
@@ -181,8 +180,17 @@
                         <!-- brand -->
                         <div class="tp-shop-widget mb-50">
                             <h3 class="tp-shop-widget-title">Marcas Populares</h3>
+                            <div class="tp-shop-widget-content">
+                                <div class="tp-shop-widget-categories">
+                                    <ul>
+                                        @for (Brand of Brands;track Brand.id) {
+                                            <li><a href="#" onclick="return false;" (click)="addBrand(Brand)" [ngClass]="{'selected-categories': brands_selected.includes(Brand.id)}">{{ Brand.name }} <span>{{ Brand.products_count }}</span></a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
 
-                            <div class="tp-shop-widget-content ">
+                            <!-- <div class="tp-shop-widget-content ">
                                 <div
                                     class="tp-shop-widget-brand-list d-flex align-items-center justify-content-between flex-wrap">
                                     @for (Brand of Brands;track Brand.id) {
@@ -193,7 +201,7 @@
                                     </div>
                                     }
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

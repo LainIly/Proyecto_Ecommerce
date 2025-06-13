@@ -265,7 +265,7 @@ class DiscountController extends Controller
         }
 
         return response()->json([
-            'message' => 200, 'message_text' => 'Descuento creado correctamente',
+            'message' => 200, 'message_text' => 'Descuento actualizado correctamente',
         ]);
 
     }
