@@ -83,7 +83,11 @@ export class EditSlidersComponent {
       return;
     }
 
-    let formData = new FormData();
+    
+    let formData = new FormData();    
+
+    formData.append("state",this.state+"");
+
     formData.append('title', this.title);
     if (this.label) {
       formData.append('label', this.label);
