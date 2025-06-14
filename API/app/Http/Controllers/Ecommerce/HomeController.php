@@ -209,7 +209,7 @@ class HomeController extends Controller
             }),
         ]);
     }
-    
+     
     public function config_filter_advance () {
         $categories = Categorie::withCount(['product_categorie_firsts'])
                                         ->where('categorie_second_id', NULL)
@@ -296,4 +296,64 @@ class HomeController extends Controller
             "products" => ProductEcommerceCollection::make($products)
         ]);
     }
-} 
+
+    public function campaing_discount_link (Request $request) {
+        $code_discount = $request->code_discount;
+
+        $is_exists_discount = Discount::where('code', $code_discount)
+                                        ->where('type_campaing', 3)
+                                        ->where('state', 1)->first();
+
+        if (!$is_exists_discount) {
+            return response()->json([
+                'message' => 403,
+                'message_text' => 'El codigo de descuento no existe.',
+            ]);
+        }
+        
+        date_default_timezone_set('America/Bogota');
+
+        $DISCOUNT_LINK = Discount::where('code', $code_discount)
+                            ->where('state', 1)
+                            ->where('type_campaing', 3)
+                            ->where('start_date', '<=', today())
+                            ->where('end_date', '>=', today())
+                            ->first();
+        
+        if (!$DISCOUNT_LINK ) {
+            return response()->json([
+                'message' => 403,
+                'message_text' => 'La campaña de descuento no existe o ha expirado.',
+            ]);
+        }
+
+        $DISCOUNT_LINK_PRODUCTS = collect([]);
+
+        if ($DISCOUNT_LINK) {
+            foreach ($DISCOUNT_LINK->products as $key => $aux_product) {
+                $DISCOUNT_LINK_PRODUCTS->push(ProductEcommerceResource::make($aux_product->product));
+            }
+
+            foreach ($DISCOUNT_LINK->categories as $key => $aux_categorie) {
+                $products_of_categories = Product::where('state', 2)->where('categorie_first_id', $aux_categorie->categorie_id)->get();
+                foreach ($products_of_categories as $key => $product) {
+                    $DISCOUNT_LINK_PRODUCTS->push(ProductEcommerceResource::make($product));
+                }
+            }
+
+            foreach ($DISCOUNT_LINK->brands as $key => $aux_brand) {
+                $products_of_brands = Product::where('state', 2)->where('brand_id', $aux_brand->brand_id)->get();
+                foreach ($products_of_brands as $key => $product) {
+                    $DISCOUNT_LINK_PRODUCTS->push(ProductEcommerceResource::make($product));
+                }
+            }
+            $DISCOUNT_LINK->start_date_format = Carbon::parse($DISCOUNT_LINK->start_date)->format('Y/m/d');
+            $DISCOUNT_LINK->end_date_format = Carbon::parse($DISCOUNT_LINK->end_date)->format('Y/m/d');
+        }
+
+        return response()->json([
+            'discount' => $DISCOUNT_LINK,
+            'products' => $DISCOUNT_LINK_PRODUCTS,
+        ]);
+    }
+}

@@ -868,8 +868,7 @@
                         @for (PRODUCT of DISCOUNT_FLASH_PRODUCTS;track PRODUCT.id) {
                         <div class="tp-product-offer-item tp-product-item transition-3 swiper-slide">
                            <div class="tp-product-thumb p-relative fix m-img">
-                              <a [routerLink]="['/producto', PRODUCT.slug]"
-                                 [queryParams]="{campaing_discount: DISCOUNT_FLASH.code}">
+                              <a [routerLink]="['/producto', PRODUCT.slug]" [queryParams]="{campaing_discount: DISCOUNT_FLASH.code}">
                                  <img [src]="PRODUCT.imagen" style="width: 410px; height: 342px; object-fit: contain;"
                                     alt="product-electronic">
                               </a>
