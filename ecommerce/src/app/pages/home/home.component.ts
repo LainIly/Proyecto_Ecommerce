@@ -144,7 +144,25 @@ export class HomeComponent {
       console.log(err);
     });
   }
-  
+
+  addCompare(TRADING_PRODUCT:any) {
+    let COMPARES = localStorage.getItem('compares') ? JSON.parse(localStorage.getItem('compares') ?? '') : [];
+
+    let INDEX = COMPARES.findIndex((item: any) => item.id == TRADING_PRODUCT.id);
+    if (INDEX != -1) {
+      this.toastr.error('El producto ya se encuentra en la lista de comparacion.');
+      return;
+    }
+
+    COMPARES.push(TRADING_PRODUCT);
+    this.toastr.success('Producto agregado a la lista de comparacion.')
+    localStorage.setItem('compares', JSON.stringify(COMPARES));
+
+    if (COMPARES.length > 1) {
+      this.router.navigateByUrl('/compare-product');
+    }
+  }
+
   getLabelSlider(SLIDER: any) {
     var miDiv: any = document.getElementById('label-' + SLIDER.id);
     miDiv.innerHTML = SLIDER.label;
