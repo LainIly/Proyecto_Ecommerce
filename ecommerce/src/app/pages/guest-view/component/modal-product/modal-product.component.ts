@@ -46,6 +46,24 @@ export class ModalProductComponent {
     }, 50);
   }
 
+  addCompare(PRODUCT: any) {
+    let COMPARES = localStorage.getItem('compares') ? JSON.parse(localStorage.getItem('compares') ?? '') : [];
+
+    let INDEX = COMPARES.findIndex((item: any) => item.id == PRODUCT.id);
+    if (INDEX != -1) {
+      this.toastr.error('El producto ya se encuentra en la lista de comparacion.');
+      return;
+    }
+
+    COMPARES.push(PRODUCT);
+    this.toastr.success('Producto agregado a la lista de comparacion.')
+    localStorage.setItem('compares', JSON.stringify(COMPARES));
+
+    if (COMPARES.length > 1) {
+      this.router.navigateByUrl('/compare-product');
+    }
+  }
+
   formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
@@ -59,16 +77,16 @@ export class ModalProductComponent {
     if (this.currency == 'COP') {
       if (DISCOUNT_FLASH_P.type_discount == 1) {
         // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-        return ((PRODUCT.price_cop+this.plus) - (PRODUCT.price_cop+this.plus) * (DISCOUNT_FLASH_P.discount * 0.01));
+        return ((PRODUCT.price_cop + this.plus) - (PRODUCT.price_cop + this.plus) * (DISCOUNT_FLASH_P.discount * 0.01));
       } else {
-        return ((PRODUCT.price_cop+this.plus) - DISCOUNT_FLASH_P.discount);
+        return ((PRODUCT.price_cop + this.plus) - DISCOUNT_FLASH_P.discount);
       }
     } else {
       if (DISCOUNT_FLASH_P.type_discount == 1) {
         // return (PRODUCT.price_cop - PRODUCT.price_cop * (DISCOUNT_FLASH_P.discount * 0.01)).toFixed(0);
-        return ((PRODUCT.price_usd+this.plus) - (PRODUCT.price_usd+this.plus) * (DISCOUNT_FLASH_P.discount * 0.01));
+        return ((PRODUCT.price_usd + this.plus) - (PRODUCT.price_usd + this.plus) * (DISCOUNT_FLASH_P.discount * 0.01));
       } else {
-        return ((PRODUCT.price_usd+this.plus) - DISCOUNT_FLASH_P.discount);
+        return ((PRODUCT.price_usd + this.plus) - DISCOUNT_FLASH_P.discount);
       }
     }
   }
@@ -161,9 +179,9 @@ export class ModalProductComponent {
       code_discount: discount_g ? discount_g.code : null,
       product_variation_id: product_variation_id,
       quantity: $("#tp-cart-input-val").val(),
-      price_unit:this.currency == 'COP' ? this.product_selected.price_cop : this.product_selected.price_usd,
+      price_unit: this.currency == 'COP' ? this.product_selected.price_cop : this.product_selected.price_usd,
       subtotal: this.getTotalPriceProduct(this.product_selected),
-      total: this.getTotalPriceProduct(this.product_selected)*$("#tp-cart-input-val").val(),
+      total: this.getTotalPriceProduct(this.product_selected) * $("#tp-cart-input-val").val(),
       currency: this.currency,
     };
 

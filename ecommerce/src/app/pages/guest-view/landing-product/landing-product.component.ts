@@ -83,6 +83,25 @@ export class LandingProductComponent {
     setTimeout(() => {
       MODAL_QUANTITY_LANDING($);
     }, 50);
+    // console.log('PRODUCT', this.PRODUCT_RELATEDS);
+  }
+
+  addCompare(PRODUCT: any) {
+    let COMPARES = localStorage.getItem('compares') ? JSON.parse(localStorage.getItem('compares') ?? '') : [];
+
+    let INDEX = COMPARES.findIndex((item: any) => item.id == PRODUCT.id);
+    if (INDEX != -1) {
+      this.toastr.error('El producto ya se encuentra en la lista de comparacion.');
+      return;
+    }
+
+    COMPARES.push(PRODUCT);
+    this.toastr.success('Producto agregado a la lista de comparacion.')
+    localStorage.setItem('compares', JSON.stringify(COMPARES));
+
+    if (COMPARES.length > 1) {
+      this.router.navigateByUrl('/compare-product');
+    }
   }
 
   // ngAfterViewInit(): void {

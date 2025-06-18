@@ -24,7 +24,7 @@ export class HomeService {
   }
 
   showProduct(slug: string, code_discount: string) {
-    let URL = URL_SERVICIOS + '/ecommerce/product/' + slug + '?campaing_discount=' + code_discount;
+    let URL = URL_SERVICIOS + "/ecommerce/product/" + slug + "?campaing_discount=" + code_discount;
     return this.http.get(URL);
   }
   
