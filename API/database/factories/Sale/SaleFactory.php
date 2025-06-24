@@ -21,8 +21,8 @@ class SaleFactory extends Factory
     public function definition(): array
     {
         $method_payment = $this->faker->randomElement(["PAYPAL","MERCADOPAGO"]);
-        $date_sales = $this->faker->dateTimeBetween("2024-01-01 00:00:00", "2024-12-31 23:59:59");
-        // $date_sales = $this->faker->dateTimeBetween("2025-01-01 00:00:00", "2025-12-31 23:59:59");
+        // $date_sales = $this->faker->dateTimeBetween("2024-01-01 00:00:00", "2024-12-31 23:59:59");
+        $date_sales = $this->faker->dateTimeBetween("2025-01-01 00:00:00", "2025-12-31 23:59:59");
 
 
         $currency_payment = $this->faker->randomElement(["USD","COP"]);

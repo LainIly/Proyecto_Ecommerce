@@ -19,7 +19,7 @@ class SaleSeeder extends Seeder
      */
     public function run(): void
     {
-        Sale::factory()->count(2000)->create()->each(function($p) {
+        Sale::factory()->count(1000)->create()->each(function($p) {
             $faker = \Faker\Factory::create();
 
             SaleAddres::create([
