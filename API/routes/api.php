@@ -16,8 +16,8 @@ use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Http\Controllers\Ecommerce\HomeController;
 use App\Http\Controllers\Ecommerce\CartController;
 use App\Http\Controllers\Ecommerce\UserAddressController;
-use App\Http\Controllers\Ecommerce\SaleController;
 use App\Http\Controllers\Ecommerce\ReviewController;
+use App\Http\Controllers\Admin\Sale\SalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,10 +35,8 @@ use App\Http\Controllers\Ecommerce\ReviewController;
 // });
 
 Route::group([
- 
     // 'middleware' => 'auth:api',
     'prefix' => 'auth'
- 
 ], function ($router) {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -87,6 +85,8 @@ Route::group ([
     Route::resource("cupones",CuponeController::class);
 
     Route::resource("discounts",DiscountController::class);
+
+    Route::post('sales/list', [SalesController::class, 'list']);
 });
 
 Route::group ([
@@ -101,7 +101,6 @@ Route::group ([
     Route::post('filter-advance-product', [HomeController::class, 'filter_advance_product']);
 
     Route::post('campaing-discount-link', [HomeController::class, 'campaing_discount_link']);
-
 
     Route::group([
         'middleware' => 'auth:api',
@@ -123,6 +122,5 @@ Route::group ([
         Route::post('profile_client', [AuthController::class, 'update']);
 
         Route::resource('reviews', ReviewController::class);
-
     });
 });

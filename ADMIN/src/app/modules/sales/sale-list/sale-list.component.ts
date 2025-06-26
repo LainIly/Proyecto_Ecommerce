@@ -42,7 +42,7 @@ export class SaleListComponent {
 
   configAll() {
     this.salesService.configAll().subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
 
       this.marcas = resp.brands;
       this.categories_first = resp.categories_first;
