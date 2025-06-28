@@ -27,6 +27,10 @@ export class SaleListComponent {
   categories_thirds: any = [];
   categories_thirds_backups: any = [];
 
+  start_date: any;
+  end_date: any;
+  method_payment: any;
+
   constructor(
     private salesService: SalesService,
     private toastr: ToastrService
@@ -58,10 +62,13 @@ export class SaleListComponent {
       categorie_first_id: this.categorie_first_id,
       categorie_second_id: this.categorie_second_id,
       categorie_third_id: this.categorie_third_id,
+      start_date: this.start_date,
+      end_date: this.end_date,
+      method_payment: this.method_payment
     }
 
     this.salesService.listSales(page, data).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
       this.sales = resp.sales.data;
       this.totalPages = resp.total;
       this.currentPage = page;
@@ -85,7 +92,20 @@ export class SaleListComponent {
   }
 
   loadPage($event: any) {
-    console.log($event);
+    // console.log($event);
     this.listSales($event);
+  }
+
+  reset() {
+    this.search = '';
+    this.marca_id = '';
+    this.categorie_first_id = '';
+    this.categorie_second_id = '';
+    this.categorie_third_id = '';
+    this.start_date = '';
+    this.end_date = '';
+    this.method_payment = '';
+
+    this.listSales();
   }
 }

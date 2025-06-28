@@ -49,7 +49,7 @@ class Sale extends Model
         return $this->hasOne(SaleAddres::class);
     }
 
-    public function use () {
+    public function user () {
         return $this->belongsTo(User::class);
     }
 
@@ -57,47 +57,44 @@ class Sale extends Model
                                         $categorie_first_id, $categorie_second_id, 
                                         $categorie_third_id, $method_payment ) {
         
-        if ($search) {
-            $query->whereHas('user', function ($q) use ($search){
-                $q->where(DB::raw("CONCAT(users.name, ' ', IFNULL(users.surname, ''), ' ', 
-                                          users.email, ' ', IFNULL(users.phone, '')"), 'LIKE', '%'.$search.'%');
+        if($search){
+            $query->whereHas("user",function($q) use($search){
+                $q->where(DB::raw("CONCAT(users.name,' ',IFNULL(users.surname,''),' ',users.email,' ',IFNULL(users.phone,''))"),"like","%".$search."%");
             });
         }
-
-        if ($start_date && $end_date) {
-            $query->whereBetween('created_at', [Carbon::parse($start_date)->format('Y-m-d').'00:00:00', 
-                                                Carbon::parse($end_date)->format('Y-m-d').'23:59:59']);
+        if($start_date && $end_date){
+            // 12-01-2024 00:00:00 - 25-01-2024 23:59:59
+            $query->whereBetween("created_at",[Carbon::parse($start_date)->format("Y-m-d")." 00:00:00",
+            Carbon::parse($end_date)->format("Y-m-d")." 23:59:59"]);
         }
-
-        if ($brand_id) {
-            $query->whereHas('sale_details', function($q) use ($brand_id){
-                $q->whereHas('product', function($subq) use ($brand_id) {
-                    $subq->where('brand_id', $this->brand_id);
+        if($brand_id){
+            $query->whereHas("sale_details",function($q) use($brand_id){
+                $q->whereHas("product",function($subq) use($brand_id){
+                    $subq->where("brand_id",$brand_id);
                 });
             });
         }
 
-        if ($categorie_first_id || $categorie_second_id || $categorie_third_id) {
-            $query->whereHas('sale_details', function($q) use ($categorie_first_id, $categorie_second_id, $categorie_third_id) {
-                $q->whereHas('product', function($subq) use ($categorie_first_id, $categorie_second_id, $categorie_third_id) {
-
-                    if ($categorie_first_id) {
-                        $subq->where('categorie_first_id', $categorie_first_id);
+        if($categorie_first_id || $categorie_second_id || $categorie_third_id){
+            $query->whereHas("sale_details",function($q) use($categorie_first_id,$categorie_second_id,$categorie_third_id){
+                $q->whereHas("product",function($subq) use($categorie_first_id,$categorie_second_id,$categorie_third_id){
+                    
+                    if($categorie_first_id){
+                        $subq->where("categorie_first_id",$categorie_first_id);
+                    }
+                    if($categorie_second_id){
+                        $subq->where("categorie_second_id",$categorie_second_id);
+                    }
+                    if($categorie_third_id){
+                        $subq->where("categorie_third_id",$categorie_third_id);
                     }
 
-                    if ($categorie_second_id) {
-                        $subq->where('categorie_second_id', $categorie_second_id);
-                    }
-
-                    if ($categorie_third_id) {
-                        $subq->where('categorie_third_id', $categorie_third_id);
-                    }
                 });
             });
         }
-
-        if ($method_payment) {
-            $query->where('method_payment', $method_payment);
+        
+        if($method_payment){
+            $query->where("method_payment",$method_payment);
         }
         return $query;
     }

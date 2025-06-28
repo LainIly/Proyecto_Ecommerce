@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 mt-3" >
+            <div class="col-6 mt-3">
                 <div class="row">
                     <div class="col-4">
                         <select class="form-control form-select-solid fw-bolder" name="departament"
@@ -34,8 +34,7 @@
                     </div>
                     <div class="col-4">
                         <select class="form-control form-select-solid fw-bolder" name="categorie"
-                            placeholder="Categoria" [(ngModel)]="categorie_second_id"
-                            (change)="changeCategorie()">
+                            placeholder="Categoria" [(ngModel)]="categorie_second_id" (change)="changeCategorie()">
                             <option value="">Categoria</option>
                             <ng-container *ngFor="let item of categories_seconds_backups">
                                 <option [value]="item.id">{{ item.name }}</option>
@@ -51,11 +50,11 @@
                             </ng-container>
                         </select>
                     </div>
-
                 </div>
             </div>
             <div class="col-1 mt-3">
-                <select class="form-control form-select-solid fw-bolder" name="marca" placeholder="Marcas" [(ngModel)]="marca_id">
+                <select class="form-control form-select-solid fw-bolder" name="marca" placeholder="Marcas"
+                    [(ngModel)]="marca_id">
                     <option value="">Marca</option>
                     <ng-container *ngFor="let item of marcas">
                         <option [value]="item.id">{{ item.name }}</option>
@@ -63,27 +62,54 @@
                 </select>
             </div>
         </div>
-        <div class="col-3">
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar"> 
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                    <!--begin::Add user--> 
 
-                    <a (click)="searchTo()" class="btn btn-primary mx-2">
-                        <i class="ki-duotone ki-magnifier fs-2"><span class="path1"></span>
-                        <span class="path2"></span></i>Buscar
-                    </a>
+        <div class="card-toolbar">
+            <form class="row g-3 align-items-end" data-kt-user-table-toolbar="base">
 
-                    <a (click)="searchTo()" class="btn btn-dark mx-2">
-                        <i class="ki-duotone ki-disk fs-2"><span class="path1"></span>
-                        <span class="path2"></span></i>Buscar
-                    </a>
-                    <!--end::Add user-->
+                <!-- Fecha Inicio -->
+                <div class="col-md-3">
+                    <label class="form-label">Fecha de Inicio</label>
+                    <input type="date" class="form-control" [(ngModel)]="start_date" name="start_date">
                 </div>
-            </div>
-            <!--end::Card toolbar-->
+
+                <!-- Fecha Fin -->
+                <div class="col-md-3">
+                    <label class="form-label">Fecha de Fin</label>
+                    <input type="date" class="form-control" [(ngModel)]="end_date" name="end_date">
+                </div>
+
+                <!-- Método de Pago -->
+                <div class="col-md-3">
+                    <label class="form-label">Método de Pago</label>
+                    <select class="form-select" [(ngModel)]="method_payment" (change)="changeCategorie()"
+                        name="method_payment">
+                        <option value="PayPal">PayPal</option>
+                        <option value="MercadoPago">MercadoPago</option>
+                    </select>
+                </div>
+
+                <!-- Botón Buscar -->
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-primary w-100 d-flex justify-content-center align-items-center" (click)="searchTo()">
+                        <i class="ki-duotone ki-magnifier fs-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span></i>
+                    </button>
+                </div>
+
+                <!-- Botón Limpiar -->
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-secondary w-100 d-flex justify-content-center align-items-center" (click)="reset()">
+                        <i class="ki-duotone ki-arrows-circle fs-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span></i>
+                    </button>
+                </div>
+
+            </form>
         </div>
+
+
         <!--begin::Card title-->
     </div>
     <!--end::Card header-->
@@ -135,14 +161,15 @@
                                         <div class="d-flex justify-content-start flex-column">
                                             <a href="#" class="text-gray-900 fw-bold text-hover-primary mb-1 fs-6">{{
                                                 sale.user.full_name }}</a>
-                                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ sale.user.phone
+                                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{
+                                                sale.user.phone
                                                 }}</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <span>
-                                        {{ sale.method_payment }} USD
+                                        {{ sale.method_payment }}
                                     </span>
                                 </td>
                                 <td>
@@ -157,7 +184,7 @@
                                 </td>
                                 <td>
                                     <span>
-                                        {{ sale.transaccion }}
+                                        {{ sale.n_transaccion }}
                                     </span>
                                 </td>
                                 <td>
@@ -167,7 +194,8 @@
                                 </td>
                                 <td>
                                     <span>
-                                        {{ sale.sale_address.country_region }} / {{ sale.sale_address.city }} / {{ sale.sale_address.company }} /
+                                        {{ sale.sale_address.country_region }} / {{ sale.sale_address.city }} / {{
+                                        sale.sale_address.company }} /
                                     </span>
                                 </td>
                                 <td class="text-end">
