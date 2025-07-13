@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\Ecommerce\Sale\SaleCollection;
 use App\Models\Sale\Sale;
+use App\Exports\SaleExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalesController extends Controller
 {
@@ -29,5 +31,25 @@ class SalesController extends Controller
             'total' => $sales->total(),
             'sales' => SaleCollection::make($sales),
         ]);
+    }
+
+    public function list_excel (Request $request) {
+        $search = $request->search;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $brand_id = $request->brand_id;
+
+        $categorie_first_id = $request->categorie_first_id;
+        $categorie_second_id = $request->categorie_second_id;
+        $categorie_third_id = $request->categorie_third_id;
+
+        $method_payment = $request->method_payment;
+
+        $sales = Sale::filterAdvanceAdmin($search, $start_date, $end_date, $brand_id,
+                                        $categorie_first_id, $categorie_second_id, 
+                                        $categorie_third_id, $method_payment)
+                                        ->orderBy('id', 'desc')->get();
+
+        return Excel::download(new SaleExport($sales), 'sales_export.xlsx');
     }
 }

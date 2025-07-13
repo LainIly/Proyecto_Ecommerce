@@ -90,7 +90,8 @@
 
                 <!-- Botón Buscar -->
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-primary w-100 d-flex justify-content-center align-items-center" (click)="searchTo()">
+                    <button type="button" class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
+                        (click)="searchTo()">
                         <i class="ki-duotone ki-magnifier fs-2">
                             <span class="path1"></span>
                             <span class="path2"></span></i>
@@ -99,13 +100,26 @@
 
                 <!-- Botón Limpiar -->
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-secondary w-100 d-flex justify-content-center align-items-center" (click)="reset()">
+                    <button type="button"
+                        class="btn btn-secondary w-100 d-flex justify-content-center align-items-center"
+                        (click)="reset()">
                         <i class="ki-duotone ki-arrows-circle fs-2">
                             <span class="path1"></span>
                             <span class="path2"></span></i>
                     </button>
                 </div>
 
+                <!-- Botón Exportar Excel -->
+                <div class="col-md-1">
+                    <button type="button" 
+                        class="btn btn-success w-100 d-flex justify-content-center align-items-center"
+                        (click)="exportToExcel()">
+                        <i class="fas fa-file-excel fs-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </button>          
+                </div>
             </form>
         </div>
 
