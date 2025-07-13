@@ -28,7 +28,7 @@ class SaleSeeder extends Seeder
                 "surname" => $faker->lastName(),
                 "company" =>  $faker->word(),
                 "country_region" =>  $faker->word(),
-                "address" =>  $faker->word(),
+                "address" =>  $faker->text($maxNbChars = 300),
                 "street" =>  $faker->word(),
                 "city" =>  $faker->word(),
                 "postcode_zip" => Str::random(4),

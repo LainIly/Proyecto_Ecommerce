@@ -31,6 +31,7 @@ export class SaleListComponent {
   start_date: any;
   end_date: any;
   method_payment: any;
+  URL_SERVICIOST:any = URL_SERVICIOS;
 
   constructor(
     private salesService: SalesService,
@@ -145,6 +146,14 @@ export class SaleListComponent {
     }
 
     window.open(URL_SERVICIOS + '/sales/list-excel?k=1' + LINK, '_blank');
+  }
 
+  formatPriceToCOP(price: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   }
 }

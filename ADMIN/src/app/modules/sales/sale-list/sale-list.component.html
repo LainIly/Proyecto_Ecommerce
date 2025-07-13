@@ -193,7 +193,7 @@
                                 </td>
                                 <td>
                                     <span>
-                                        {{ sale.total }} {{ sale.currency_payment }}
+                                        {{ formatPriceToCOP(sale.total) }} {{ sale.currency_payment }}
                                     </span>
                                 </td>
                                 <td>
@@ -213,10 +213,11 @@
                                     </span>
                                 </td>
                                 <td class="text-end">
-                                    <a href="#" class="btn btn-icon btn-bg-danger btn-active-color-danger btn-sm me-1">
-                                        <i class="ki-duotone ki-some-files fs-2">
+                                    <a [href]="URL_SERVICIOST+'/sales/report-pdf/'+sale.id" target="_blank"  class="btn btn-danger justify-content-center align-items-center">
+                                        <i class="fas fa-file-pdf fs-2">
                                             <span class="path1"></span>
-                                            <span class="path2"></span></i></a>
+                                            <span class="path2"></span>                            </i>
+                                        </a>
                                 </td>
                             </tr>
                         </ng-container>
