@@ -23,7 +23,7 @@ export class SaleListComponent {
   categorie_second_id: string = '';
   categorie_third_id: string = '';
   categories_first: any = [];
-  categories_seconds: any = [];
+  categories_seconds: any = []; 
   categories_seconds_backups: any = [];
   categories_thirds: any = [];
   categories_thirds_backups: any = [];

@@ -1,0 +1,6 @@
+Profesor, Buenas noches
+
+En el diagrama de Datos solo estan las tablas sin relaciones ya que,
+las relaciones entre estas se trabajan directamente desde el backend, como indica la imagen 1.png.
+En la base de datos (MySQL) solo se crean las tablas, las relaciones las hago en el codigo.
+Para que por favor se tenga en cuenta esto.
