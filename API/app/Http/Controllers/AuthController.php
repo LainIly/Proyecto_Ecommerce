@@ -131,10 +131,8 @@ class AuthController extends Controller
         $user = User::where("code_verified", $request->code)->first();
         $user ->update(["password" => bcrypt($request->new_password), "code_verified" => null]);     
         return response()->json(["message" => 403]);
-    
     }
 
-    
     /**
      * Get a JWT via given credentials.
      *

@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   // KeenThemes mock, change it to:
   defaultAuth: any = {
     email: 'jaimeandres274@hotmail.com',
-    password: '12345678',
+    password: '123456789',
   };
   loginForm: FormGroup;
   hasError: boolean;

@@ -18,6 +18,7 @@ use App\Http\Controllers\Ecommerce\CartController;
 use App\Http\Controllers\Ecommerce\UserAddressController;
 use App\Http\Controllers\Ecommerce\ReviewController;
 use App\Http\Controllers\Admin\Sale\SalesController;
+use App\Http\Controllers\Admin\Sale\KpiSaleReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,12 @@ Route::group ([
     Route::resource("discounts",DiscountController::class);
 
     Route::post('sales/list', [SalesController::class, 'list']);
+
+    Route::group ([
+        'prefix' => 'kpi',
+    ], function ($router)  {
+        Route::post('report_sale_country_for_year', [KpiSaleReportController::class, 'report_sale_country_for_year']);
+    });
 });
 
 Route::get('sales/list-excel', [SalesController::class, 'list_excel']);
