@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin\Sale;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class KpiSaleReportController extends Controller
 {
-    public function report_sale_country_for_year (Request $request) {
+    public function report_sale_country_for_year (Request $request) { //Reporte de ventas por año y país.
         $year = $request->year;
         $month = $request->month;
 
@@ -30,4 +31,97 @@ class KpiSaleReportController extends Controller
             'sales_for_country' => $query
         ]);
     }
-}
+
+    public function report_sales_week_categorias () { //Reporte de ventas de la semana actual vs semana pasada por categorías.
+        $start_week = Carbon::now()->startOfWeek();
+        $end_week = Carbon::now()->endOfWeek();
+
+        $start_week_last = Carbon::now()->subWeek()->startOfWeek();
+        $end_week_last = Carbon::now()->endOfWeek();
+
+        $sales_week = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
+                    ->sum('sales.total');
+
+        $sales_week_last = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week_last->format('Y-m-d').' 00:00:00', $end_week_last->format('Y-m-d').' 23:59:59'])
+                    ->sum('sales.total');
+
+        $porcentajeV = 0;
+
+        if ($sales_week_last > 0) {
+            $porcentajeV = (($sales_week - $sales_week_last) / $sales_week_last) * 100;
+        }
+        
+        $sales_week_categories = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->join('products', 'sale_details.product_id', '=', 'products.id')
+                    ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
+                    ->where('sale_details.deteled_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
+                    ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(sales.total), 2) as categorie_total'))
+                    ->groupBy('categorie_name')
+                    ->orderBy('categorie_total', 'desc')
+                    ->take(3)
+                    ->get();
+
+        return response()->json([
+            'sales_week' => round($sales_week, 2),
+            'porcentajeV' => round($porcentajeV, 2),
+            'sales_week_categories' => $sales_week_categories
+        ]);
+
+        // dd($start_week, $end_week);
+    }
+
+    public function report_sales_week_discount() { //Reporte de ventas por descuento
+        $start_week = Carbon::now()->startOfWeek();
+        $end_week = Carbon::now()->endOfWeek();
+
+        $start_week_last = Carbon::now()->subWeek()->startOfWeek();
+        $end_week_last = Carbon::now()->endOfWeek();
+
+        $sales_week_discount = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->where('sale_details.deleted_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
+                    ->sum('sale_details.discount');
+
+        $sales_week_discount_last = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->where('sale_details.deleted_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week_last->format('Y-m-d').' 00:00:00', $end_week_last->format('Y-m-d').' 23:59:59'])
+                    ->sum('sale_details.discount');
+
+        $porcentajeV = 0;
+
+        if ($sales_week_discount_last > 0) {
+            $porcentajeV = (($sales_week_discount - $sales_week_discount_last) / $sales_week_discount_last) * 100;
+        }
+        
+        $sales_week_discount_for_day = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->where('sale_details.deleted_at', NULL)
+                    ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
+                    ->select(DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m-%d") as date_format'),
+                             DB::raw('ROUND(SUM(sale_details.discount), 2) as discount_total')
+                    )
+                    ->groupBy('date_format')
+                    ->get();
+
+        $discount_for_days = collect([]);
+
+        foreach ($sales_week_discount_for_day as $key => $sales_week_discount) {
+            $discount_for_days->push([
+                "date" => $sales_week_discount->date_format,
+                "percentage" => round((($sales_week_discount->discount_total)/$sales_week_discount)*100,2)
+            ]);
+        }
+
+        return response()->json([
+            "discount_for_days" => $discount_for_days,
+            "sales_week_discount" => $sales_week_discount,
+            "porcentageV" => $porcentageV
+        ]);
+    }
+ }
