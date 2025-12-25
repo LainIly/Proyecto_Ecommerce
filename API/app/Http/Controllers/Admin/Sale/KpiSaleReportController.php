@@ -22,7 +22,7 @@ class KpiSaleReportController extends Controller
         }
 
         $query->select("sale_addres.country_region as country_region",
-                DB::raw('ROUND(SUM(sales.total), 2) as total_sales'))
+                DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as total_sales'))
                 ->groupBy('country_region')
                 ->orderBy('total_sales', 'desc');
 
@@ -41,11 +41,19 @@ class KpiSaleReportController extends Controller
 
         $sales_week = DB::table('sales')->where('sales.deleted_at', NULL)
                     ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
-                    ->sum('sales.total');
+                                   ->select(
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
+                                   )
+                                   ->get()
+                                   ->sum('sales_total');
 
         $sales_week_last = DB::table('sales')->where('sales.deleted_at', NULL)
                     ->whereBetween('sales.created_at', [$start_week_last->format('Y-m-d').' 00:00:00', $end_week_last->format('Y-m-d').' 23:59:59'])
-                    ->sum('sales.total');
+                                   ->select(
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
+                                   )
+                                   ->get()
+                                   ->sum('sales_total');
 
         $porcentajeV = 0;
 
@@ -59,7 +67,7 @@ class KpiSaleReportController extends Controller
                     ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
                     ->where('sale_details.deteled_at', NULL)
                     ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
-                    ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(sales.total), 2) as categorie_total'))
+                    ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as categorie_total'))
                     ->groupBy('categorie_name')
                     ->orderBy('categorie_total', 'desc')
                     ->take(3)
@@ -74,7 +82,7 @@ class KpiSaleReportController extends Controller
         // dd($start_week, $end_week);
     }
 
-    public function report_sales_week_discounts(){  //Reporte de descuentos aplicados en la semana actual vs semana pasada.
+    public function report_sales_week_discounts (){  //Reporte de descuentos aplicados en la semana actual vs semana pasada.
         $start_week = Carbon::now()->startOfWeek();
         $end_week = Carbon::now()->endOfWeek();
 
@@ -134,7 +142,7 @@ class KpiSaleReportController extends Controller
                                    ->select(
                                         DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m-%d") as date_format'),
                                         DB::raw('DATE_FORMAT(sales.created_at, "%m-%d") as date_format_day'),
-                                        DB::raw('ROUND(SUM(sales.total), 2) as sales_total')
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
                                    )
                                    ->groupBy('date_format', 'date_format_day')
                                    ->get();
@@ -145,7 +153,7 @@ class KpiSaleReportController extends Controller
                                    ->whereYear('sales.created_at', $month_last->format('Y'))
                                    ->whereMonth('sales.created_at', $month_last->format('m'))
                                    ->select(
-                                        DB::raw('ROUND(SUM(sales.total), 2) as sales_total')
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
                                    )
                                    ->get()
                                    ->sum('sales_total');
@@ -160,6 +168,58 @@ class KpiSaleReportController extends Controller
             // 'sales_for_month_last' => $sales_for_month_last,
             'total_sales_for_month' => $sales_for_day_of_month->sum('sales_total'),
             'sales_for_day_of_month' => $sales_for_day_of_month,
+        ]);
+    }
+
+    public function report_sales_for_month_year_selected (Request $request) {
+        $year = $request->year;
+
+        $query = DB::table('sales')->where('sales.deleted_at', NULL) //An/o actual
+                                    ->whereYear('sales.created_at', $year)
+                                    ->select(
+                                        DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m") as date_format_month'),
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
+                                    )
+                                    ->groupBy('date_format_month')
+                                    ->get();
+                                    
+        $query_last = DB::table('sales')->where('sales.deleted_at', NULL) //An/o pasado
+                                    ->whereYear('sales.created_at', $year-1)
+                                    ->select(
+                                        DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m") as date_format_month'),
+                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
+                                    )
+                                    ->groupBy('date_format_month')
+                                    ->get();    
+        
+        $query_discount = DB::table('sales')->where('sales.deleted_at', NULL) //An/o actual
+                                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                                    ->where('sale_details.deleted_at', NULL)
+                                    ->whereYear('sales.created_at', $year)
+                                    ->where('sale_details.code_discount','<>', NULL)
+                                    ->select(
+                                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.discount*3800, sale_details.discount)), 2) as discount_total'),
+                                        DB::raw('COUNT(*) as count_total')
+                                    )
+                                    ->get();
+        
+        $query_cupone = DB::table('sales')->where('sales.deleted_at', NULL) //An/o actual
+                                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                                    ->where('sale_details.deleted_at', NULL)
+                                    ->whereYear('sales.created_at', $year)
+                                    ->where('sale_details.code_cupon','<>', NULL)
+                                    ->select(
+                                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.discount*3800, sale_details.discount)), 2) as discount_total'),
+                                        DB::raw('COUNT(*) as count_total')
+                                    )
+                                    ->get();
+
+        return response()->json([
+            'query_cupone' => $query_cupone,
+            'query_discount' => $query_discount,
+            'sales_for_month_year_last' => $query_last,
+            'sales_for_month_year_total' => $query->sum('sale_total'),
+            'sales_for_month_year' => $query,
         ]);
     }
 }

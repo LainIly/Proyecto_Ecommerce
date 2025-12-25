@@ -17,8 +17,8 @@ class Sale extends Model
     protected $fillable = [
         'user_id',
         'method_payment',
-        'currency_total',
-        'currency_payment',
+        'currency_total', //Tipo de moneda en el carrito
+        'currency_payment', //Tipo de moneda al momento de pagar la venta
         'discount',
         'subtotal',
         'total',
