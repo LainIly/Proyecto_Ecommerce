@@ -67,7 +67,7 @@ class KpiSaleReportController extends Controller
                     ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
                     ->where('sale_details.deteled_at', NULL)
                     ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
-                    ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as categorie_total'))
+                    ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as categorie_total'))
                     ->groupBy('categorie_name')
                     ->orderBy('categorie_total', 'desc')
                     ->take(3)
@@ -306,6 +306,79 @@ class KpiSaleReportController extends Controller
         return response()->json([
             'sales_for_categories' => $query,
             'porcentajeV' => $porcentajeV,
+        ]);
+    }
+
+    public function report_sale_categories_details (Request $request) {
+        $year = $request->year;
+        $month = $request->month;
+
+        $sales_month_categories = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->join('products', 'sale_details.product_id', '=', 'products.id')
+                    ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
+                    ->where('sale_details.deleted_at', NULL)
+                    ->whereYear('sales.created_at', $year)
+                    ->whereMonth('sales.created_at', $month)
+                    ->select('categories.name as categorie_name',
+                        'categories.id as categorie_id', 
+                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as categorie_total'))
+                    ->groupBy('categorie_name', 'categorie_id')
+                    ->orderBy('categorie_total', 'desc')
+                    ->take(5)
+                    ->get();
+        
+        $product_most_sales = collect([]);
+        foreach($sales_month_categories as $key => $sales_month_categ) {
+
+                    $query_product_most_sales = DB::table('sales')->where('sales.deleted_at', NULL)
+                    ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                    ->join('products', 'sale_details.product_id', '=', 'products.id')
+                    ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
+                    ->where('sale_details.deleted_at', NULL)
+                    ->whereYear('sales.created_at', $year)
+                    ->whereMonth('sales.created_at', $month)
+                    ->where('products.categorie_first_id', $sales_month_categ->categorie_id)
+                    ->select('products.title as product_title', 'products.sku as product_sku', 'products.price_cop as product_price_cop',
+                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as product_total'),
+                        DB::raw('ROUND(SUM(sale_details.quantity), 2) as product_quantity_total'))
+                    ->groupBy('product_title', 'product_sku', 'product_price_cop')
+                    ->orderBy('product_total', 'desc')
+                    ->take(5)
+                    ->get();
+
+            $product_most_sales->push([
+                'categorie_id' => $sales_month_categ->categorie_id,
+                'products' => $query_product_most_sales,
+            ]);
+        }
+
+        return response()->json([
+            'product_most_sales' => $product_most_sales,
+            'sale_month_categories' => $sales_month_categories
+        ]);
+    }
+
+    public function report_sale_brands (Request $request) {
+        $year = $request->year;
+        $month = $request->month;
+
+        $query = DB::table('sales')->where('sales.deleted_at', NULL)
+                                   ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
+                                   ->join('products', 'sale_details.product_id', '=', 'products.id')
+                                   ->join('brands', 'products.brand_id', '=', 'brands.id')
+                                   ->where('sale_details.deleted_at', NULL)
+                                   ->whereYear('sales.created_at', $year)
+                                   ->whereMonth('sales.created_at', $month)
+                                   ->select('brands.name as brand_name',
+                                       'brands.id as brand_t_id', 
+                                       DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as brand_total'),
+                                       DB::raw('ROUND(SUM(sale_details.quantity), 2) as quantity_total'))
+                                   ->groupBy('brand_name', 'brand_t_id')
+                                   ->get();
+
+        return response()->json([
+            'sales_for_month' => $query
         ]);
     }
 }

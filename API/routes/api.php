@@ -99,6 +99,8 @@ Route::group ([
         Route::post('report_sales_for_month_year_selected', [KpiSaleReportController::class, 'report_sales_for_month_year_selected']);
         Route::post('report_discount_cupone_year', [KpiSaleReportController::class, 'report_discount_cupone_year']);
         Route::post('report_sale_categories', [KpiSaleReportController::class, 'report_sale_categories']);
+        Route::post('report_sale_categories_details', [KpiSaleReportController::class, 'report_sale_categories_details']);
+        Route::post('report_sale_brands', [KpiSaleReportController::class, 'report_sale_brands']);
     });
 });
 
