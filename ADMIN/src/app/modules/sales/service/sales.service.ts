@@ -15,6 +15,7 @@ export class SalesService {
   constructor(
     private http: HttpClient,
     public authservice: AuthService,
+
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
@@ -34,6 +35,24 @@ export class SalesService {
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/admin/products/config";
     return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  configAllReport () {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/admin/kpi/config";
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  reportSaleForCountry (data:any) {
+    this.isLoadingSubject.next(true)
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + '/admin/kpi/report_sale_country_for_year';
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }

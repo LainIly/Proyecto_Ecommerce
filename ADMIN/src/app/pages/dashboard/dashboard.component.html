@@ -1,6 +1,7 @@
 <!--begin::Row-->
 <div class="row g-5 g-xl-10">
   <!--begin::Col-->
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
   <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
     <div class="row">
       <div class="col-6 mb-md-5 mb-xl-10">
@@ -13,14 +14,24 @@
               <!--begin::Heading-->
               <div class="d-flex align-items-center mb-2">
                 <!--begin::Title-->
-                <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">35,568</span>
+                <span class="fs-6 fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ formatPriceToCOP(sales_for_year_for_country) }}  COP</span>
                 <!--end::Title-->
                 <!--begin::Label-->
-                <span class="badge badge-light-danger fs-base">
-                <i class="ki-duotone ki-arrow-up fs-5 text-danger ms-n1">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>8.02%</span>
+                <ng-container *ngIf="porcentaje_sale_for_country >= 0">
+                  <span class="badge badge-light-success fs-base">
+                  <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>{{ porcentaje_sale_for_country }}%</span>
+                </ng-container>
+
+                <ng-container *ngIf="porcentaje_sale_for_country < 0">
+                  <span class="badge badge-light-danger fs-base">
+                  <i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>{{ porcentaje_sale_for_country }}%</span>
+                </ng-container>
                 <!--end::Label-->
               </div>
               <!--end::Heading-->
@@ -52,55 +63,36 @@
                 <!--end::Menu separator-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">New Ticket</a>
+                  <select
+                        class="form-control form-select-solid fw-bolder"
+                        name="year_1"
+                        placeholder="Selec. Año"
+                        [(ngModel)]="year_1"
+                    >
+                        <option value="">Selec. Año</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
                 </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">New Customer</a>
+                  <select
+                        class="form-control form-select-solid fw-bolder"
+                        name="month_1"
+                        placeholder="Selec. Año"
+                        [(ngModel)]="month_1"
+                    >
+                    <option value="">Selec. Mes</option>
+                        <ng-container *ngFor="let mes of meses; let i = index">
+                            <option [value]="(i+1 > 10 ? i+1 : '0'+(i+1))">{{ mes }}</option>
+                        </ng-container>
+                    </select>
                 </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
-                  <!--begin::Menu item-->
-                  <a href="#" class="menu-link px-3">
-                    <span class="menu-title">New Group</span>
-                    <span class="menu-arrow"></span>
-                  </a>
-                  <!--end::Menu item-->
-                  <!--begin::Menu sub-->
-                  <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                    <!--begin::Menu item-->
-                    <div class="menu-item px-3">
-                      <a href="#" class="menu-link px-3">Admin Group</a>
-                    </div>
-                    <!--end::Menu item-->
-                    <!--begin::Menu item-->
-                    <div class="menu-item px-3">
-                      <a href="#" class="menu-link px-3">Staff Group</a>
-                    </div>
-                    <!--end::Menu item-->
-                    <!--begin::Menu item-->
-                    <div class="menu-item px-3">
-                      <a href="#" class="menu-link px-3">Member Group</a>
-                    </div>
-                    <!--end::Menu item-->
-                  </div>
-                  <!--end::Menu sub-->
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">New Contact</a>
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu separator-->
-                <div class="separator mt-3 opacity-75"></div>
-                <!--end::Menu separator-->
-                <!--begin::Menu item-->
+
                 <div class="menu-item px-3">
                   <div class="menu-content px-3 py-3">
-                    <a class="btn btn-primary btn-sm px-4" href="#">Generate Reports</a>
+                    <a class="btn btn-primary btn-sm px-4" (click)="reportSaleForCountry()" href="#" onclick="return false">Generar reportes</a>
                   </div>
                 </div>
                 <!--end::Menu item-->
@@ -113,7 +105,7 @@
           <!--end::Header-->
           <!--begin::Body-->
           <div class="card-body pt-0 pb-1">
-            <div id="kt_charts_widget_27" class="min-h-auto"></div>
+            <div *ngIf="sales_for_year_for_country" id="kt_charts_widget_27" class="min-h-auto"></div>
           </div>
           <!--end::Body-->
         </div>

@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalConfig, ModalComponent } from '../../_metronic/partials';
+import { SalesService } from 'src/app/modules/sales/service/sales.service';
 
 declare var KTUtil:any;
 declare var KTThemeMode:any;
@@ -16,7 +17,19 @@ export class DashboardComponent {
     closeButtonLabel: 'Cancel'
   };
   @ViewChild('modal') private modalComponent: ModalComponent;
-  constructor() {}
+
+  current_year: string = '';
+  current_month: string = '';
+  meses: any = [];
+  year_1: string = '';
+  month_1: string = '';
+  porcentaje_sale_for_country: number = 0;
+  sales_for_year_for_country: any = null;
+  isLoading$: any;
+
+  constructor(
+   public salesService: SalesService,
+  ) {}
 
   async openModal() {
     return await this.modalComponent.open();
@@ -25,6 +38,18 @@ export class DashboardComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+
+    this.isLoading$ = this.salesService.isLoading$;
+
+    this.salesService.configAllReport().subscribe((resp:any) => {
+      console.log(resp);
+      this.meses  = resp.meses;
+      this.current_year = resp.year;
+      this.current_month = resp.month;
+      this.year_1 = resp.year;
+      this.month_1 = resp.month;
+      this.reportSaleForCountry();
+    });
 
     let KTCardsWidget6 = {
       init: function () {
@@ -622,7 +647,84 @@ export class DashboardComponent {
       KTChartsWidget18.init()
    }));
 
-   
+   var KTChartsWidget22 = function () {
+      var e = function (e:any, t:any, a:any, l:any) {
+         var r = document.querySelector(t);
+         if (r) {
+            parseInt(KTUtil.css(r, "height"));
+            var o = {
+                  series: a,
+                  chart: {
+                     fontFamily: "inherit",
+                     type: "donut",
+                     width: 250
+                  },
+                  plotOptions: {
+                     pie: {
+                        donut: {
+                           size: "50%",
+                           labels: {
+                              value: {
+                                 fontSize: "10px"
+                              }
+                           }
+                        }
+                     }
+                  },
+                  colors: [KTUtil.getCssVariableValue("--bs-info"), KTUtil.getCssVariableValue("--bs-success"), KTUtil.getCssVariableValue("--bs-primary"), KTUtil.getCssVariableValue("--bs-danger")],
+                  stroke: {
+                     width: 0
+                  },
+                  labels: ["Sales", "Sales", "Sales", "Sales"],
+                  legend: {
+                     show: !1
+                  },
+                  fill: {
+                     type: "false"
+                  }
+               },
+               i = new ApexCharts(r, o),
+               s:any = !1,
+               n = document.querySelector(e);
+            !0 === l && (i.render(), s = !0), n.addEventListener("shown.bs.tab", (function (e:any) {
+               0 == s && (i.render(), s = !0)
+            }))
+         }
+      };
+      return {
+         init: function () {
+            e("#kt_chart_widgets_22_tab_1", "#kt_chart_widgets_22_chart_1", [20, 100, 15, 25], !0)//, 
+            // e("#kt_chart_widgets_22_tab_2", "#kt_chart_widgets_22_chart_2", [70, 13, 11, 2], !1)
+         }
+      }
+   }();
+   KTUtil.onDOMContentLoaded((function () {
+      KTChartsWidget22.init()
+   }));
+  }
+
+  reportSaleForCountry() {
+   let data = {
+      year: this.year_1,
+      month: this.month_1,
+   }
+
+   this.sales_for_year_for_country = null;
+
+   this.salesService.reportSaleForCountry(data).subscribe((resp:any) => {
+      console.log(resp);
+
+      var categories_labels:any = [];
+      var series_data:any = [];
+
+      this.porcentaje_sale_for_country = resp.porcentajeV;
+      this.sales_for_year_for_country = resp.sales_for_year;
+
+      resp.sales_for_country.forEach((element:any) => {
+         categories_labels.push(element.country_region);
+         series_data.push(element.total_sales);
+      })
+
    var KTChartsWidget27 = function() {
       var e:any = {
               self: null,
@@ -636,7 +738,7 @@ export class DashboardComponent {
                       r = {
                           series: [{
                               name: "Sessions",
-                              data: [12.478, 7.546, 6.083, 5.041, 4.42]
+                              data: series_data
                           }],
                           chart: {
                               fontFamily: "inherit",
@@ -678,7 +780,7 @@ export class DashboardComponent {
                           },
                           colors: ["#3E97FF", "#F1416C", "#50CD89", "#FFC700", "#7239EA"],
                           xaxis: {
-                              categories: ["USA", "India", "Canada", "Brasil", "France"],
+                              categories: categories_labels,
                               labels: {
                                  //  formatter: function(e:any) {
                                  //      return e + "K"
@@ -747,64 +849,20 @@ export class DashboardComponent {
           }
       }
    }();
-   KTUtil.onDOMContentLoaded((function() {
-      KTChartsWidget27.init()
-   }));
 
-   var KTChartsWidget22 = function () {
-      var e = function (e:any, t:any, a:any, l:any) {
-         var r = document.querySelector(t);
-         if (r) {
-            parseInt(KTUtil.css(r, "height"));
-            var o = {
-                  series: a,
-                  chart: {
-                     fontFamily: "inherit",
-                     type: "donut",
-                     width: 250
-                  },
-                  plotOptions: {
-                     pie: {
-                        donut: {
-                           size: "50%",
-                           labels: {
-                              value: {
-                                 fontSize: "10px"
-                              }
-                           }
-                        }
-                     }
-                  },
-                  colors: [KTUtil.getCssVariableValue("--bs-info"), KTUtil.getCssVariableValue("--bs-success"), KTUtil.getCssVariableValue("--bs-primary"), KTUtil.getCssVariableValue("--bs-danger")],
-                  stroke: {
-                     width: 0
-                  },
-                  labels: ["Sales", "Sales", "Sales", "Sales"],
-                  legend: {
-                     show: !1
-                  },
-                  fill: {
-                     type: "false"
-                  }
-               },
-               i = new ApexCharts(r, o),
-               s:any = !1,
-               n = document.querySelector(e);
-            !0 === l && (i.render(), s = !0), n.addEventListener("shown.bs.tab", (function (e:any) {
-               0 == s && (i.render(), s = !0)
-            }))
-         }
-      };
-      return {
-         init: function () {
-            e("#kt_chart_widgets_22_tab_1", "#kt_chart_widgets_22_chart_1", [20, 100, 15, 25], !0)//, 
-            // e("#kt_chart_widgets_22_tab_2", "#kt_chart_widgets_22_chart_2", [70, 13, 11, 2], !1)
-         }
-      }
-   }();
-   KTUtil.onDOMContentLoaded((function () {
-      KTChartsWidget22.init()
-   }));
-
+   setTimeout(() => {
+      KTUtil.onDOMContentLoaded((function() {
+         KTChartsWidget27.init()
+      }));
+   }, 50)
+   })
+  }
+    formatPriceToCOP(price: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   }
 }
