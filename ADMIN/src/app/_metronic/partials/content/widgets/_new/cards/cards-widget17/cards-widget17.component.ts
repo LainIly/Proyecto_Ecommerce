@@ -13,13 +13,33 @@ export class CardsWidget17Component implements OnInit {
   @Input() chartSize: number = 70;
   @Input() chartLine: number = 11;
   @Input() chartRotate?: number = 145;
+  @Input() report_sale_for_week: any;
+
+  porcentajeV: number = 0;
+  sale_total_week: number = 0;
+  categories: any = [];
 
   constructor() {}
 
   ngOnInit(): void {
+    // console.log(this.report_sale_for_week);
+    this.porcentajeV = this.report_sale_for_week.porcentajeV;
+    this.sale_total_week =  this.report_sale_for_week.sales_week;
+    this.categories  = this.report_sale_for_week.sales_week_categories;
+
+
     setTimeout(() => {
       initChart(this.chartSize, this.chartLine, this.chartRotate);
     }, 10);
+  }
+
+    formatPriceToCOP(price: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   }
 }
 
@@ -27,6 +47,7 @@ const initChart = function (
   chartSize: number = 70,
   chartLine: number = 11,
   chartRotate: number = 145
+  
 ) {
   const el = document.getElementById('kt_card_widget_17_chart');
 
@@ -82,8 +103,13 @@ const initChart = function (
     ctx.stroke();
   };
 
+
   // Init
   drawCircle('#E4E6EF', options.lineWidth, 100 / 100);
   drawCircle(getCSSVariableValue('--bs-primary'), options.lineWidth, 100 / 150);
   drawCircle(getCSSVariableValue('--bs-success'), options.lineWidth, 100 / 250);
 };
+
+
+
+

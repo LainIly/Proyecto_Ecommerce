@@ -25,7 +25,13 @@ export class DashboardComponent {
   month_1: string = '';
   porcentaje_sale_for_country: number = 0;
   sales_for_year_for_country: any = null;
+  report_sale_for_week: any;
+
   isLoading$: any;
+
+  discount_weeks: any = [];
+  discount_porcentaje_v : number = 0;
+  discount_total_week : number = 0;
 
   constructor(
    public salesService: SalesService,
@@ -42,149 +48,16 @@ export class DashboardComponent {
     this.isLoading$ = this.salesService.isLoading$;
 
     this.salesService.configAllReport().subscribe((resp:any) => {
-      console.log(resp);
+      // console.log(resp);
       this.meses  = resp.meses;
       this.current_year = resp.year;
       this.current_month = resp.month;
       this.year_1 = resp.year;
       this.month_1 = resp.month;
       this.reportSaleForCountry();
+      this.reportSaleForWeek();
+      this.reportSaleForDiscountWeek();
     });
-
-    let KTCardsWidget6 = {
-      init: function () {
-        var e = document.getElementById("kt_card_widget_6_chart");
-        if (e) {
-              var t = parseInt(KTUtil.css(e, "height")),
-                a = KTUtil.getCssVariableValue("--bs-gray-500"),
-                l = KTUtil.getCssVariableValue("--bs-border-dashed-color"),
-                r = KTUtil.getCssVariableValue("--bs-primary"),
-                o = KTUtil.getCssVariableValue("--bs-gray-300"),
-                i = new ApexCharts(e, {
-                    series: [{
-                      name: "Sales",
-                      data: [30, 60, 53, 45, 60, 75, 53]
-                    }],
-                    chart: {
-                      fontFamily: "inherit",
-                      type: "bar",
-                      height: t,
-                      toolbar: {
-                          show: !1
-                      },
-                      sparkline: {
-                          enabled: !0
-                      }
-                    },
-                    plotOptions: {
-                      bar: {
-                          horizontal: !1,
-                          columnWidth: ["55%"],
-                          borderRadius: 6
-                      }
-                    },
-                    legend: {
-                      show: !1
-                    },
-                    dataLabels: {
-                      enabled: !1
-                    },
-                    stroke: {
-                      show: !0,
-                      width: 9,
-                      colors: ["transparent"]
-                    },
-                    xaxis: {
-                      axisBorder: {
-                          show: !1
-                      },
-                      axisTicks: {
-                          show: !1,
-                          tickPlacement: "between"
-                      },
-                      labels: {
-                          show: !1,
-                          style: {
-                            colors: a,
-                            fontSize: "12px"
-                          }
-                      },
-                      crosshairs: {
-                          show: !1
-                      }
-                    },
-                    yaxis: {
-                      labels: {
-                          show: !1,
-                          style: {
-                            colors: a,
-                            fontSize: "12px"
-                          }
-                      }
-                    },
-                    fill: {
-                      type: "solid"
-                    },
-                    states: {
-                      normal: {
-                          filter: {
-                            type: "none",
-                            value: 0
-                          }
-                      },
-                      hover: {
-                          filter: {
-                            type: "none",
-                            value: 0
-                          }
-                      },
-                      active: {
-                          allowMultipleDataPointsSelection: !1,
-                          filter: {
-                            type: "none",
-                            value: 0
-                          }
-                      }
-                    },
-                    tooltip: {
-                      style: {
-                          fontSize: "12px"
-                      },
-                      x: {
-                          formatter: function (e:any) {
-                            return "Feb: " + e
-                          }
-                      },
-                      y: {
-                          formatter: function (e:any) {
-                            return e + "%"
-                          }
-                      }
-                    },
-                    colors: [r, o],
-                    grid: {
-                      padding: {
-                          left: 10,
-                          right: 10
-                      },
-                      borderColor: l,
-                      strokeDashArray: 4,
-                      yaxis: {
-                          lines: {
-                            show: !0
-                          }
-                      }
-                    }
-                });
-              setTimeout((function () {
-                i.render()
-              }), 300)
-        }
-      }
-    };
-    KTUtil.onDOMContentLoaded((function () {
-      KTCardsWidget6.init()
-    }))
 
     var KTChartsWidget3 = function () {
       var e:any = {
@@ -712,7 +585,7 @@ export class DashboardComponent {
    this.sales_for_year_for_country = null;
 
    this.salesService.reportSaleForCountry(data).subscribe((resp:any) => {
-      console.log(resp);
+      // console.log(resp);
 
       var categories_labels:any = [];
       var series_data:any = [];
@@ -857,12 +730,173 @@ export class DashboardComponent {
    }, 50)
    })
   }
-    formatPriceToCOP(price: number): string {
+
+   formatPriceToCOP(price: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  }
+
+   reportSaleForWeek() {
+   this.salesService.reportSaleForWeek().subscribe((resp:any) => {
+      // console.log(resp);
+      this.report_sale_for_week = resp;
+   })
+  }
+
+   reportSaleForDiscountWeek() {
+   this.salesService.reportSaleForDiscountWeek().subscribe((resp:any) => {
+     console.log(resp);
+     this.discount_weeks = resp.discount_for_days;
+     this.discount_porcentaje_v = resp.porcentageV;
+     this.discount_total_week = resp.sales_week_discounts;
+
+     var series_data:any = [];
+     var categories_data: any = [];
+
+     this.discount_weeks.forEach((element:any) => {
+      series_data.push(element.percentage);
+      categories_data.push(element.date);
+     })
+
+      let KTCardsWidget6 = {
+      init: function () {
+        var e = document.getElementById("kt_card_widget_6_chart");
+        if (e) {
+              var t = parseInt(KTUtil.css(e, "height")),
+                a = KTUtil.getCssVariableValue("--bs-gray-500"),
+                l = KTUtil.getCssVariableValue("--bs-border-dashed-color"),
+                r = KTUtil.getCssVariableValue("--bs-primary"),
+                o = KTUtil.getCssVariableValue("--bs-gray-300"),
+                i = new ApexCharts(e, {
+                    series: [{
+                      name: "Discounts",
+                      data: series_data
+                    }],
+                    chart: {
+                      fontFamily: "inherit",
+                      type: "bar",
+                      height: t,
+                      toolbar: {
+                          show: !1
+                      },
+                      sparkline: {
+                          enabled: !0
+                      }
+                    },
+                    plotOptions: {
+                      bar: {
+                          horizontal: !1,
+                          columnWidth: ["55%"],
+                          borderRadius: 6
+                      }
+                    },
+                    legend: {
+                      show: !1
+                    },
+                    dataLabels: {
+                      enabled: !1
+                    },
+                    stroke: {
+                      show: !0,
+                      width: 9,
+                      colors: ["transparent"]
+                    },
+                    xaxis: {
+                      categories: categories_data,
+                      axisBorder: {
+                          show: !1
+                      },
+                      axisTicks: {
+                          show: !1,
+                          tickPlacement: "between"
+                      },
+                      labels: {
+                          show: !1,
+                          style: {
+                            colors: a,
+                            fontSize: "12px"
+                          }
+                      },
+                      crosshairs: {
+                          show: !1
+                      }
+                    },
+                    yaxis: {
+                      labels: {
+                          show: !1,
+                          style: {
+                            colors: a,
+                            fontSize: "12px"
+                          }
+                      }
+                    },
+                    fill: {
+                      type: "solid"
+                    },
+                    states: {
+                      normal: {
+                          filter: {
+                            type: "none",
+                            value: 0
+                          }
+                      },
+                      hover: {
+                          filter: {
+                            type: "none",
+                            value: 0
+                          }
+                      },
+                      active: {
+                          allowMultipleDataPointsSelection: !1,
+                          filter: {
+                            type: "none",
+                            value: 0
+                          }
+                      }
+                    },
+                    tooltip: {
+                      style: {
+                          fontSize: "12px"
+                      },
+                      x: {
+                          formatter: function (e:any) {
+                            return e; //"Feb: "
+                          }
+                      },
+                      y: {
+                          formatter: function (e:any) {
+                            return e + "%"
+                          }
+                      }
+                    },
+                    colors: [r, o],
+                    grid: {
+                      padding: {
+                          left: 10,
+                          right: 10
+                      },
+                      borderColor: l,
+                      strokeDashArray: 4,
+                      yaxis: {
+                          lines: {
+                            show: !0
+                          }
+                      }
+                    }
+                });
+              setTimeout((function () {
+                i.render()
+              }), 300)
+        }
+      }
+    };
+    KTUtil.onDOMContentLoaded((function () {
+      KTCardsWidget6.init()
+    }))
+   })
   }
 }

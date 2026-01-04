@@ -103,7 +103,7 @@ class KpiSaleReportController extends Controller
                     ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
                     ->join('products', 'sale_details.product_id', '=', 'products.id')
                     ->join('categories', 'products.categorie_first_id', '=', 'categories.id')
-                    ->where('sale_details.deteled_at', NULL)
+                    ->where('sale_details.deleted_at', NULL)
                     ->whereBetween('sales.created_at', [$start_week->format('Y-m-d').' 00:00:00', $end_week->format('Y-m-d').' 23:59:59'])
                     ->select('categories.name as categorie_name', DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as categorie_total'))
                     ->groupBy('categorie_name')
