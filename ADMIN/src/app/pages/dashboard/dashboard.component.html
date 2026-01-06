@@ -230,18 +230,24 @@
         <div class="px-9 mb-5">
           <!--begin::Statistics-->
           <div class="d-flex align-items-center mb-2">
-            <span class="fs-4 fw-semibold text-gray-500 align-self-start me-1">$</span>
-            <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">14,094</span>
-            <span class="badge badge-light-success fs-base">
-            <i class="ki-duotone ki-arrow-down fs-5 text-success ms-n1">
+            <span class="fs-4 fw-semibold text-gray-500 align-self-start me-1">COP</span>
+            <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ formatPriceToCOP(report_sale_for_month ? report_sale_for_month.total_sales_for_month : 0) }}</span>
+            <span class="badge badge-light-success fs-base" *ngIf="report_sale_for_month && report_sale_for_month.porcentajeV >= 0">
+            <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
               <span class="path1"></span>
               <span class="path2"></span>
-            </i>4.5%</span>
+            </i>{{ report_sale_for_month.porcentajeV }}%</span>
+
+            <span class="badge badge-light-danger fs-base" *ngIf="report_sale_for_month && report_sale_for_month.porcentajeV < 0">
+            <i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>{{ report_sale_for_month.porcentajeV }}%</span>
           </div>
 
           <!--end::Statistics-->
           <!--begin::Description-->
-          <span class="fs-6 fw-semibold text-gray-500">Another $48,346 to Goal</span>
+          <!-- <span class="fs-6 fw-semibold text-gray-500">Another $48,346 to Goal</span> -->
           <!--end::Description-->
         </div>
         <!--end::Statistics-->

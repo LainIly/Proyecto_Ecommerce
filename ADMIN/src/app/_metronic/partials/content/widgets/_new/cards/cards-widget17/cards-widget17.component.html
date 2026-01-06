@@ -19,14 +19,14 @@
         <ng-container *ngIf="porcentajeV >= 0">
           <span class="badge badge-light-success fs-base">
             <app-keenicon name="arrow-up" class="fs-5 text-success ms-n1"></app-keenicon>
-            {{ porcentajeV }}
+            {{ porcentajeV }}%
           </span>
         </ng-container>
 
         <ng-container *ngIf="porcentajeV < 0">
           <span class="badge badge-light-danger fs-base">
-            <app-keenicon name="arrow-up" class="fs-5 text-danger ms-n1"></app-keenicon>
-            {{ porcentajeV }}
+            <app-keenicon name="arrow-down" class="fs-5 text-danger ms-n1"></app-keenicon>
+            {{ porcentajeV }}%
           </span>
         </ng-container>
 

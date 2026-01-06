@@ -205,7 +205,7 @@ class KpiSaleReportController extends Controller
         return response()->json([
             'porcentajeV' => round($porcentajeV, 2),
             // 'sales_for_month_last' => $sales_for_month_last,
-            'total_sales_for_month' => $sales_for_day_of_month->sum('sales_total'),
+            'total_sales_for_month' => round($sales_for_day_of_month->sum('sales_total'), 2),
             'sales_for_day_of_month' => $sales_for_day_of_month,
         ]);
     }
