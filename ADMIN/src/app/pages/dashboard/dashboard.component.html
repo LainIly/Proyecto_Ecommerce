@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="menu-item px-3">
-                  <div class="menu-content px-3 py-3">
+                  <div class="menu-content px-3 py-2">
                     <a class="btn btn-primary btn-sm px-4" (click)="reportSaleForCountry()" href="#" onclick="return false;">Generar reportes</a>
                   </div>
                 </div>
@@ -104,7 +104,7 @@
           </div>
           <!--end::Header-->
           <!--begin::Body-->
-          <div class="card-body pt-0 pb-1"> 
+          <div class="card-body pt-0 pb-0"> 
             <div *ngIf="sales_for_year_for_country" id="kt_charts_widget_27" class="min-h-auto"></div>
           </div>
           <!--end::Body-->
@@ -142,7 +142,7 @@
               </div>
               <!--end::Info-->
               <!--begin::Subtitle-->
-              <span class="text-gray-500 pt-1 fw-semibold fs-6">Average Daily Sales</span>
+              <span class="text-gray-500 pt-1 fw-semibold fs-6">Promedio de ventas diarias</span>
               <!--end::Subtitle-->
             </div>
             <!--end::Title-->
@@ -164,8 +164,8 @@
       <div class="card-header py-5">
         <!--begin::Title-->
         <h3 class="card-title align-items-start flex-column">
-          <span class="card-label fw-bold text-gray-900">Sales This Months</span>
-          <span class="text-gray-500 mt-1 fw-semibold fs-6">Users from all channels</span>
+          <span class="card-label fw-bold text-gray-900">Ventas por meses</span>
+          <!-- <span class="text-gray-500 mt-1 fw-semibold fs-6">Users from all channels</span> -->
         </h3>
         <!--end::Title-->
         <!--begin::Toolbar-->
@@ -181,57 +181,33 @@
           </button>
           <!--begin::Menu 2-->
           <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions</div>
-            </div>
-            <!--end::Menu item-->
-            <!--begin::Menu separator-->
-            <div class="separator mb-3 opacity-75"></div>
-            <!--end::Menu separator-->
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <a href="#" class="menu-link px-3">New Ticket</a>
-            </div>
-            <!--end::Menu item-->
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <a href="#" class="menu-link px-3">New Customer</a>
-            </div>
-            <!--end::Menu item-->
-            <!--begin::Menu item-->
-            <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
-              <!--begin::Menu item-->
-              <a href="#" class="menu-link px-3">
-                <span class="menu-title">New Group</span>
-                <span class="menu-arrow"></span>
-              </a>
-              <!--end::Menu item-->
-              <!--begin::Menu sub-->
-              <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">Admin Group</a>
+                  <select
+                        class="form-control form-select-solid fw-bolder"
+                        name="year_2"
+                        placeholder="Selec. Año"
+                        [(ngModel)]="year_2"
+                    >
+                        <option value="">Selec. Año</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
                 </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">Staff Group</a>
+                  <select
+                        class="form-control form-select-solid fw-bolder"
+                        name="month_2"
+                        placeholder="Selec. Año"
+                        [(ngModel)]="month_2"
+                    >
+                    <option value="">Selec. Mes</option>
+                        <ng-container *ngFor="let mes of meses; let i = index">
+                            <option [value]="(i+1 > 10 ? i+1 : '0'+(i+1))">{{ mes }}</option>
+                        </ng-container>
+                    </select>
                 </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-3">
-                  <a href="#" class="menu-link px-3">Member Group</a>
-                </div>
-                <!--end::Menu item-->
-              </div>
-              <!--end::Menu sub-->
-            </div>
-            <!--end::Menu item-->
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <a href="#" class="menu-link px-3">New Contact</a>
-            </div>
             <!--end::Menu item-->
             <!--begin::Menu separator-->
             <div class="separator mt-3 opacity-75"></div>
@@ -239,7 +215,7 @@
             <!--begin::Menu item-->
             <div class="menu-item px-3">
               <div class="menu-content px-3 py-3">
-                <a class="btn btn-primary btn-sm px-4" href="#">Generate Reports</a>
+                <a class="btn btn-primary btn-sm px-4" (click)="reportSaleForMonth()" href="#" onclick="return false;">Generar reporte</a>
               </div>
             </div>
             <!--end::Menu item-->
