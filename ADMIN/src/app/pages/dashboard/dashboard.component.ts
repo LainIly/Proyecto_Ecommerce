@@ -37,6 +37,9 @@ export class DashboardComponent {
   month_2: string = '';
   report_sale_for_month: any;
 
+  discount_for_list_year: any = [];
+  cupone_for_list_year: any = [];
+
   constructor(public salesService: SalesService) {}
 
   async openModal() {
@@ -815,7 +818,7 @@ export class DashboardComponent {
     this.report_sale_for_month = null;
 
     this.salesService.reportSaleForMonth(data).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
 
       var categories_labels: any = [];
       var series_data: any = [];
@@ -995,5 +998,12 @@ export class DashboardComponent {
         });
       }, 50);
     });
+  }
+
+  discountCuponeR($event:any) {
+    // console.log($event);
+
+    this.discount_for_list_year = $event.discount,
+    this.cupone_for_list_year = $event.cupone
   }
 }

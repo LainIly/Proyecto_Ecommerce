@@ -217,19 +217,19 @@ class KpiSaleReportController extends Controller
                                     ->whereYear('sales.created_at', $year)
                                     ->select(
                                         DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m") as date_format_month'),
-                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
+                                        DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3800,sales.total)),2) as sales_total")
                                     )
                                     ->groupBy('date_format_month')
                                     ->get();
                                     
-        $query_last = DB::table('sales')->where('sales.deleted_at', NULL) //An/o pasado
-                                    ->whereYear('sales.created_at', $year-1)
-                                    ->select(
-                                        DB::raw('DATE_FORMAT(sales.created_at, "%Y-%m") as date_format_month'),
-                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
-                                    )
-                                    ->groupBy('date_format_month')
-                                    ->get();    
+        $query_last = DB::table("sales")->where("sales.deleted_at",NULL)
+                    ->whereYear("sales.created_at",$year-1)
+                    ->select(
+                        DB::raw("DATE_FORMAT(sales.created_at,'%Y-%m') as date_format_month"),
+                        DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3.85,sales.total)),2) as sales_total")
+                    )
+                    ->groupBy("date_format_month")
+                    ->get(); 
         
         $query_discount = DB::table('sales')->where('sales.deleted_at', NULL) //An/o actual
                                     ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
@@ -257,7 +257,7 @@ class KpiSaleReportController extends Controller
             'query_cupone' => $query_cupone,
             'query_discount' => $query_discount,
             'sales_for_month_year_last' => $query_last,
-            'sales_for_month_year_total' => $query->sum('sale_total'),
+            'sales_for_month_year_total' => $query->sum('sales_total'),
             'sales_for_month_year' => $query,
         ]);
     }

@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { getCSSVariableValue } from '../../../../../kt/_utils';
+import { SalesService } from 'src/app/modules/sales/service/sales.service';
+
 @Component({
   selector: 'app-mixed-widget11',
   templateUrl: './mixed-widget11.component.html',
@@ -9,30 +11,105 @@ export class MixedWidget11Component implements OnInit {
   @Input() chartHeight: string;
   chartOptions: any = {};
 
-  constructor() {}
+  @Output() discountR: EventEmitter<any> = new EventEmitter();
+
+  @Input() current_year: any; //Viene desde el dashboard
+  @Input() meses: any = []; //Viene desde el dashboard
+
+  year_1: string = '';
+  report_sale_for_year: any = null;
+
+  constructor(public salesService: SalesService) {}
 
   ngOnInit(): void {
-    this.chartOptions = getChartOptions(this.chartHeight, this.chartColor);
+    // this.chartOptions = getChartOptions(this.chartHeight, this.chartColor);
+
+    this.year_1 = this.current_year;
+    this.reportSaleForYear();
+  }
+
+  formatPriceToCOP(price: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  }
+
+  reportSaleForYear() {
+    let data = {
+      year: this.year_1,
+    };
+
+    this.report_sale_for_year = null;
+    this.salesService.reportSaleForYear(data).subscribe((resp: any) => {
+      console.log(resp);
+
+      var categories_labels: any = [];
+      var series_data: any = [];
+      this.report_sale_for_year = resp;
+
+      var series_data_year_current: any = [];
+      this.report_sale_for_year.sales_for_month_year.forEach((element: any) => {
+        series_data_year_current.push(element.sales_total);
+      });
+      series_data.push({
+        name: 'Ventas del año ' + this.year_1,
+        data: series_data_year_current,
+      });
+
+      var series_data_year_last: any = [];
+      this.report_sale_for_year.sales_for_month_year_last.forEach(
+        (element: any) => {
+          series_data_year_last.push(element.sales_total);
+        }
+      );
+      series_data.push({
+        name: 'Ventas del año ' + (parseInt(this.year_1) - 1),
+        data: series_data_year_last,
+      });
+
+      this.discountR.emit({
+        discount: resp.query_discount,
+        cupone: resp.query_cupone
+      })
+
+      // var max_data = Math.max(...series_data);
+      // var min_data = Math.min(...series_data);
+      this.chartOptions = getChartOptions(
+        this.chartHeight,
+        this.chartColor,
+        series_data,
+        this.meses
+      );
+    });
   }
 }
 
-function getChartOptions(chartHeight: string, chartColor: string) {
+function getChartOptions(
+  chartHeight: string,
+  chartColor: string,
+  series_data: Array<any>,
+  categories_labels: Array<any>
+) {
   const labelColor = getCSSVariableValue('--bs-gray-500');
   const borderColor = getCSSVariableValue('--bs-gray-200');
   const secondaryColor = getCSSVariableValue('--bs-gray-300');
   const baseColor = getCSSVariableValue('--bs-' + chartColor);
 
   return {
-    series: [
-      {
-        name: 'Net Profit',
-        data: [50, 60, 70, 80, 60, 50, 70, 60],
-      },
-      {
-        name: 'Revenue',
-        data: [50, 60, 70, 80, 60, 50, 70, 60],
-      },
-    ],
+    series: series_data,
+    // [
+    //   {
+    //     name: 'Net Profit',
+    //     data: [50, 60, 70, 80, 60, 50, 70, 60],
+    //   },
+    //   {
+    //     name: 'Revenue',
+    //     data: [50, 60, 70, 80, 60, 50, 70, 60],
+    //   },
+    // ],
     chart: {
       fontFamily: 'inherit',
       type: 'bar',
@@ -60,7 +137,8 @@ function getChartOptions(chartHeight: string, chartColor: string) {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: categories_labels,
+      // ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
       axisBorder: {
         show: false,
       },
@@ -112,7 +190,7 @@ function getChartOptions(chartHeight: string, chartColor: string) {
       },
       y: {
         formatter: function (val: number) {
-          return '$' + val + ' revenue';
+          return val + 'COP';
         },
       },
     },
