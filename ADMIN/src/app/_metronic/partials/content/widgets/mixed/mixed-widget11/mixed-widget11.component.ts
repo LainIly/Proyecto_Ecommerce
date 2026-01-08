@@ -44,7 +44,7 @@ export class MixedWidget11Component implements OnInit {
 
     this.report_sale_for_year = null;
     this.salesService.reportSaleForYear(data).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
 
       var categories_labels: any = [];
       var series_data: any = [];

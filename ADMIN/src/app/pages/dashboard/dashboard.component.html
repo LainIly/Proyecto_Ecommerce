@@ -398,10 +398,10 @@
               <!--begin::Item-->
               <li class="nav-item mb-3 me-3 me-lg-6">
                 <!--begin::Link-->
-                <a class="nav-link btn btn-outline btn-flex btn-active-color-warning flex-column overflow-hidden w-80px h-85px pt-5 pb-2 active" data-bs-toggle="pill" id="kt_charts_widget_10_tab_1" href="#kt_charts_widget_10_tab_content_1">
+                <a class="nav-link btn btn-outline btn-flex btn-active-color-warning flex-column overflow-hidden w-80px h-85px pt-5 pb-2 active" (click)="selectedTypeDiscount(1)" [ngClass]="{'active': selected_type_discount == 1}" onclick="return false;" (click)="selected_type_discount = 1" data-bs-toggle="pill" id="kt_charts_widget_10_tab_1" href="#kt_charts_widget_10_tab_content_1">
                   <!--begin::Icon-->
                   <div class="nav-icon mb-3">
-                    <i class="ki-duotone ki-ship fs-1 p-0">
+                    <i class="ki-duotone ki-price-tag fs-1 p-0">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
@@ -409,7 +409,7 @@
                   </div>
                   <!--end::Icon-->
                   <!--begin::Title-->
-                  <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Ship</span>
+                  <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Cupones</span>
                   <!--end::Title-->
                   <!--begin::Bullet-->
                   <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"></span>
@@ -421,10 +421,10 @@
               <!--begin::Item-->
               <li class="nav-item mb-3 me-3 me-lg-6">
                 <!--begin::Link-->
-                <a class="nav-link btn btn-outline btn-flex btn-active-color-warning flex-column overflow-hidden w-80px h-85px pt-5 pb-2" data-bs-toggle="pill" id="kt_charts_widget_10_tab_2" href="#kt_charts_widget_10_tab_content_2">
+                <a class="nav-link btn btn-outline btn-flex btn-active-color-warning flex-column overflow-hidden w-80px h-85px pt-5 pb-2" (click)="selectedTypeDiscount(2)" [ngClass]="{'active': selected_type_discount == 2}" onclick="return false;" data-bs-toggle="pill" id="kt_charts_widget_10_tab_2" href="#kt_charts_widget_10_tab_content_2">
                   <!--begin::Icon-->
                   <div class="nav-icon mb-3">
-                    <i class="ki-duotone ki-truck fs-1 p-0">
+                    <i class="ki-duotone ki-dollar fs-1 p-0">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
@@ -434,7 +434,7 @@
                   </div>
                   <!--end::Icon-->
                   <!--begin::Title-->
-                  <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Truck</span>
+                  <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Descuento</span>
                   <!--end::Title-->
                   <!--begin::Bullet-->
                   <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"></span>

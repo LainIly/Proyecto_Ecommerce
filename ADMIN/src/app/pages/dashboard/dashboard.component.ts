@@ -40,6 +40,11 @@ export class DashboardComponent {
   discount_for_list_year: any = [];
   cupone_for_list_year: any = [];
 
+  report_discount_for_year: any;
+
+  year_3: string = '';
+  selected_type_discount: number = 1;
+
   constructor(public salesService: SalesService) {}
 
   async openModal() {
@@ -64,176 +69,13 @@ export class DashboardComponent {
       this.year_2 = resp.year;
       this.month_2 = resp.month;
 
+      this.year_3 = resp.year;
+
       this.reportSaleForCountry();
       this.reportSaleForWeek();
       this.reportSaleForDiscountWeek();
       this.reportSaleForMonth();
-    });
-
-    var KTChartsWidget10Chart1 = (function () {
-      var e: any = {
-          self: null,
-          rendered: !1,
-        },
-        t = function (e: any) {
-          var t = document.getElementById('kt_charts_widget_10_chart_1');
-          if (t) {
-            var a = parseInt(KTUtil.css(t, 'height')),
-              l = KTUtil.getCssVariableValue('--bs-gray-900'),
-              r = KTUtil.getCssVariableValue('--bs-border-dashed-color'),
-              o = {
-                series: [
-                  {
-                    name: 'Spent time',
-                    data: [54, 42, 75, 110, 23, 87, 50],
-                  },
-                ],
-                chart: {
-                  fontFamily: 'inherit',
-                  type: 'bar',
-                  height: a,
-                  toolbar: {
-                    show: !1,
-                  },
-                },
-                plotOptions: {
-                  bar: {
-                    horizontal: !1,
-                    columnWidth: ['28%'],
-                    borderRadius: 5,
-                    dataLabels: {
-                      position: 'top',
-                    },
-                    startingShape: 'flat',
-                  },
-                },
-                legend: {
-                  show: !1,
-                },
-                dataLabels: {
-                  enabled: !0,
-                  offsetY: -28,
-                  style: {
-                    fontSize: '13px',
-                    colors: [l],
-                  },
-                  formatter: function (e: any) {
-                    return e;
-                  },
-                },
-                stroke: {
-                  show: !0,
-                  width: 2,
-                  colors: ['transparent'],
-                },
-                xaxis: {
-                  categories: [
-                    'QA Analysis',
-                    'Marketing',
-                    'Web Dev',
-                    'Maths',
-                    'Front-end Dev',
-                    'Physics',
-                    'Phylosophy',
-                  ],
-                  axisBorder: {
-                    show: !1,
-                  },
-                  axisTicks: {
-                    show: !1,
-                  },
-                  labels: {
-                    style: {
-                      colors: KTUtil.getCssVariableValue('--bs-gray-500'),
-                      fontSize: '13px',
-                    },
-                  },
-                  crosshairs: {
-                    fill: {
-                      gradient: {
-                        opacityFrom: 0,
-                        opacityTo: 0,
-                      },
-                    },
-                  },
-                },
-                yaxis: {
-                  labels: {
-                    style: {
-                      colors: KTUtil.getCssVariableValue('--bs-gray-500'),
-                      fontSize: '13px',
-                    },
-                    formatter: function (e: any) {
-                      return e + 'H';
-                    },
-                  },
-                },
-                fill: {
-                  opacity: 1,
-                },
-                states: {
-                  normal: {
-                    filter: {
-                      type: 'none',
-                      value: 0,
-                    },
-                  },
-                  hover: {
-                    filter: {
-                      type: 'none',
-                      value: 0,
-                    },
-                  },
-                  active: {
-                    allowMultipleDataPointsSelection: !1,
-                    filter: {
-                      type: 'none',
-                      value: 0,
-                    },
-                  },
-                },
-                tooltip: {
-                  style: {
-                    fontSize: '12px',
-                  },
-                  y: {
-                    formatter: function (e: any) {
-                      return +e + ' hours';
-                    },
-                  },
-                },
-                colors: [
-                  KTUtil.getCssVariableValue('--bs-warning'),
-                  KTUtil.getCssVariableValue('--bs-warning-light'),
-                ],
-                grid: {
-                  borderColor: r,
-                  strokeDashArray: 4,
-                  yaxis: {
-                    lines: {
-                      show: !0,
-                    },
-                  },
-                },
-              };
-            (e.self = new ApexCharts(t, o)),
-              setTimeout(function () {
-                e.self.render(), (e.rendered = !0);
-              }, 200);
-          }
-        };
-      return {
-        init: function () {
-          t(e),
-            KTThemeMode.on('kt.thememode.change', function () {
-              e.rendered && e.self.destroy(), t(e);
-            });
-        },
-      };
-    })();
-
-    KTUtil.onDOMContentLoaded(function () {
-      KTChartsWidget10Chart1.init();
+      this.reportSaleForYearDiscount();
     });
 
     var KTChartsWidget18 = (function () {
@@ -926,7 +768,7 @@ export class DashboardComponent {
                         fontSize: '12px',
                       },
                       formatter: function (e: any) {
-                        return 'COP '+ e;//+ 'K';
+                        return 'COP ' + e; //+ 'K';
                       },
                     },
                   },
@@ -957,7 +799,7 @@ export class DashboardComponent {
                     },
                     y: {
                       formatter: function (e: any) {
-                        return 'COP '+ e; //+ 'K';
+                        return 'COP ' + e; //+ 'K';
                       },
                     },
                   },
@@ -1000,10 +842,198 @@ export class DashboardComponent {
     });
   }
 
-  discountCuponeR($event:any) {
+  discountCuponeR($event: any) {
     // console.log($event);
 
-    this.discount_for_list_year = $event.discount,
-    this.cupone_for_list_year = $event.cupone
+    (this.discount_for_list_year = $event.discount),
+      (this.cupone_for_list_year = $event.cupone);
+  }
+
+  reportSaleForYearDiscount() {
+    let data = {
+      year: this.year_3,
+    };
+
+    this.sales_for_year_for_country = null;
+    this.report_discount_for_year = null;
+
+    this.salesService.reportSaleForYearDiscount(data).subscribe((resp: any) => {
+      console.log(resp);
+
+      var categories_labels: any = [];
+      var series_data: any = [];
+
+      this.report_discount_for_year = resp;
+      this.report_discount_for_year.canje_cupone_year.forEach(
+        (element: any) => {
+          categories_labels.push(element.cupone);
+          series_data.push(element.count_total);
+        }
+      );
+
+      setTimeout(() => {
+        KTUtil.onDOMContentLoaded(function () {
+          KTChartsWidget10Chart1.init();
+        });
+      }, 50);
+
+      var KTChartsWidget10Chart1 = (function () {
+        var e: any = {
+            self: null,
+            rendered: !1,
+          },
+          t = function (e: any) {
+            var t = document.getElementById('kt_charts_widget_10_chart_1');
+            if (t) {
+              var a = parseInt(KTUtil.css(t, 'height')),
+                l = KTUtil.getCssVariableValue('--bs-gray-900'),
+                r = KTUtil.getCssVariableValue('--bs-border-dashed-color'),
+                o = {
+                  series: [
+                    {
+                      name: 'Canje por cupon',
+                      data: series_data,
+                    },
+                  ],
+                  chart: {
+                    fontFamily: 'inherit',
+                    type: 'bar',
+                    height: a,
+                    toolbar: {
+                      show: !1,
+                    },
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: !1,
+                      columnWidth: ['28%'],
+                      borderRadius: 5,
+                      dataLabels: {
+                        position: 'top',
+                      },
+                      startingShape: 'flat',
+                    },
+                  },
+                  legend: {
+                    show: !1,
+                  },
+                  dataLabels: {
+                    enabled: !0,
+                    offsetY: -28,
+                    style: {
+                      fontSize: '13px',
+                      colors: [l],
+                    },
+                    formatter: function (e: any) {
+                      return e;
+                    },
+                  },
+                  stroke: {
+                    show: !0,
+                    width: 2,
+                    colors: ['transparent'],
+                  },
+                  xaxis: {
+                    categories: categories_labels,
+                    axisBorder: {
+                      show: !1,
+                    },
+                    axisTicks: {
+                      show: !1,
+                    },
+                    labels: {
+                      style: {
+                        colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                        fontSize: '13px',
+                      },
+                    },
+                    crosshairs: {
+                      fill: {
+                        gradient: {
+                          opacityFrom: 0,
+                          opacityTo: 0,
+                        },
+                      },
+                    },
+                  },
+                  yaxis: {
+                    labels: {
+                      style: {
+                        colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                        fontSize: '13px',
+                      },
+                      // formatter: function (e: any) {
+                      //   return e + 'H';
+                      // },
+                    },
+                  },
+                  fill: {
+                    opacity: 1,
+                  },
+                  states: {
+                    normal: {
+                      filter: {
+                        type: 'none',
+                        value: 0,
+                      },
+                    },
+                    hover: {
+                      filter: {
+                        type: 'none',
+                        value: 0,
+                      },
+                    },
+                    active: {
+                      allowMultipleDataPointsSelection: !1,
+                      filter: {
+                        type: 'none',
+                        value: 0,
+                      },
+                    },
+                  },
+                  tooltip: {
+                    style: {
+                      fontSize: '12px',
+                    },
+                    y: {
+                      formatter: function (e: any) {
+                        return +e + ' Canje';
+                      },
+                    },
+                  },
+                  colors: [
+                    KTUtil.getCssVariableValue('--bs-warning'),
+                    KTUtil.getCssVariableValue('--bs-warning-light'),
+                  ],
+                  grid: {
+                    borderColor: r,
+                    strokeDashArray: 4,
+                    yaxis: {
+                      lines: {
+                        show: !0,
+                      },
+                    },
+                  },
+                };
+              (e.self = new ApexCharts(t, o)),
+                setTimeout(function () {
+                  e.self.render(), (e.rendered = !0);
+                }, 200);
+            }
+          };
+        return {
+          init: function () {
+            t(e),
+              KTThemeMode.on('kt.thememode.change', function () {
+                e.rendered && e.self.destroy(), t(e);
+              });
+          },
+        };
+      })();
+    });
+  }
+
+  selectedTypeDiscount (number: number) {
+    this.selected_type_discount = number;
   }
 }
