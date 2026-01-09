@@ -45,7 +45,11 @@ export class DashboardComponent {
   year_3: string = '';
   selected_type_discount: number = 1;
 
-  constructor(public salesService: SalesService) {}
+  total_uso_canje_discount: number = 0;
+
+  constructor(
+    public salesService: SalesService
+  ) {}
 
   async openModal() {
     return await this.modalComponent.open();
@@ -858,182 +862,247 @@ export class DashboardComponent {
     this.report_discount_for_year = null;
 
     this.salesService.reportSaleForYearDiscount(data).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
 
-      var categories_labels: any = [];
-      var series_data: any = [];
+      // var categories_labels: any = [];
+      // var series_data: any = [];
 
       this.report_discount_for_year = resp;
-      this.report_discount_for_year.canje_cupone_year.forEach(
-        (element: any) => {
-          categories_labels.push(element.cupone);
-          series_data.push(element.count_total);
-        }
-      );
+      // this.report_discount_for_year.canje_cupone_year.forEach(
+      //   (element: any) => {
+      //     categories_labels.push(element.cupone);
+      //     series_data.push(element.count_total);
+      //   }
+      // );
 
       setTimeout(() => {
-        KTUtil.onDOMContentLoaded(function () {
-          KTChartsWidget10Chart1.init();
-        });
-      }, 50);
-
-      var KTChartsWidget10Chart1 = (function () {
-        var e: any = {
-            self: null,
-            rendered: !1,
-          },
-          t = function (e: any) {
-            var t = document.getElementById('kt_charts_widget_10_chart_1');
-            if (t) {
-              var a = parseInt(KTUtil.css(t, 'height')),
-                l = KTUtil.getCssVariableValue('--bs-gray-900'),
-                r = KTUtil.getCssVariableValue('--bs-border-dashed-color'),
-                o = {
-                  series: [
-                    {
-                      name: 'Canje por cupon',
-                      data: series_data,
-                    },
-                  ],
-                  chart: {
-                    fontFamily: 'inherit',
-                    type: 'bar',
-                    height: a,
-                    toolbar: {
-                      show: !1,
-                    },
-                  },
-                  plotOptions: {
-                    bar: {
-                      horizontal: !1,
-                      columnWidth: ['28%'],
-                      borderRadius: 5,
-                      dataLabels: {
-                        position: 'top',
-                      },
-                      startingShape: 'flat',
-                    },
-                  },
-                  legend: {
-                    show: !1,
-                  },
-                  dataLabels: {
-                    enabled: !0,
-                    offsetY: -28,
-                    style: {
-                      fontSize: '13px',
-                      colors: [l],
-                    },
-                    formatter: function (e: any) {
-                      return e;
-                    },
-                  },
-                  stroke: {
-                    show: !0,
-                    width: 2,
-                    colors: ['transparent'],
-                  },
-                  xaxis: {
-                    categories: categories_labels,
-                    axisBorder: {
-                      show: !1,
-                    },
-                    axisTicks: {
-                      show: !1,
-                    },
-                    labels: {
-                      style: {
-                        colors: KTUtil.getCssVariableValue('--bs-gray-500'),
-                        fontSize: '13px',
-                      },
-                    },
-                    crosshairs: {
-                      fill: {
-                        gradient: {
-                          opacityFrom: 0,
-                          opacityTo: 0,
-                        },
-                      },
-                    },
-                  },
-                  yaxis: {
-                    labels: {
-                      style: {
-                        colors: KTUtil.getCssVariableValue('--bs-gray-500'),
-                        fontSize: '13px',
-                      },
-                      // formatter: function (e: any) {
-                      //   return e + 'H';
-                      // },
-                    },
-                  },
-                  fill: {
-                    opacity: 1,
-                  },
-                  states: {
-                    normal: {
-                      filter: {
-                        type: 'none',
-                        value: 0,
-                      },
-                    },
-                    hover: {
-                      filter: {
-                        type: 'none',
-                        value: 0,
-                      },
-                    },
-                    active: {
-                      allowMultipleDataPointsSelection: !1,
-                      filter: {
-                        type: 'none',
-                        value: 0,
-                      },
-                    },
-                  },
-                  tooltip: {
-                    style: {
-                      fontSize: '12px',
-                    },
-                    y: {
-                      formatter: function (e: any) {
-                        return +e + ' Canje';
-                      },
-                    },
-                  },
-                  colors: [
-                    KTUtil.getCssVariableValue('--bs-warning'),
-                    KTUtil.getCssVariableValue('--bs-warning-light'),
-                  ],
-                  grid: {
-                    borderColor: r,
-                    strokeDashArray: 4,
-                    yaxis: {
-                      lines: {
-                        show: !0,
-                      },
-                    },
-                  },
-                };
-              (e.self = new ApexCharts(t, o)),
-                setTimeout(function () {
-                  e.self.render(), (e.rendered = !0);
-                }, 200);
-            }
-          };
-        return {
-          init: function () {
-            t(e),
-              KTThemeMode.on('kt.thememode.change', function () {
-                e.rendered && e.self.destroy(), t(e);
-              });
-          },
-        };
-      })();
+        this.selectedTypeDiscount(1);
+      }, 25)
     });
   }
 
-  selectedTypeDiscount (number: number) {
+  selectedTypeDiscount(number: number) {
     this.selected_type_discount = number;
+
+    var categories_labels: any = [];
+    var series_data: any = [];
+    var title_series:string = '';
+    var title_format:string = '';
+
+    let BACKUP = this.report_discount_for_year;
+    this.report_discount_for_year = null;
+
+    setTimeout(() => {
+      this.isLoadingView();
+      this.report_discount_for_year = BACKUP;
+
+      if (this.selected_type_discount == 1) {
+        this.total_uso_canje_discount = 0;
+        this.report_discount_for_year.canje_cupone_year.forEach(
+          (element: any) => {
+            categories_labels.push(element.cupone);
+            series_data.push(element.count_total);
+            this.total_uso_canje_discount += element.count_total;
+          }
+        );
+  
+        title_series = 'Canje por cupon';
+        title_format = 'Canje';
+      }
+  
+      if (this.selected_type_discount == 2) {
+        this.total_uso_canje_discount = 0;
+        this.report_discount_for_year.uso_discount_year.forEach(
+          (element: any) => {
+            categories_labels.push(element.code_discount);
+            series_data.push(element.count_total);
+            this.total_uso_canje_discount += element.count_total;
+          }
+        );
+      }
+    }, 50);
+
+    this.graphicDiscountCupone(
+      series_data,
+      categories_labels,
+      title_series,
+      title_format
+    );
+      title_series = 'Uso por campana de descuento';
+      title_format = 'Uso';
+  }
+
+  graphicDiscountCupone(
+    series_data: any,
+    categories_labels: any,
+    title_series: string,
+    title_format: string
+  ) {
+    var KTChartsWidget10Chart1 = (function () {
+      var e: any = {
+          self: null,
+          rendered: !1,
+        },
+        t = function (e: any) {
+          var t = document.getElementById('kt_charts_widget_10_chart_1');
+          if (t) {
+            var a = parseInt(KTUtil.css(t, 'height')),
+              l = KTUtil.getCssVariableValue('--bs-gray-900'),
+              r = KTUtil.getCssVariableValue('--bs-border-dashed-color'),
+              o = {
+                series: [
+                  {
+                    name: title_series, //'Canje por cupon',
+                    data: series_data,
+                  },
+                ],
+                chart: {
+                  fontFamily: 'inherit',
+                  type: 'bar',
+                  height: a,
+                  toolbar: {
+                    show: !1,
+                  },
+                },
+                plotOptions: {
+                  bar: {
+                    horizontal: !1,
+                    columnWidth: ['28%'],
+                    borderRadius: 5,
+                    dataLabels: {
+                      position: 'top',
+                    },
+                    startingShape: 'flat',
+                  },
+                },
+                legend: {
+                  show: !1,
+                },
+                dataLabels: {
+                  enabled: !0,
+                  offsetY: -28,
+                  style: {
+                    fontSize: '13px',
+                    colors: [l],
+                  },
+                  formatter: function (e: any) {
+                    return e;
+                  },
+                },
+                stroke: {
+                  show: !0,
+                  width: 2,
+                  colors: ['transparent'],
+                },
+                xaxis: {
+                  categories: categories_labels,
+                  axisBorder: {
+                    show: !1,
+                  },
+                  axisTicks: {
+                    show: !1,
+                  },
+                  labels: {
+                    style: {
+                      colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                      fontSize: '13px',
+                    },
+                  },
+                  crosshairs: {
+                    fill: {
+                      gradient: {
+                        opacityFrom: 0,
+                        opacityTo: 0,
+                      },
+                    },
+                  },
+                },
+                yaxis: {
+                  labels: {
+                    style: {
+                      colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                      fontSize: '13px',
+                    },
+                    // formatter: function (e: any) {
+                    //   return e + 'H';
+                    // },
+                  },
+                },
+                fill: {
+                  opacity: 1,
+                },
+                states: {
+                  normal: {
+                    filter: {
+                      type: 'none',
+                      value: 0,
+                    },
+                  },
+                  hover: {
+                    filter: {
+                      type: 'none',
+                      value: 0,
+                    },
+                  },
+                  active: {
+                    allowMultipleDataPointsSelection: !1,
+                    filter: {
+                      type: 'none',
+                      value: 0,
+                    },
+                  },
+                },
+                tooltip: {
+                  style: {
+                    fontSize: '12px',
+                  },
+                  y: {
+                    formatter: function (e: any) {
+                      return +e + title_format; //' Canje';
+                    },
+                  },
+                },
+                colors: [
+                  KTUtil.getCssVariableValue('--bs-warning'),
+                  KTUtil.getCssVariableValue('--bs-warning-light'),
+                ],
+                grid: {
+                  borderColor: r,
+                  strokeDashArray: 4,
+                  yaxis: {
+                    lines: {
+                      show: !0,
+                    },
+                  },
+                },
+              };
+            (e.self = new ApexCharts(t, o)),
+              setTimeout(function () {
+                e.self.render(), (e.rendered = !0);
+              }, 200);
+          }
+        };
+      return {
+        init: function () {
+          t(e),
+            KTThemeMode.on('kt.thememode.change', function () {
+              e.rendered && e.self.destroy(), t(e);
+            });
+        },
+      };
+    })();
+
+    setTimeout(() => {
+      KTUtil.onDOMContentLoaded(function () {
+        KTChartsWidget10Chart1.init();
+      });
+    }, 50);
+  }
+
+  isLoadingView () {
+    this.salesService.isLoadingSubject.next(true);
+    setTimeout(() => {
+      this.salesService.isLoadingSubject.next(false);
+    }, 50);
   }
 }
