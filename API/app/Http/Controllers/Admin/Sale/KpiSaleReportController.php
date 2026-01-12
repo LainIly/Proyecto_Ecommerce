@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Sale;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 
 class KpiSaleReportController extends Controller
 {
@@ -226,7 +226,7 @@ class KpiSaleReportController extends Controller
                     ->whereYear("sales.created_at",$year-1)
                     ->select(
                         DB::raw("DATE_FORMAT(sales.created_at,'%Y-%m') as date_format_month"),
-                        DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3.85,sales.total)),2) as sales_total")
+                        DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3800,sales.total)),2) as sales_total")
                     )
                     ->groupBy("date_format_month")
                     ->get(); 
@@ -299,51 +299,54 @@ class KpiSaleReportController extends Controller
         $year = $request->year;
         $month = $request->month;
 
-        $sales_for_month = DB::table('sales')->where('sales.deleted_at', NULL)
-                                   ->whereYear('sales.created_at', $year)
-                                   ->whereMonth('sales.created_at', $month)
-                                   ->select(
-                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
-                                   )
-                                   ->get()
-                                   ->sum('sales_total');
+        $sales_for_month = DB::table("sales")->where("sales.deleted_at",NULL)
+                                ->whereYear("sales.created_at",$year)
+                                ->whereMonth("sales.created_at",$month)
+                                ->select(
+                                    DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3800,sales.total)),2) as sales_total")
+                                )
+                                ->get()
+                                ->sum("sales_total");
 
-        $month_last = Carbon::parse($year.'-'.$month.'-'.'01')->subMonth(); 
+        $month_last = Carbon::parse($year.'-'.$month.'-'.'01')->subMonth();
 
-        $sales_for_month_last = DB::table('sales')->where('sales.deleted_at', NULL)
-                                   ->whereYear('sales.created_at', $month_last->format('Y'))
-                                   ->whereMonth('sales.created_at', $month_last->format('m'))
-                                   ->select(
-                                        DB::raw('ROUND(SUM(IF(sales.currency_payment = "USD", sales.total*3800, sales.total)), 2) as sales_total')
-                                   )
-                                   ->get()
-                                   ->sum('sales_total');
+        $sales_for_month_last = DB::table("sales")->where("sales.deleted_at",NULL)
+                                ->whereYear("sales.created_at",$month_last->format("Y"))
+                                ->whereMonth("sales.created_at",$month_last->format("m"))
+                                ->select(
+                                    DB::raw("ROUND(SUM(IF(sales.currency_payment = 'USD',sales.total*3800,sales.total)),2) as sales_total")
+                                )
+                                ->get()
+                                ->sum("sales_total");
 
         $porcentajeV = 0;
         
-        if ($sales_for_month_last) {
-            $porcentajeV = (($sales_for_month - $sales_for_month_last) / $sales_for_month_last)*100;
+        if($sales_for_month_last){
+            $porcentajeV = (($sales_for_month - $sales_for_month_last)/$sales_for_month_last)*100;
         }
 
-        $query = DB::table('sales')->where('sales.deleted_at', NULL)
-                                   ->join('sale_details', 'sale_details.sale_id', '=', 'sales.id')
-                                   ->where('sale_details.deleted_at', NULL)
-                                   ->whereYear('sales.created_at', $year)
-                                   ->whereMonth('sales.created_at', $month)
-                                   ->join('products', 'products.id', '=', 'sale_details.product_id')
-                                   ->join('categories', 'categories.id', '=', 'products.categorie_first_id')
-                                   ->select(
-                                        'categories.name as categorie_name',
-                                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as categories_total'),
-                                        DB::raw('ROUND(SUM(sale_details.quantity), 2) as categories_quantity'),
-                                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)/30), 2) as categories_avg'),
-                                   )
-                                   ->groupBy('categorie_name')
-                                   ->get();
+        $query = DB::table('sales')->where("sales.deleted_at",NULL)
+                    ->join("sale_details","sale_details.sale_id",'=',"sales.id")
+                    ->where("sale_details.deleted_at",NULL)
+                    ->whereYear("sales.created_at",$year)
+                    ->whereMonth("sales.created_at",$month)
+                    ->join("products","products.id",'=',"sale_details.product_id")
+                    ->join("categories","categories.id",'=',"products.categorie_first_id")
+                    ->select(
+                        "categories.name as categorie_name",
+                        DB::raw("ROUND(SUM(IF(sale_details.currency = 'USD',sale_details.total*3800,sale_details.total)),2) as categories_total"),
+                        DB::raw("ROUND(SUM(sale_details.quantity),2) as categories_quantity"),
+                        DB::raw("ROUND(SUM(IF(sale_details.currency = 'USD',sale_details.total*3800,sale_details.total)/30),2) as categories_avg"),
+                    )
+                    ->groupBy("categorie_name")
+                    ->orderBy("categories_total","desc")
+                    ->take(5)
+                    ->get();
 
         return response()->json([
             'sales_for_categories' => $query,
-            'porcentajeV' => $porcentajeV,
+            'porcentajeV' => round($porcentajeV, 2),
+            'sales_total' => round($sales_for_month, 2)
         ]);
     }
 

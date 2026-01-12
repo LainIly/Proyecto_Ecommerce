@@ -660,7 +660,6 @@ export class DashboardComponent {
       month: this.month_2,
     };
 
-    this.sales_for_year_for_country = null;
     this.report_sale_for_month = null;
 
     this.salesService.reportSaleForMonth(data).subscribe((resp: any) => {
@@ -905,9 +904,8 @@ export class DashboardComponent {
             this.total_uso_canje_discount += element.count_total;
           }
         );
-  
         title_series = 'Canje por cupon';
-        title_format = 'Canje';
+        title_format = 'Canjes: ';
       }
   
       if (this.selected_type_discount == 2) {
@@ -928,7 +926,7 @@ export class DashboardComponent {
       title_series,
       title_format
     );
-      title_series = 'Uso por campana de descuento';
+      title_series = 'Uso por campaña';
       title_format = 'Uso';
   }
 
@@ -1058,7 +1056,7 @@ export class DashboardComponent {
                   },
                   y: {
                     formatter: function (e: any) {
-                      return +e + title_format; //' Canje';
+                      return + e + ' ' +title_format; //'Canjes: '
                     },
                   },
                 },
