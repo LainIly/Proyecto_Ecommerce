@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalConfig, ModalComponent } from '../../_metronic/partials';
 import { SalesService } from 'src/app/modules/sales/service/sales.service';
+import { data } from 'jquery';
 
 declare var KTUtil: any;
 declare var KTThemeMode: any;
@@ -47,6 +48,14 @@ export class DashboardComponent {
 
   total_uso_canje_discount: number = 0;
 
+  year_4 : string = '';
+  month_4 : string = '';
+  report_sale_for_categorie_details:any;
+  product_most_sales: any = [];
+  sale_month_categories : any = [];
+  categorie_selected : number = 0;
+  categorie_details : any = [];
+
   constructor(
     public salesService: SalesService
   ) {}
@@ -75,11 +84,15 @@ export class DashboardComponent {
 
       this.year_3 = resp.year;
 
+      this.year_4 = resp.year;
+      this.month_4 = resp.month;
+
       this.reportSaleForCountry();
       this.reportSaleForWeek();
       this.reportSaleForDiscountWeek();
       this.reportSaleForMonth();
       this.reportSaleForYearDiscount();
+      this.reportSaleForCategorieDetails();
     });
 
     var KTChartsWidget18 = (function () {
@@ -1102,5 +1115,32 @@ export class DashboardComponent {
     setTimeout(() => {
       this.salesService.isLoadingSubject.next(false);
     }, 50);
+  }
+
+  reportSaleForCategorieDetails() {
+    let data = {
+      year: this.year_4,
+      month: this.month_4,
+    };
+
+    // this.report_sale_for_categorie_details = null;
+
+    this.salesService.reportSaleForCategorieDetails(data).subscribe((resp: any) => {
+      console.log(resp);
+
+      this.product_most_sales = resp.product_most_sales;
+      this.sale_month_categories = resp.sale_month_categories;
+      this.categorie_selected = this.sale_month_categories[0].categorie_id;
+      
+      setTimeout(() => {
+
+      }, 50);
+    });
+  }
+
+  selectedCategorie(sale_month_categ:any) {
+    this.categorie_selected = sale_month_categ.categorie_id;
+    let DATA = this.product_most_sales.find((item:any) => item.categorie_id == sale_month_categ.categorie_id);
+    this.categorie_details = DATA ? DATA.products : [];
   }
 }

@@ -91,7 +91,7 @@ export class NewChartsWidget8Component implements OnInit {
     }
     this.report_sale_for_categories = null;
     this.salesService.reportSaleForCategories(data).subscribe((resp:any) => {
-       console.log(resp);
+      //  console.log(resp);
       //  var categories_labels:any = [];
        var series_data:any = [];
        this.report_sale_for_categories = resp;
