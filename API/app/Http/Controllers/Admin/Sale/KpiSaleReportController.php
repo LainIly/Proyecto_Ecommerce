@@ -363,8 +363,9 @@ class KpiSaleReportController extends Controller
                     ->whereMonth('sales.created_at', $month)
                     ->select('categories.name as categorie_name',
                         'categories.id as categorie_id', 
+                        'categories.imagen as categorie_imagen', 
                         DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as categorie_total'))
-                    ->groupBy('categorie_name', 'categorie_id')
+                    ->groupBy('categorie_name', 'categorie_id', 'categorie_imagen')
                     ->orderBy('categorie_total', 'desc')
                     ->take(5)
                     ->get();
@@ -380,23 +381,29 @@ class KpiSaleReportController extends Controller
                     ->whereYear('sales.created_at', $year)
                     ->whereMonth('sales.created_at', $month)
                     ->where('products.categorie_first_id', $sales_month_categ->categorie_id)
-                    ->select('products.title as product_title', 'products.sku as product_sku', 'products.price_cop as product_price_cop',
+                    ->select('products.title as product_title', 'products.sku as product_sku', 'products.price_cop as product_price_cop', 'products.imagen as products_imagen',
                         DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as product_total'),
                         DB::raw('ROUND(SUM(sale_details.quantity), 2) as product_quantity_total'))
-                    ->groupBy('product_title', 'product_sku', 'product_price_cop')
+                    ->groupBy('product_title', 'product_sku', 'product_price_cop', 'products_imagen') //
                     ->orderBy('product_total', 'desc')
                     ->take(5)
                     ->get();
 
             $product_most_sales->push([
                 'categorie_id' => $sales_month_categ->categorie_id,
-                'products' => $query_product_most_sales,
+                'products' => $query_product_most_sales->map(function($item) {
+                    $item->imagen = env('APP_URL').'storage/'.$item->products_imagen;
+                    return $item;
+                }),
             ]);
         }
 
         return response()->json([
             'product_most_sales' => $product_most_sales,
-            'sale_month_categories' => $sales_month_categories
+            'sale_month_categories' => $sales_month_categories->map(function($item) {
+                $item->imagen = env('APP_URL').'storage/'.$item->categorie_imagen;
+                return $item;
+            }),
         ]);
     }
 
