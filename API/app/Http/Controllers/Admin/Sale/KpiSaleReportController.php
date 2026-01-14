@@ -423,10 +423,11 @@ class KpiSaleReportController extends Controller
                                        DB::raw('ROUND(SUM(IF(sale_details.currency = "USD", sale_details.total*3800, sale_details.total)), 2) as brand_total'),
                                        DB::raw('ROUND(SUM(sale_details.quantity), 2) as quantity_total'))
                                    ->groupBy('brand_name', 'brand_t_id')
+                                   ->take(5)
                                    ->get();
 
         return response()->json([
-            'sales_for_month' => $query
+            'sales_for_brands' => $query
         ]);
     }
 }

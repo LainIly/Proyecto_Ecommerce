@@ -19,7 +19,7 @@ class SaleSeeder extends Seeder
     public function run(): void
     {
         Sale::factory()
-            ->count(1000)
+            ->count(500)
             ->create([
                 'created_at' => function () {
                     return \Faker\Factory::create()->dateTimeBetween(

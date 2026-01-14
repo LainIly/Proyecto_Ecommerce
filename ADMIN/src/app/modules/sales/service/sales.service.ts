@@ -132,4 +132,13 @@ export class SalesService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
+  reportSaleForBrands(data:any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authservice.token});
+    let URL = URL_SERVICIOS+"/admin/kpi/report_sale_brands";
+    return this.http.post(URL,data,{headers: headers}).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 }

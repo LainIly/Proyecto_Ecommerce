@@ -5,9 +5,9 @@
     class="spinner-border spinner-border-sm align-middle ms-2"
     *ngIf="isLoading$ | async"
   ></span>
-  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+  <div class="col-md-7 col-lg-7 col-xl-7 col-xxl-7 mb-md-5 mb-xl-10">
     <div class="row">
-      <div class="col-6 mb-md-5 mb-xl-10">
+      <div class="col-7 mb-md-5 mb-xl-10">
         <div class="card card-flush h-xl-100">
           <!--begin::Header-->
           <div class="card-header py-7">
@@ -17,7 +17,7 @@
               <div class="d-flex align-items-center mb-2">
                 <!--begin::Title-->
                 <span class="fs-6 fw-bold text-gray-800 me-2 lh-1 ls-n2"
-                  >{{ formatPriceToCOP(sales_for_year_for_country) }} COP</span
+                  >COP {{ formatPriceToCOP(sales_for_year_for_country) }}</span
                 >
                 <!--end::Title-->
                 <!--begin::Label-->
@@ -43,7 +43,7 @@
               <!--end::Heading-->
               <!--begin::Description-->
               <span class="fs-6 fw-semibold text-gray-500"
-                >Sesiones orgánicas</span
+                >Venta por País</span
               >
               <!--end::Description-->
             </div>
@@ -142,7 +142,7 @@
           <!--end::Body-->
         </div>
       </div>
-      <div class="col-6 mb-md-5 mb-xl-10">
+      <div class="col-5 mb-md-5 mb-xl-10">
         <ng-container *ngIf="report_sale_for_week">
           <app-cards-widget17
             cssClass=""
@@ -191,7 +191,7 @@
               <!--end::Info-->
               <!--begin::Subtitle-->
               <span class="text-gray-500 pt-1 fw-semibold fs-6"
-                >Promedio de ventas diarias</span
+                >Descuentos por semana</span
               >
               <!--end::Subtitle-->
             </div>
@@ -213,13 +213,13 @@
   <!--end::Col-->
   <!--begin::Col-->
   <!-- <app-engage-widget10 class="col-xxl-6" cssClass="h-md-100"></app-engage-widget10> -->
-  <div class="col-xxl-6" cssClass="h-md-100">
+  <div class="col-xxl-5" cssClass="h-md-100">
     <div class="card card-flush overflow-hidden">
       <div class="card-header py-5">
         <!--begin::Title-->
         <h3 class="card-title align-items-start flex-column">
           <span class="card-label fw-bold text-gray-900">Ventas por meses</span>
-          <!-- <span class="text-gray-500 mt-1 fw-semibold fs-6">Users from all channels</span> -->
+          <span class="text-gray-500 mt-1 fw-semibold fs-6">Usuarios de todos los paises</span>
         </h3>
         <!--end::Title-->
         <!--begin::Toolbar-->
@@ -612,7 +612,7 @@
                   <option value="2026">2026</option>
                 </select>
               </li>
-              
+
               <!--end::Item-->
             </ul>
             <!--end::Nav-->
@@ -698,41 +698,44 @@
           <!--begin::Menu separator-->
           <div class="separator mt-3 opacity-75"></div>
 
-          
-            <div class="menu-item px-3">
-              <select
-                class="form-control form-select-solid fw-bolder"
-                name="year_4"
-                placeholder="Selec. Año"
-                [(ngModel)]="year_4"
-              >
-                <option value="">Selec. Año</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-                <option value="2026">2026</option>
-              </select>
-            </div>
-            <div class="menu-item px-3">
-              <select
-                class="form-control form-select-solid fw-bolder"
-                name="month_4"
-                placeholder="Selec. Año"
-                [(ngModel)]="month_4"
-              >
-                <option value="">Selec. Mes</option>
-                <ng-container *ngFor="let mes of meses; let i = index">
-                  <option [value]="i + 1 > 10 ? i + 1 : '0' + (i + 1)">
-                    {{ mes }}
-                  </option>
-                </ng-container>
-              </select>
-            </div>
+          <div class="menu-item px-3">
+            <select
+              class="form-control form-select-solid fw-bolder"
+              name="year_4"
+              placeholder="Selec. Año"
+              [(ngModel)]="year_4"
+            >
+              <option value="">Selec. Año</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+            </select>
+          </div>
+          <div class="menu-item px-3">
+            <select
+              class="form-control form-select-solid fw-bolder"
+              name="month_4"
+              placeholder="Selec. Año"
+              [(ngModel)]="month_4"
+            >
+              <option value="">Selec. Mes</option>
+              <ng-container *ngFor="let mes of meses; let i = index">
+                <option [value]="i + 1 > 10 ? i + 1 : '0' + (i + 1)">
+                  {{ mes }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
 
           <!--begin::Menu item-->
           <div class="menu-item px-3">
             <div class="menu-content px-3 py-3">
-              <a class="btn btn-primary btn-sm px-4" href="#"
+              <a
+                class="btn btn-primary btn-sm px-4"
+                href="#"
+                onclick="return false;"
+                (click)="reportSaleForCategorieDetails()"
                 >Generar Reportes</a
               >
             </div>
@@ -747,7 +750,6 @@
       <div class="card-body pt-2">
         <!--begin::Nav-->
         <ul class="nav nav-pills nav-pills-custom mb-3">
-
           <ng-container *ngFor="let sale_month_categ of sale_month_categories">
             <li class="nav-item mb-3 me-3 me-lg-6">
               <!--begin::Link-->
@@ -758,24 +760,18 @@
                 onclick="return false;"
                 (click)="selectedCategorie(sale_month_categ)"
                 [ngClass]="{
-                  active:
-                    categorie_selected ==
-                    sale_month_categ.categorie_id
+                  active: categorie_selected == sale_month_categ.categorie_id
                 }"
               >
                 <!--begin::Icon-->
                 <div class="nav-icon">
-                  <img
-                    alt=""
-                    [src]="sale_month_categ.imagen"
-                    class=""
-                  />
+                  <img alt="" [src]="sale_month_categ.imagen" class="" />
                 </div>
                 <!--end::Icon-->
                 <!--begin::Subtitle-->
-                <span class="nav-text text-gray-700 fw-bold fs-6 lh-1"
-                  >{{ sale_month_categ.categorie_name }}</span
-                >
+                <span class="nav-text text-gray-700 fw-bold fs-6 lh-1">{{
+                  sale_month_categ.categorie_name
+                }}</span>
                 <!--end::Subtitle-->
                 <!--begin::Bullet-->
                 <span
@@ -788,7 +784,6 @@
           </ng-container>
           <!--begin::Item-->
           <!--end::Item-->
-
         </ul>
         <!--end::Nav-->
         <!--begin::Tab Content-->
@@ -812,11 +807,14 @@
                 <!--end::Table head-->
                 <!--begin::Table body-->
                 <tbody>
-                  <ng-container *ngFor="let categorie_detail of categorie_details ">
+                  <ng-container
+                    *ngFor="let categorie_detail of categorie_details"
+                  >
                     <tr>
                       <td>
                         <img
-                          [src]="categorie_detail.imagen" style=" height: 50px; width: 50px; object-fit: contain;"
+                          [src]="categorie_detail.imagen"
+                          style="height: 50px; width: 50px; object-fit: contain"
                           class="w-50px ms-n1"
                           alt=""
                         />
@@ -836,17 +834,23 @@
                       <td>
                         <span
                           class="text-gray-800 fw-bold d-block fs-6 ps-0 text-end"
-                          >{{ categorie_detail.product_quantity_total}}</span
+                          >{{ categorie_detail.product_quantity_total }}</span
                         >
                       </td>
                       <td class="text-end pe-0">
                         <span class="text-gray-800 fw-bold d-block fs-6"
-                          >{{ formatPriceToCOP(categorie_detail.product_price_cop) }} COP</span
+                          >{{
+                            formatPriceToCOP(categorie_detail.product_price_cop)
+                          }}
+                          COP</span
                         >
                       </td>
                       <td class="text-end pe-0">
                         <span class="text-gray-800 fw-bold d-block fs-6"
-                          >{{ formatPriceToCOP(categorie_detail.product_total) }} COP</span
+                          >{{
+                            formatPriceToCOP(categorie_detail.product_total)
+                          }}
+                          COP</span
                         >
                       </td>
                     </tr>
@@ -879,54 +883,31 @@
         >
           <!--begin::Title-->
           <div class="fs-4 fw-bold text-gray-900 text-center mb-5">
-            Session Attendance <br />for Current Academic Year
+            Ventas por <br />Marcas
           </div>
           <!--end::Title-->
           <!--begin::Chart-->
-          <div id="kt_chart_widgets_22_chart_1" class="mx-auto mb-4"></div>
+          <div id="kt_chart_widgets_22_chart_1" *ngIf="report_sale_for_brands" class="mx-auto mb-4"></div>
           <!--end::Chart-->
           <!--begin::Labels-->
-          <div class="mx-auto">
-            <!--begin::Label-->
-            <div class="d-flex align-items-center mb-2">
-              <!--begin::Bullet-->
-              <div class="bullet bullet-dot w-8px h-7px bg-success me-2"></div>
-              <!--end::Bullet-->
+          <div class="mx-auto" *ngIf="report_sale_for_brands">
+           <ng-container *ngFor="let brand of report_sale_for_brands.sales_for_brands;let i=index">
               <!--begin::Label-->
-              <div class="fs-8 fw-semibold text-muted">Precent(133)</div>
+              <div class="d-flex align-items-center mb-2">
+                <!--begin::Bullet-->
+                <div class="bullet bullet-dot w-8px h-7px me-2" [ngStyle]="{'background-color': getExpressionCss(i)}"></div>
+                <!--end::Bullet-->
+                <!--begin::Label-->
+                <div class="fs-8 fw-semibold text-muted">{{ brand.brand_name }}({{ brand.quantity_total }})</div>
+                <!--end::Label-->
+              </div>
               <!--end::Label-->
-            </div>
+
+            </ng-container>
             <!--end::Label-->
-            <!--begin::Label-->
-            <div class="d-flex align-items-center mb-2">
-              <!--begin::Bullet-->
-              <div class="bullet bullet-dot w-8px h-7px bg-primary me-2"></div>
-              <!--end::Bullet-->
-              <!--begin::Label-->
-              <div class="fs-8 fw-semibold text-muted">Illness(9)</div>
-              <!--end::Label-->
-            </div>
-            <!--end::Label-->
-            <!--begin::Label-->
-            <div class="d-flex align-items-center mb-2">
-              <!--begin::Bullet-->
-              <div class="bullet bullet-dot w-8px h-7px bg-info me-2"></div>
-              <!--end::Bullet-->
-              <!--begin::Label-->
-              <div class="fs-8 fw-semibold text-muted">Late(2)</div>
-              <!--end::Label-->
-            </div>
-            <!--end::Label-->
-            <!--begin::Label-->
-            <div class="d-flex align-items-center mb-2">
-              <!--begin::Bullet-->
-              <div class="bullet bullet-dot w-8px h-7px bg-danger me-2"></div>
-              <!--end::Bullet-->
-              <!--begin::Label-->
-              <div class="fs-8 fw-semibold text-muted">Absent(3)</div>
-              <!--end::Label-->
-            </div>
-            <!--end::Label-->
+
+
+
           </div>
           <!--end::Labels-->
         </div>
@@ -938,19 +919,47 @@
       <div class="card-header pt-7">
         <!--begin::Title-->
         <h3 class="card-title align-items-start flex-column">
-          <span class="card-label fw-bold text-gray-800">Learn Activity</span>
-          <span class="text-gray-500 mt-1 fw-semibold fs-6"
-            >Hours per course</span
-          >
+          <span class="card-label fw-bold text-gray-800">Ventas por marcas</span>
         </h3>
         <!--end::Title-->
         <!--begin::Toolbar-->
-        <div class="card-toolbar"></div>
+        <div class="card-toolbar d-flex mx-3">
+
+          <select
+            class="form-control form-select-solid fw-bolder"
+            name="year_5"
+            placeholder="Selec. Año"
+            [(ngModel)]="year_5"
+            (change)="reportSaleForBrands()"
+          >
+            <!-- <option value="">Selec. Año</option> -->
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+          </select>
+
+          <select
+            class="form-control form-select-solid fw-bolder"
+            name="month_5"
+            placeholder="Selec. Año"
+            [(ngModel)]="month_5"
+            (change)="reportSaleForBrands()"
+          >
+            <!-- <option value="">Selec. Mes</option> -->
+            <ng-container *ngFor="let mes of meses; let i = index">
+              <option [value]="i + 1 > 10 ? i + 1 : '0' + (i + 1)">
+                {{ mes }}
+              </option>
+            </ng-container>
+          </select>
+
+        </div>
         <!--end::Toolbar-->
       </div>
       <div class="card-body d-flex align-items-end px-0 pt-3 pb-5">
         <div
-          id="kt_charts_widget_18_chart"
+          id="kt_charts_widget_18_chart" *ngIf="report_sale_for_brands"
           class="h-325px w-100 min-h-auto ps-4 pe-6"
         ></div>
       </div>
